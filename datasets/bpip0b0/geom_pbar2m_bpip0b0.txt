@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 // pbar2m geometry for pi+ beam
 //-----------------------------------------------------------------------------
-#include "pbar2m/common/geom_baseline.txt"
+#include "pipenu/common/geom_baseline.txt"
 //
 
 double ts.coll3.rotationAngle    = 180.0; // DEFAULT: 0.0
