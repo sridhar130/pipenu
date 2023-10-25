@@ -1,0 +1,17 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# write out stopped mu+'s only 
+#------------------------------------------------------------------------------
+#include "Production/JobConfig/beam/BeamSplitter.fcl"
+services.GeometryService.inputFile         : "pbar2m/datasets/bmum0b0/geom_pbar2m_bmum0b0.txt"
+services.GeometryService.bFieldFile        : "Offline/Mu2eG4/geom/bfgeom_v01.txt"
+#------------------------------------------------------------------------------
+physics.filters.muonSelector.ParticleCodes : [ [-13, "uninitialized", "mu2eKillerVolume" ] ]
+physics.filters.muonSelector.SimParticles  : "TargetStopFilter"
+physics.outpath                            : [ muonout ]
+#------------------------------------------------------------------------------
+# geometry service is not needed, and it is not defined above.
+# an attempt to define the B-field leads to the FCL parser failure
+#------------------------------------------------------------------------------
+services.TFileService.fileName      : "nts.mu2e.bmum0b0s32r0000.pbar2m.001210_00000000.root"
+outputs.muonout.fileName            : "sim.mu2e.bmum0b0s32r0000.pbar2m.001210_00000000.art"
