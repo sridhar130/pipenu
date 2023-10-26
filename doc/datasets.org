@@ -47,7 +47,7 @@
 |         |        | bmup1b0s21r0000                |             | particles stopped in the stopping target (mu+/-, pi+/-, pbar)         |
 |         |        | bmup1b0s22r0000                |             | particles stopped outside the stopping target (mu+/-, pi+/-, pbar)    |
 |---------+--------+--------------------------------+-------------+-----------------------------------------------------------------------|
-| [[file:../datasets/bpip1b0/pbar2m.bpip1b0.org][bpip1b0]] |    5e6 |                                |             | pi+ beam - default for the MDC2020-style Mu2e Production, ShieldingM  |
+| [[file:../datasets/bpip1b0/pipenu.bpip1b0.org][bpip1b0]] |    5e6 |                                |             | pi+ beam - default for the MDC2020-style Mu2e Production, ShieldingM  |
 |         |        |                                |             | 70% B-field for pi+ --> e+ nu                                         |
 |         |        | bpip1b0s11r0000                |             | output of the stage 1 muon tracing                                    |
 |         |        | bpip1b0s12r0000                |             | output of the stage 2 muon tracing                                    |
