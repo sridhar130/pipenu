@@ -1,0 +1,62 @@
+#
+#  Mix pileup.  This is a form of OnSpill digitization
+#
+#include "Production/JobConfig/common/prolog.fcl"
+#include "Production/JobConfig/digitize/prolog.fcl"
+#include "Production/JobConfig/mixing/prolog.fcl"
+
+# Reconstruct from digis, including MC information
+# original author: David Brown (LBNL) 1 Feb 2020
+#
+#include "Offline/fcl/minimalMessageService.fcl"
+#include "Offline/fcl/standardServices.fcl"
+#include "Production/JobConfig/reco/prolog.fcl"
+
+process_name: Mix
+source : { module_type : RootInput }
+services : @local::Services.SimAndReco # reco is needed for the trigger
+physics : {
+  producers : {
+    @table::Digitize.producers
+    @table::Trigger.producers
+    @table::Mixing.producers
+    @table::Reconstruction.producers
+  }
+  filters: {
+    @table::Digitize.filters
+    @table::Trigger.filters
+    @table::Mixing.filters
+    @table::Reconstruction.filters
+  }
+  analyzers: { @table::Digitize.analyzers 
+               @table::Reconstruction.analyzers
+  }
+  MixPath : [ @sequence::Mixing.MixSequence ]
+  UntriggeredPath : [ @sequence::Mixing.MixSequence, @sequence::Digitize.UntriggeredSequence ]
+  RecoPath : [  @sequence::Mixing.MixSequence, @sequence::Digitize.UntriggeredSequence, @sequence::Reconstruction.RecoMCPath ]
+  # EndPath : @table::Reconstruction.EndPath
+
+}
+outputs : {
+  SignalOutput : @local::Digitize.SignalOutput
+  DiagOutput :  @local::Digitize.DiagOutput
+  TrkOutput :  @local::Digitize.TrkOutput
+  CaloOutput : @local::Digitize.CaloOutput
+  UntriggeredOutput : @local::Digitize.UntriggeredOutput
+  RecoOutput : @local::Reconstruction.Output
+}
+
+#
+# Final configuration
+#
+#include "Production/JobConfig/digitize/OnSpill.fcl"
+#include "Production/JobConfig/common/epilog.fcl"
+#include "Production/JobConfig/digitize/epilog.fcl"
+#include "Production/JobConfig/mixing/epilog.fcl"
+#include "Production/JobConfig/common/epilog.fcl"
+#include "Production/JobConfig/reco/epilog.fcl"
+
+physics.trigger_paths[0] : MixPath
+physics.trigger_paths[1] : UntriggeredPath
+physics.trigger_paths[2] : [ RecoPath ]
+# physics.end_paths : [ EndPath ]

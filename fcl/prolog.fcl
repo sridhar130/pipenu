@@ -1,0 +1,536 @@
+# -*- mode: tcl -*-
+#------------------------------------------------------------------------------
+# this file is included by fcl/standardProducers.fcl inside the PROLOG section
+#------------------------------------------------------------------------------
+BEGIN_PROLOG
+#------------------------------------------------------------------------------
+# Files containing the positions and times of stopped muons in target (tgt) and out of target (oot).
+#   tdr       - 17 target configuration
+#   cd3       - 34 target configuration, produced by Andy Edmonds in 2017.
+#   mdc2018_x - 34 target configuration, produced during MDC2018.  There may be several versions.
+merged_tgtStops_tdr           : [ "mergedMuonStops/mustops.1025a_1426a_1504a.15318715.root" ]
+merged_tgtStops_cd3           : [ "mergedMuonStops/nts.mu2e.cd3-beam-nts3-tgtstops.v533_v543_v563b.001002_00000000.root" ]
+mergedMuon_tgtStops_mdc2018_1 : [ "mergedMuonStops/nts.mu2e.DS-TGTstops.MDC2018a.001002_00000000.root" ]
+
+merged_ootStops_tdr           : [ "mergedMuonStops/mustops.1025a_1426a_1504a.15318715.root" ]
+merged_ootStops_cd3           : [ "mergedMuonStops/nts.mu2e.cd3-beam-nts3-ootstops.v533_v543_v563b.001002_00000000.root" ]
+mergedMuon_ootStops_mdc2018_1 : [ "mergedMuonStops/nts.mu2e.DS-OOTstops.MDC2018a.001002_00000000.root" ]
+
+mergedMuon_ipaStops_mdc2018_1 : [ "mergedMuonStops/nts.mu2e.DS-IPAstops.MDC2018a.001002_00000000.root" ]
+mergedPbar_tgtStops_su2020_1  : [ "pnfs/mu2e/resilient/users/defelice/su2020/stops/nts.mu2e.pbar0s41b0.su2020.001000_00000000.root" ]
+
+mergedMuon_tgtStops_mdc2018   : @local::mergedMuon_tgtStops_mdc2018_1
+mergedMuon_ootStops_mdc2018   : @local::mergedMuon_ootStops_mdc2018_1
+mergedMuon_ipaStops_mdc2018   : @local::mergedMuon_ipaStops_mdc2018_1
+
+mergedPion_tgtStops_mdc2018   : ["mergedMuonStops/nts.mu2e.pion-DS-TGTstops.MDC2018a.001002_00000000.root" ]
+
+pbar0_tgtStops_su2020_1       : [ "pnfs/mu2e/resilient/users/defelice/su2020/stops/nts.mu2e.pbar0s41b0.su2020.001000_00000000.root" ]
+# nothing to add to MU2E_SEARCH_PATH
+pbar0_tgtStops_su2020_2       : [ "pbar2m/stops/nts.mu2e.pbar0s41b0.su2020.001000_00000000.root" ]
+# add / to MU2E_SEARCH_PATH
+# pbar0_tgtStops_su2020_2       : [ "pnfs/mu2e/resilient/users/mu2epro/su2020/stops/nts.mu2e.pbar0s41b0.su2020.001000_00000000.root" ]
+rpce2_tgtStops_su2020_1       : [ "nts.mu2e.rpce2s31b0.su2020.001000_00000000.root" ]
+
+pbar0_tgtStops_su2020   : @local::pbar0_tgtStops_su2020_1
+pbar0_tgtStops_su20201  : @local::pbar0_tgtStops_su2020_2
+rpce2_tgtStops_su2020   : @local::rpce2_tgtStops_su2020_1
+
+MCvsReconstruction : {
+    module_type : MCvsReconstruction
+    HitBackgroundBits      : ["Noisy","Dead","Background"]
+    TimeClusterCollection   : "TZClusterFinder"
+    HelixSeedCollection     : "HelixFinderDe"
+    KalSeedCollection       : "KKDeM"
+    pdgIDsToProcess         : [11]
+    momentumLimits          : [100] # make same length as pdgIDsToProcess
+    trackDirections         : ["down"] # make same length as pdgIDsToProcess
+    scatterThresh           : 3.0
+    simIDThresh             : 15
+    mcUtils       : { @table::TrkReco.McUtils }
+}
+
+HelixFinder : {
+    module_type : HelixFinder
+    debug                   : 0
+    chCollLabel             : "FlagBkgHits"
+    tcCollLabel             : "TimeClusterFinderDe"
+    ccCollLabel             : "CaloClusterMaker"
+    nPhiBins                : 36
+    nPhiPeakBins            : 3
+    phiPeakThresh           : 5 # number of combo hits needed to be considered a phi peak
+    phiWindow               : 45.0 # this is +/- so actual window is 2 x value
+    isoRad                  : 150.0
+    isoMinHitsNear          : 2
+    minDistCut              : 20.0
+    updateCircleErrThresh   : 5.0
+    maxSeedCircleResidual   : 1.0
+    minSeedCircleHits       : 7
+    maxDeltaPhi             : 2.0
+    maxZWindow              : 500.0
+    max2PiAmbigResidual     : 2.0
+    maxPhiZResidual         : 2.0
+    minFinalSeedHits        : 7
+    maxCircleRecoverSigma   : 5.0
+    maxLineRecoverSigma     : 5.0
+    caloClusterSigma        : 30.0
+    minNHelixHits           : 15
+    chi2LineSaveThresh      : 5.0
+    debugPdgID              : 11
+    debugMomentum           : 100.0
+    debugDirection          : "down"
+    debugStrawHitThresh     : 15
+    debugScatterThresh      : 3.0
+    mcUtils                 : { @table::TrkReco.McUtils }
+}
+
+TimeClusterAnalysis : {
+    module_type          : TimeClusterAnalysis
+    chCollTag            : "FlagBkgHits"
+    tcCollTag            : "TimeClusterFinderDe"
+    protonBunchIntensity : "PBISim"
+}
+
+HelixAnalysis : {
+    module_type          : HelixAnalysis
+    chCollTag            : "FlagBkgHits"
+    hsCollTag            : "HelixFinderDe"
+    protonBunchIntensity : "PBISim"
+}
+
+TrackAnalysis : {
+    module_type          : TrackAnalysis
+    chCollTag            : "FlagBkgHits"
+    ksCollTag            : "KKDeM"
+    protonBunchIntensity : "PBISim"
+}
+
+# PhiCluster : { module_type : PhiClusterFinder
+#   ComboHitCollection     : "makePH"
+#   #TimeClusterCollection  : "TimeClusterFinderDmu"
+#   DiagLevel              : 0
+#   DebugLevel             : 0
+#   MinNStrawHits          : 10
+#   MinCount               : 10
+#   Threshold              : 2 # 4
+#   Phimin                 : 0.0
+#   Phimax                 : 6.238
+#   Phibin                 : 0.207
+#   DeltaPhimin            : 1.5
+#   Tmin                   : 0.0
+#   Tmax                   : 100000.0
+#   Tbin                   : 15.0
+#   AveragePitch           : 0.6
+#   Ymin                   : 5.0
+#   PeakWidth              : 100
+#   MaxdT                  : 150
+#   MinSigma               : 0.1
+#   T0Calculator           : {} 
+#   UseTC                  : false
+# }
+
+# CD3 stopped muon configs.
+mu2e.tgtMuonStops: {
+    inputFiles            : @nil
+    averageNumRecordsToUse: 500000
+    treeName              : "stoppedMuonDumper/stops"
+    branchName            : "stops"
+    verbosityLevel        : 0
+}
+
+mu2e.tgtPbarStops: {
+    inputFiles            : @local::pbar0_tgtStops_su2020_2
+    averageNumRecordsToUse: 500000
+    treeName              : "stoppedAntipDumper/stops"
+    branchName            : "stops"
+    verbosityLevel        : 0
+}
+
+mu2e.ootMuonStops: {
+    inputFiles            : @nil
+    averageNumRecordsToUse: 500000
+    treeName              : "outOfTargetDumper/stops"
+    branchName            : "stops"
+    verbosityLevel        : 0
+}
+mu2e.IPAMuonStops: {
+    inputFiles            : @nil
+    averageNumRecordsToUse: 1000000
+    treeName              : "IPAstops/stops"
+    branchName            : "stops"
+    verbosityLevel        : 0
+}
+
+pbarStops : {
+    inputFiles            : @local::pbar0_tgtStops_su2020_2
+    averageNumRecordsToUse: 500000
+    treeName              : "stoppedAntipDumper/stops"
+    branchName            : "stops"
+    verbosityLevel        : 0
+}
+
+# Generate Event; this is legacy, should not be used
+generate: {
+    module_type          : EventGenerator
+    inputfile            : "Offline/Mu2eG4/test/genconfig_02.txt"
+    allowReplacement     : true
+    messageOnReplacement : true
+}
+
+# provided for consistency in some production scripts
+dummyGenerator : {
+  module_type : EventGenerator
+}
+
+CeEndpointGun: {
+    module_type    : StoppedParticleReactionGun
+    physics: {
+      genId : CeEndpoint
+      pdgId : 11
+      spectrumShape: CeEndpoint
+      spectrumVariable: totalEnergy
+    }
+    muonStops      : @local::mu2e.tgtMuonStops
+}
+
+antiPGun: {
+    module_type    : StoppedPbarGun
+    physics: {
+        genId           : pbarFlat
+        pdgId           : -2212
+        spectrumShape   : flat
+        elow            : 10
+        ehi             : 100
+        spectrumVariable: totalEnergy
+    }
+    pbarStops      : @local::mu2e.tgtPbarStops
+
+}
+
+CeplusEndpointGun : {
+    module_type    : StoppedParticleReactionGun
+    physics: {
+        genId           : CeEndpoint
+        pdgId           : -11
+# temporary hack until we get this number into code FIXME!
+        spectrumShape: flat
+        elow            : 1.0e-10
+        ehi             : 1.0e-10
+        spectrumVariable: totalEnergy
+    }
+    muonStops      : @local::mu2e.tgtMuonStops
+}
+
+PrimaryProtonGun: {
+    module_type : PrimaryProtonGun
+    beamDisplacementOnTarget : [0.,0.,0.]
+    beamRotationTheta : 0.
+    beamRotationPhi   : 0.
+    beamRotationPsi   : 0.
+    beamSpotSigma     : 1.
+    phimin            : 0
+    czmin             : -1.
+    czmax             : -1.
+    tmin              : 0.
+    tmax              : 0.
+    shape             : "gaus"
+    rmax              : 100.
+    mean              : -1.
+
+}
+
+
+StoppedParticleReactionGun: {
+    @table::CeEndpointGun
+    physics:  { @table::CeEndpointGun.physics
+        genId : StoppedParticleReactionGun
+    }
+}
+
+
+StoppedMuonXRayGammaRayGun: {
+    module_type    : StoppedMuonXRayGammaRayGun
+    muonStops      : @local::mu2e.tgtMuonStops
+    verbosityLevel : 0
+    physics        : { }
+}
+
+
+CaloTBGun : {
+    module_type    : CaloTBGun
+}
+
+
+CaloCalibGun : {
+  module_type : CaloCalibGun
+  cosmin :  -1.0
+  cosmax :  1.0
+  phimin :  0.0
+  phimax : 2.0
+  tmin  :  500.
+  tmax : 1694.
+}
+# Save state of random numbers at the start of each event
+# the module is defined in art/Framework/Modules
+
+randomsaver: {
+    module_type          : RandomNumberSaver
+}
+#------------------------------------------------------------------------------
+# transitioning ... EventGenerator producers table
+#------------------------------------------------------------------------------
+EventGenerator : {
+    pionStops : {
+        treeName               : "stoppedPionDumper/stops"
+        branchName             : "stops"
+        inputFiles             : ["mergedMuonStops/nts.mu2e.pion-DS-TGTstops.MDC2018a.001002_00000000.root" ] # does this need removing?
+        averageNumRecordsToUse : 0
+        verbosityLevel         : 0
+    }
+    muonStops      : { @table::mu2e.tgtMuonStops
+        inputFiles : @local::mergedMuon_tgtStops_mdc2018_1
+    }
+    
+    # SU2020 stopped antiproton config.
+    pbarStops: {  @table::mu2e.tgtPbarStops
+        inputFiles : @local::pbar0_tgtStops_su2020_1
+    }
+    # SU2020 (delayed) stopped pions from antiproton config.
+    pbarPionStops: {
+	treeName              : "stoppedAntipDumper/stops"
+	branchName            : "stops"
+	averageNumRecordsToUse: 500000
+	verbosityLevel        : 0
+	inputFiles            : @local::rpce2_tgtStops_su2020_1
+    }
+}
+
+EventGenerator : { @table::EventGenerator
+    producers : {
+        CeEndpointGun               : { @table::CeEndpointGun               }
+        StoppedParticleReactionGun  : { @table::StoppedParticleReactionGun  }
+        antiPGun                    : { @table::antiPGun}
+#------------------------------------------------------------------------------
+# new implementation from Eleonora, doesn't require tabulations of LL spectra
+# conversion e- and e+ on Al27
+#------------------------------------------------------------------------------
+        CeMEndpoint              : {   module_type: StoppedParticleReactionGun
+            physics: { @table::StoppedParticleReactionGun.physics
+                genId                 : CeEndpoint
+                pdgId                 : 11
+                spectrumShape         : "CeEndpoint"       # could also be "flat" or "ceLeadingLog" or "CeEndpoint"
+                spectrumVariable      : "totalEnergy"      # could be  "kineticEnergy" or "momentum" or "totalEnergy"
+                ehi                   : 104.97
+            }
+            muonStops            : { @table::mu2e.tgtMuonStops
+                inputFiles: @local::mergedMuon_tgtStops_mdc2018_1
+            }
+            doHistograms              : true
+        }
+
+        CePEndpoint              : {   module_type: StoppedParticleReactionGun
+            physics: { @table::StoppedParticleReactionGun.physics
+                genId                 : CeEndpoint
+                pdgId                 : -11
+                spectrumShape         : "CeEndpoint"       # could also be "flat" or "ceLeadingLog" or "CeEndpoint"
+                spectrumVariable      : "totalEnergy"      # could be  "kineticEnergy" or "momentum" or "totalEnergy"
+                ehi                   : 92.32
+            }
+            muonStops            : { @table::mu2e.tgtMuonStops
+                inputFiles       : @local::mergedMuon_tgtStops_mdc2018_1
+            }
+            doHistograms              : true
+        }
+
+        CeMLeadingLog              : {   module_type: StoppedParticleReactionGun
+            physics: { @table::StoppedParticleReactionGun.physics
+                genId                 : CeLeadingLog
+                pdgId                 : 11
+                spectrumShape         : "ceLeadingLog"     # could also be "flat" or "CeEndpoint"
+                spectrumVariable      : "totalEnergy"      # could be  "kineticEnergy" or "momentum" or "totalEnergy"
+                spectrumResolution    : 0.1                # MeV
+                ehi                   : 104.97
+                elow                  : 0.
+            }
+            muonStops            : { @table::mu2e.tgtMuonStops
+                inputFiles       : @local::mergedMuon_tgtStops_mdc2018_1
+            }
+            doHistograms              : true
+        }
+
+        CePLeadingLog              : {   module_type: StoppedParticleReactionGun
+            physics: { @table::StoppedParticleReactionGun.physics
+                genId                 : CeLeadingLog
+                pdgId                 : -11
+                spectrumShape         : "ceLeadingLog"     # could also be "flat" or "CeEndpoint"
+                spectrumVariable      : "totalEnergy"      # could be  "kineticEnergy" or "momentum" or "totalEnergy"
+                spectrumResolution    : 0.1                # MeV
+                ehi                   : 92.32
+                elow                  : 0.
+            }
+            muonStops            : { @table::mu2e.tgtMuonStops
+                inputFiles: @local::mergedMuon_tgtStops_mdc2018_1
+            }
+            doHistograms              : true
+        }
+#------------------------------------------------------------------------------
+# generic electron and muon guns, default momentum is that of the CE on Al
+#------------------------------------------------------------------------------
+        egun : { @table::StoppedParticleReactionGun
+            physics : { @table::StoppedParticleReactionGun.physics
+                pdgId            : 11
+                elow             : 104.97175
+                ehi              : 104.97176
+                spectrumVariable : "momentum"
+                spectrumShape    : "flat"
+            }
+            muonStops            : { @table::mu2e.tgtMuonStops
+                inputFiles       : @local::mergedMuon_tgtStops_mdc2018_1
+            }
+        }
+
+        mgun : { @table::StoppedParticleReactionGun
+            physics : { @table::StoppedParticleReactionGun.physics
+                pdgId            : 13
+                elow             : 104.97175
+                ehi              : 104.97176
+                spectrumVariable : "momentum"
+                spectrumShape    : "flat"
+            }
+            muonStops            : { @table::mu2e.tgtMuonStops
+                inputFiles       : @local::mergedMuon_tgtStops_mdc2018_1
+            }
+        }
+#------------------------------------------------------------------------------
+# DIO electrons, Al, leading order spectrum
+#------------------------------------------------------------------------------
+        dioallo : { @table::StoppedParticleReactionGun # DIO Al LO
+            physics : { @table::StoppedParticleReactionGun.physics
+                pdgId            :  11
+                spectrumVariable : "totalEnergy"
+                spectrumShape    : "tabulated"
+                spectrumFileName : "Offline/ConditionsService/data/czarnecki_Al.tbl"
+            }
+        }
+#------------------------------------------------------------------------------
+# DIO electrons, Al, leading order spectrum
+# 'tabulated' option ignores elow and ehi
+#------------------------------------------------------------------------------
+        dioalll : { @table::StoppedParticleReactionGun # DIO Al leading log
+            physics : { @table::StoppedParticleReactionGun.physics
+                pdgId            :  11
+                spectrumVariable : "totalEnergy"
+                spectrumShape    : "tabulated"
+                spectrumFileName : "Offline/ConditionsService/data/czarnecki_szafron_Al_2016.tbl"
+            }
+        }
+#------------------------------------------------------------------------------
+# 100 MeV/c protons
+#------------------------------------------------------------------------------
+        pgun : { @table::StoppedParticleReactionGun # p(proton)=100 MeV/c
+            physics : { @table::StoppedParticleReactionGun.physics
+                pdgId            : 2212
+                elow             :  99.99
+                ehi              : 100.01
+                spectrumVariable : "momentum"
+                spectrumShape    : "flat"
+            }
+        }
+
+        photonGun : { @table::StoppedParticleReactionGun # p(photon)=100 MeV/c
+            physics : { @table::StoppedParticleReactionGun.physics
+                pdgId            : 22
+                elow             :  99.999
+                ehi              : 100.001
+                spectrumVariable : "momentum"
+                spectrumShape    : "flat"
+            }
+            muonStops            : { @table::mu2e.tgtMuonStops
+                inputFiles: @local::mergedMuon_tgtStops_mdc2018_1
+            }
+        }
+        
+        antiprotonGun : { @table::antiPGun
+	    physics : { @table::antiPGun.physics
+	       	genId            :  pbarFlat
+		pdgId            : -2212
+		elow             : 1.0e-10
+		ehi              : 1.1e-10
+		spectrumVariable : "momentum"
+		spectrumShape    : "flat"
+	    }
+	    pbarStops            : {  @table::mu2e.tgtPbarStops
+                inputFiles: @local::pbar0_tgtStops_su2020_1
+            }
+	}
+
+        RPCGun : {
+            module_type    : RPCGun
+            verbosityLevel : 0
+            doHistograms   : false
+            physics : {
+                generateIntConversion : 0    # 0:photons 1: e+e- internal conversion pairs
+                spectrumShape         : "Bistirlich"    # could also be "flat"
+                elow                  : 1.5
+                ehi                   : 140.1
+                spectrumResolution    : 0.1 # hopefully, in MeV
+            }
+            pionStops                 : { @table::EventGenerator.pionStops }
+        }
+        
+        PbarRPCGun : { module_type       : RPCGun
+	    verbosityLevel    : 0
+	    doHistograms      : false
+	    tmin              : -1.
+	    czmin             : -1.
+	    czmax             :  1.
+	    phimin            :  0.
+	    phimax            : 10.
+	    randPDFparameters : {}
+	    physics : {
+		genId                 : PbarRPC # @local::GEN_ID  # InternalRPC or ExternalRPC, defines the generated process
+		generateIntConversion : 0               # 0:photons 1: e+e- internal conversion pairs 
+		spectrumShape         : "Bistirlich"    # could also be "flat"
+		elow                  : 1.5
+		ehi                   : 140.1
+		spectrumResolution    : 0.1             # hopefully, in MeV
+	    }
+	    pionStops                 : { @table::EventGenerator.pbarPionStops }
+	}
+
+        RMCGun : {
+            module_type    : RMCGun
+            verbosityLevel : 0
+            doHistograms   : false
+            physics : {
+                generateIntConversion : 0
+                spectrumShape         : "flat"
+                elow                  : 60
+                ehi                   : 110
+                spectrumResolution    : 0.1
+            }
+            muonStops      : { @table::EventGenerator.muonStops }
+        }
+
+        StoppedParticleRMCGun : {
+            module_type    : StoppedMuonRMCGun
+            verbosityLevel : 0
+            doHistograms   : false
+            physics : {
+                rhoInternal    : 1.0
+                elow           : 1.5
+                ehi            : 120.0
+                generateIntConversion : 0    # 0:photons 1: e+e- internal conversion pairs
+                spectrumShape         : "flat"    # could also be "flat"
+                physicsVerbosityLevel : 0
+            }
+            muonStops                 : { @table::muonStops  }
+	}
+
+        CaloTBGun : {
+	    module_type    : CaloTBGun
+	}
+    }
+}
+
+END_PROLOG

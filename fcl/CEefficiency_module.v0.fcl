@@ -1,0 +1,91 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# read output of reconstruction. run event display
+#------------------------------------------------------------------------------
+
+BEGIN_PROLOG
+  TRIGGER_PATHS : [ p1 ]
+  TIME_MAPS     @protect_ignore: [ "compressDigiMCs:protonTimeMap", "compressDigiMCs:muonTimeMap", "compressDigiMCs:cosmicTimeMap" ]
+END_PROLOG
+
+#include "Stntuple/fcl/stntuple.fcl"
+
+process_name : Display
+
+TrkHitReco.PrepareHits : [@sequence::TrkHitReco.PrepareHits, TimeClusterFinderDe, HelixFinderDe, KSFDeM, KFFDeM]
+
+source       : { module_type : RootInput   }
+
+producers    : { @table::stntuple.producers
+    FlagBkgHits         : { @table::CalPatRec.producers.DeltaFinder     }
+    TimeClusterFinderDe : { @table::CalPatRec.producers.TZClusterFinder }
+}
+
+filters      : { @table::stntuple.filters   }
+analyzers    : { @table::stntuple.analyzers
+    CEdeltaPhi : { @table::CEdeltaPhi
+	TimeClusterCollection : TimeClusterFinderDe
+    }
+    TimeClusterAnalysis : { @table::TimeClusterAnalysis }
+}
+paths        : { @table::stntuple.paths     }
+
+physics : {
+    producers  : { 
+	@table::producers
+	#@table::production.producers
+    }
+    
+    filters    : { @table::filters   }
+    analyzers  : { @table::analyzers }
+
+    @table::paths
+
+
+    p1 : [ 
+	  @sequence::CaloReco.Reco,
+	  @sequence::CaloCluster.Reco,
+	  @sequence::TrkHitReco.PrepareHits
+	  
+	 ]
+
+    end_p1 : [ CEdeltaPhi
+#	      ,MuHitDisplay
+	 ]
+
+    trigger_paths : [ p1 ]
+    out           : [     ]
+    end_paths     : [ end_p1, out ]
+    #e1            : [ defaultOutput ]
+    #end_paths     : [ e1 ]
+}
+
+services.TFileService.fileName            : "CEdeltaPhi.root"
+
+# decide what to filter in MC analyzer
+physics.analyzers.CEdeltaPhi.pdgIDsToProcess : [11]
+physics.analyzers.CEdeltaPhi.momentumLimits : [60]
+physics.analyzers.CEdeltaPhi.massValues : [0.511]
+physics.analyzers.CEdeltaPhi.chargeSigns : [-1]
+physics.analyzers.CEdeltaPhi.trackDirections : ["down"]
+physics.analyzers.CEdeltaPhi.doHelixTesting : 0
+physics.analyzers.CEdeltaPhi.helixPdgID : 11
+physics.analyzers.CEdeltaPhi.helixMomentum : 100.0
+physics.analyzers.CEdeltaPhi.helixDirection : "down"
+physics.analyzers.CEdeltaPhi.runDisplay : 0
+
+# make sure we aren't flitering protons during TZClusterFinder
+#physics.producers.makePH.StrawHitSelectionBits : ["TimeSelection"]
+
+# turn on tools of interest
+physics.producers.TimeClusterFinderDe.diagLevel : 1
+#physics.producers.TimeClusterFinderDe.runDisplay : 1
+#physics.analyzers.MuHitDisplay.timeClusterCollTag : TimeClusterFinderDe
+physics.producers.HelixFinderDe.DiagLevel : 0
+physics.producers.HelixFinderDe.DiagPlugin.diagLevel : 0
+
+# give KSFDeM correct seed collection
+physics.producers.KSFDeM.SeedCollection : "HelixFinderDe:Positive"
+
+#------------------------------------------------------------------------------
+

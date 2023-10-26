@@ -1,0 +1,97 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# read output of reconstruction. run event display
+#------------------------------------------------------------------------------
+
+BEGIN_PROLOG
+  TRIGGER_PATHS : [ p1 ]
+  TIME_MAPS     @protect_ignore: [ "compressDigiMCs:protonTimeMap", "compressDigiMCs:muonTimeMap", "compressDigiMCs:cosmicTimeMap" ]
+END_PROLOG
+
+#include "Stntuple/fcl/stntuple.fcl"
+
+process_name : Display
+
+TrkHitReco.PrepareHits : [@sequence::TrkHitReco.PrepareHits, TimeClusterFinderDe, HelixFinderDe, KKDeM]
+
+source       : { module_type : RootInput   }
+
+producers    : { @table::stntuple.producers
+    FlagBkgHits         : { @table::CalPatRec.producers.DeltaFinder     }
+    TimeClusterFinderDe : { @table::CalPatRec.producers.TZClusterFinder }
+    KKDeM               : { @table::Mu2eKinKal.producers.KKDeM }
+    HelixFinderDe       : { @table::HelixFinder }
+}
+
+filters      : { @table::stntuple.filters   }
+analyzers    : { @table::stntuple.analyzers
+    MCvsReconstruction : { @table::MCvsReconstruction
+	TimeClusterCollection : TimeClusterFinderDe
+    }
+    TimeClusterAnalysis : { @table::TimeClusterAnalysis }
+    HelixAnalysis       : { @table::HelixAnalysis }
+    TrackAnalysis       : { @table::TrackAnalysis }
+}
+paths        : { @table::stntuple.paths     }
+
+physics : {
+    producers  : { 
+	@table::producers
+    }
+    
+    filters    : { @table::filters   }
+    analyzers  : { @table::analyzers }
+
+    @table::paths
+
+
+    p1 : [ 
+	  @sequence::CaloReco.Reco,
+	  @sequence::CaloCluster.Reco,
+	  @sequence::TrkHitReco.PrepareHits
+	  
+	 ]
+
+    end_p1 : [ TimeClusterAnalysis, HelixAnalysis, TrackAnalysis
+               ,MCvsReconstruction
+	       ,MuHitDisplay
+	 ]
+
+    trigger_paths : [ p1 ]
+    out           : [     ]
+    end_paths     : [ end_p1, out ]
+}
+
+services.TFileService.fileName            : "test_2.root"
+
+# decide what to filter in MC analyzer
+physics.analyzers.MCvsReconstruction.HelixSeedCollection : "HelixFinderDe"
+physics.analyzers.MCvsReconstruction.pdgIDsToProcess : [11]
+physics.analyzers.MCvsReconstruction.momentumLimits : [100]
+physics.analyzers.MCvsReconstruction.trackDirections : ["down"]
+
+# make sure we aren't flitering protons during TZClusterFinder
+# also set radius cuts at makeSH level since TZ doesn't have StrawHitSelectionBits implemented yet
+#physics.producers.makeSH.MaximumRadius : 650.0
+#physics.producers.makeSH.MinimumRadius : 395.0
+physics.producers.makePH.MaximumEnergy : 3.5e-3
+physics.producers.makePH.MinimumEnergy : 1e-4
+physics.producers.makePH.StrawHitSelectionBits : ["TimeSelection"]
+
+# turn on tools of interest
+#physics.producers.TimeClusterFinderDe.diagLevel : 0
+#physics.producers.TimeClusterFinderDe.runDisplay : 0
+physics.analyzers.MuHitDisplay.timeClusterCollTag : TimeClusterFinderDe
+physics.analyzers.MuHitDisplay.helixSeedCollTag : HelixFinderDe
+
+# give KKDeM correct collections and settings
+physics.producers.KKDeM.ModuleSettings.HelixSeedCollections : ["HelixFinderDe"]
+physics.producers.KKDeM.UsePDGCharge : false
+physics.producers.KKDeM.ModuleSettings.ComboHitCollection : "makeSH"
+physics.producers.KKDeM.ModuleSettings.CaloClusterCollection : "CaloClusterMaker"
+
+# HelixFinder settings
+physics.producers.HelixFinderDe.debug : 1
+
+#------------------------------------------------------------------------------
+

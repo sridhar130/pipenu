@@ -12,7 +12,7 @@
 #------------------------------------------------------------------------------
 #include "Offline/fcl/standardServices.fcl"
 #include "Production/JobConfig/common/prolog.fcl"
-#include "pbar2m/fcl/pileup/prolog.fcl"
+#include "pipenu/fcl/pileup/prolog.fcl"
 
 process_name: S2Sim
 #------------------------------------------------------------------------------
@@ -108,8 +108,8 @@ physics.producers.g4run.SDConfig.preSimulatedHits:  ["BeamFilter:virtualdetector
 #------------------------------------------------------------------------------
 # !!!! overrides have to be placed after all includes .... 
 #------------------------------------------------------------------------------
-services.GeometryService.bFieldFile : "pbar2m/common/bfgeom_DS70_v01.txt"
-services.GeometryService.inputFile  : "pbar2m/datasets/bpip0b0/geom_pbar2m_bpip0b0.txt"
+services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
+services.GeometryService.inputFile  : "pipenu/datasets/bpip0b0/geom_pbar2m_bpip0b0.txt"
 #------------------------------------------------------------------------------
 # disable pion decays 
 #------------------------------------------------------------------------------

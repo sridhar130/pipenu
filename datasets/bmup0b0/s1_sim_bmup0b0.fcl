@@ -43,5 +43,5 @@ physics.producers.g4run.physics.minRangeCut             : 1. # mm
 physics.producers.g4run.physics.protonProductionCut     : 1. # mm
 physics.producers.g4run.physics.turnOffRadioactiveDecay : true
 
-services.GeometryService.inputFile                      : "pbar2m/datasets/bmup0b0/geom_pbar2m_bmup0b0.txt"
+services.GeometryService.inputFile                      : "pipenu/datasets/bmup0b0/geom_pbar2m_bmup0b0.txt"
 services.GeometryService.bFieldFile                     : "Offline/Mu2eG4/geom/bfgeom_DS50_v01.txt"

@@ -1,0 +1,38 @@
+#
+#  Digitization simulations
+#
+#include "Production/JobConfig/common/prolog.fcl"
+#include "pbar2m/fcl/digitize/prolog.fcl"
+# name all processes the same, to mask any provenance in ensemble creation
+process_name: Cosmicstrip
+source : { module_type : RootInput }
+services : @local::Services.SimAndReco # reco is needed for the trigger
+physics : {
+  producers : {
+    @table::Digitize.producers
+    # @table::Trigger.producers
+  }
+  filters: {
+    @table::Digitize.filters
+    # @table::Trigger.filters
+  }
+  analyzers: { @table::Digitize.analyzers }
+  # define the digitization paths.  Trigger paths are added specific to digitization type
+  DigitizePath : @local::Digitize.DigitizeSequence
+  UntriggeredPath : [ @sequence::Digitize.DigitizeSequence, @sequence::Digitize.UntriggeredSequence ]
+}
+physics.trigger_paths[0] : DigitizePath
+physics.trigger_paths[1] : UntriggeredPath
+# define all outputs: not all digitization types will use all of
+outputs : {
+  SignalOutput : @local::Digitize.SignalOutput
+#  DiagOutput :  @local::Digitize.DiagOutput
+#  TrkOutput :  @local::Digitize.TrkOutput
+#  CaloOutput : @local::Digitize.CaloOutput
+#  UntriggeredOutput : @local::Digitize.UntriggeredOutput
+}
+#
+# Final configuration
+#
+#include "Production/JobConfig/common/epilog.fcl"
+#include "pbar2m/fcl/digitize/epilog.fcl"

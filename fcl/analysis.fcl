@@ -1,0 +1,80 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# read output of reconstruction. run event display
+#------------------------------------------------------------------------------
+
+BEGIN_PROLOG
+  TRIGGER_PATHS : [ p1 ]
+  TIME_MAPS     @protect_ignore: [ "compressDigiMCs:protonTimeMap", "compressDigiMCs:muonTimeMap", "compressDigiMCs:cosmicTimeMap" ]
+END_PROLOG
+
+#include "Stntuple/fcl/stntuple.fcl"
+
+process_name : Display
+
+TrkHitReco.PrepareHits : [@sequence::TrkHitReco.PrepareHits, TimeClusterFinderDe, HelixFinderDe, KSFDeM, KFFDeM]
+
+source       : { module_type : RootInput   }
+
+producers    : { @table::stntuple.producers 
+    TimeClusterFinderDe : { @table::CalPatRec.producers.TZClusterFinder }
+}
+
+filters      : { @table::stntuple.filters   }
+analyzers    : { @table::stntuple.analyzers
+    MCvsReconstruction : { @table::MCvsReconstruction
+	TimeClusterCollection : TimeClusterFinderDe
+    }
+    TimeClusterAnalysis : { @table::TimeClusterAnalysis }
+}
+paths        : { @table::stntuple.paths     }
+
+physics : {
+    producers  : { 
+	@table::producers
+	@table::production.producers
+    }
+    
+    filters    : { @table::filters   }
+    analyzers  : { @table::analyzers }
+
+    @table::paths
+
+
+    p1 : [ 
+	  @sequence::CaloReco.Reco,
+	  @sequence::CaloCluster.Reco,
+	  @sequence::TrkHitReco.PrepareHits
+	  
+	 ]
+
+    end_p1 : [ MCvsReconstruction, TimeClusterAnalysis
+	 ]
+
+    trigger_paths : [ p1 ]
+    out           : [     ]
+    end_paths     : [ end_p1, out ]
+}
+
+services.TFileService.fileName            : "analysis.root"
+
+# decide what to filter in MC analyzer
+physics.analyzers.MCvsReconstruction.pdgIDsToProcess : [11]
+physics.analyzers.MCvsReconstruction.momentumLimits : [100]
+physics.analyzers.MCvsReconstruction.massValues : [0.511]
+physics.analyzers.MCvsReconstruction.chargeSigns : [-1]
+physics.analyzers.MCvsReconstruction.trackDirections : ["down"]
+
+# make sure we aren't flitering protons during TZClusterFinder
+physics.producers.makePH.StrawHitSelectionBits : ["TimeSelection"]
+
+# turn on tools of interest
+physics.producers.TimeClusterFinderDe.diagLevel : 1
+physics.producers.HelixFinderDe.DiagLevel : 1
+physics.producers.HelixFinderDe.DiagPlugin.diagLevel : 1
+
+# give KSFDeM correct seed collection
+physics.producers.KSFDeM.SeedCollection : "HelixFinderDe:Positive"
+
+#------------------------------------------------------------------------------
+

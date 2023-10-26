@@ -1,0 +1,34 @@
+# -*- mode:tcl -*- 
+#------------------------------------------------------------------------------
+#  add back out-of-target stops
+#------------------------------------------------------------------------------
+#include "Production/JobConfig/pileup/prolog.fcl"
+
+BEGIN_PROLOG
+Pileup : { @table::Pileup
+    producers : { @table::Pileup.producers 
+        ootMuonFinder : { module_type : StoppedParticlesFinder
+            particleInput    : "g4run"
+            physVolInfoInput : "g4run"
+            vetoedMaterials  : [ "StoppingTarget_Al", "IPAPolyethylene" ]
+            particleTypes    : [ 13, -13 ]             // mu- , mu+
+            verbosityLevel   : 1
+        }
+
+        compressPVOOTStops: {
+            module_type    : CompressPhysicalVolumes
+            volumesInput   : "g4run"
+            hitInputs      : []
+            particleInputs : [ "ootStopFilter" ]
+        }
+    }
+
+    filters : { @table::Pileup.filters 
+        ootStopFilter: { module_type: FilterG4Out
+            mainHitInputs  : []
+            extraHitInputs : [ "g4run:virtualdetector" ]
+            mainSPPtrInputs: [ "ootMuonFinder" ]
+        }
+    }
+}
+END_PROLOG

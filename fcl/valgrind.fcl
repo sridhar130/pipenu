@@ -1,0 +1,59 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# read output of reconstruction. run event display
+#------------------------------------------------------------------------------
+
+BEGIN_PROLOG
+  TRIGGER_PATHS : [ p1 ]
+  TIME_MAPS     @protect_ignore: [ "compressDigiMCs:protonTimeMap", "compressDigiMCs:muonTimeMap", "compressDigiMCs:cosmicTimeMap" ]
+END_PROLOG
+
+#include "Stntuple/fcl/stntuple.fcl"
+
+process_name : Display
+
+TrkHitReco.PrepareHits : [@sequence::TrkHitReco.PrepareHits, TimeClusterFinderDe]
+
+source       : { module_type : RootInput   }
+
+producers    : { @table::stntuple.producers 
+    TimeClusterFinderDe : { @table::CalPatRec.producers.TZClusterFinder }    
+}
+
+filters      : { @table::stntuple.filters   }
+analyzers    : { @table::stntuple.analyzers }
+paths        : { @table::stntuple.paths     }
+
+physics : {
+    producers  : { 
+	@table::producers
+	@table::production.producers
+    }
+    
+    filters    : { @table::filters   }
+    analyzers  : { @table::analyzers }
+
+    @table::paths
+
+
+    p1 : [ 
+	  @sequence::CaloReco.Reco,
+	  @sequence::CaloCluster.Reco,
+	  @sequence::TrkHitReco.PrepareHits
+	  
+	 ]
+
+    end_p1 : []
+
+    trigger_paths : [ p1 ]
+    out           : [     ]
+    end_paths     : [ end_p1, out ]
+}
+
+services.TFileService.fileName            : "test.root"
+
+# make sure we aren't flitering protons during TZClusterFinder
+physics.producers.makePH.StrawHitSelectionBits : ["TimeSelection"]
+
+#------------------------------------------------------------------- -----------
+

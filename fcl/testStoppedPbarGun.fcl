@@ -1,0 +1,173 @@
+# -*- mode:tcl -*-
+
+#include "Offline/fcl/minimalMessageService.fcl"
+#include "Offline/fcl/standardProducers.fcl"
+#include "Offline/fcl/standardServices.fcl"
+#include "Offline/CommonMC/fcl/prolog.fcl"
+
+#include "Offline/CaloCluster/fcl/prolog.fcl"
+#include "Offline/TrackerMC/fcl/prolog.fcl"
+#include "Offline/CaloMC/fcl/prolog.fcl"
+#include "Offline/CaloReco/fcl/prolog.fcl"
+#include "Offline/CaloCluster/fcl/prolog.fcl"
+#include "Offline/TrackCaloMatching/fcl/prolog.fcl"
+#include "Offline/ParticleID/fcl/prolog.fcl"
+#include "Offline/TrkHitReco/fcl/prolog.fcl"
+#include "Offline/TrkPatRec/fcl/prolog.fcl"
+#include "pbar2m/fcl/prolog.fcl"
+
+process_name : StoppedPbarGunTest
+
+source       : { module_type : EmptyEvent   
+    maxEvents : 100000
+}
+
+producers     : { @table::EventGenerator.producers }
+
+services : @local::Services.SimAndReco
+
+physics : {
+
+    analyzers: {
+        genCountLogger: {
+            module_type: GenEventCountReader
+        }
+    }
+  
+    producers: {   @table::producers
+	generate : { @table::antiPGun 
+	    doHistograms : true
+	}
+        
+        genCounter: {
+            module_type: GenEventCounter
+        }
+
+        StrawGasStepMaker : {
+            module_type : MakeStrawGasSteps
+            KeepDeltasModule : "g4run" # don't compress deltas on primary particles
+        }
+
+        EWMProducer : {
+            module_type : EventWindowMarkerProducer
+            SpillType : 1
+            RecoFromMCTruth : true
+            RecoFromMCTruthErr : 0.5
+        }
+
+        makeSD  : {
+            module_type : StrawDigisFromStrawGasSteps
+            TimeOffsets   : [  @sequence::CommonMC.TimeMaps ]
+            StrawGasStepModule : "StrawGasStepMaker"
+            # set to digitize all hits in outer straws of the first 2 planes
+            AllHitsPlanes : [0,1]
+            AllHitsStraw : 91 # this straw and higher are always digitized
+        }
+   
+        g4run: @local::g4run
+        makeSH               : @local::makeSH
+        makePH               : @local::makePH
+        makeSTH              : @local::makeSTH
+        FlagBkgHits          : @local::FlagBkgHits
+        TimeClusterFinder  : @local::TimeClusterFinder
+        TimeClusterFinderDe  : @local::TimeClusterFinderDe
+        HelixFinderDe  : @local::RobustHelixFinderDe
+        TimeClusterFinderDmu  : @local::TimeClusterFinderDmu
+        HelixFinderDmu  : @local::RobustHelixFinderDmu
+       
+        TimeClusterFinderUe  : @local::TimeClusterFinderUe
+        HelixFinderUe  : @local::RobustHelixFinderUe
+        TimeClusterFinderUmu  : @local::TimeClusterFinderUmu
+        HelixFinderUmu  : @local::RobustHelixFinderUmu
+ 
+        KSFDeM    : @local::KSFDeM
+        KSFUeM    : @local::KSFUeM
+        KSFDeP    : @local::KSFDeP
+        KSFUeP    : @local::KSFUeP
+        KSFDmuM   : @local::KSFDmuM
+        KSFUmuM   : @local::KSFUmuM
+        KSFDmuP   : @local::KSFDmuP
+        KSFUmuP   : @local::KSFUmuP
+        KFFDeM    : @local::KFFDeM
+        KFFUeM    : @local::KFFUeM
+        KFFDeP    : @local::KFFDeP
+        KFFUeP    : @local::KFFUeP
+        KFFDmuM   : @local::KFFDmuM
+        KFFUmuM   : @local::KFFUmuM
+        KFFDmuP   : @local::KFFDmuP
+        KFFUmuP   : @local::KFFUmuP
+       
+  
+        CaloShowerStepMaker  : @local::CaloShowerStepMaker
+        CaloShowerROMaker    : @local::CaloShowerROMaker
+        CaloDigiMaker        : @local::CaloDigiMaker
+        CaloRecoDigiMaker  : @local::CaloRecoDigiMaker
+        CaloHitMaker       : @local::CaloHitMaker
+        CaloProtoClusterMaker  : @local::CaloProtoClusterMaker
+        CaloClusterMaker       : @local::CaloClusterMaker
+
+        compressPVTGTStops: {
+            module_type: CompressPhysicalVolumes
+            volumesInput : "g4run"
+            hitInputs : []
+            particleInputs : [ "tgtStopFilter" ]
+        }
+
+        stoppedPbarFinder : {
+            module_type : StoppedParticlesFinder
+            particleInput : "g4run"
+            # multiple matches, we'll get the one from the current process, which is what we want
+            physVolInfoInput : "g4run"
+            stoppingMaterial : "StoppingTarget_Al"
+            particleTypes : [ -2212 ] # antiproton
+            verbosityLevel: 1
+        } 
+
+        
+    }
+
+    filters: {
+
+        tgtStopFilter: {
+            module_type: FilterG4Out
+            mainHitInputs: []
+            extraHitInputs: [ "g4run:virtualdetector" ]
+            mainSPPtrInputs: [ "stoppedPbarFinder" ]
+        }
+
+        g4consistent: {
+            module_type: FilterStatusG4
+            input: "g4run"
+            maxAcceptedStatus: 9  #  status 10 and above means StepPointMCCollection may have non-dereferencable pointers
+        }
+    }
+
+    p1 : [ generate, genCounter, g4run, g4consistent,
+           stoppedPbarFinder, tgtStopFilter,
+           compressPVTGTStops, 
+           EWMProducer,
+           StrawGasStepMaker,makeSD,makeSH,makePH,makeSTH,
+           CaloShowerStepMaker, CaloShowerROMaker,
+           CaloDigiMaker, CaloRecoDigiMaker, CaloHitMaker,
+           CaloProtoClusterMaker, CaloClusterMaker,
+           FlagBkgHits,@sequence::Tracking.TPRDeM, 
+           @sequence::Tracking.TPRDeP, @sequence::Tracking.TPRDmuP, @sequence::Tracking.TPRDmuM
+          ]
+    
+
+    trigger_paths : [ p1 ]
+    outpath: [pbarout]
+}
+# setup outputs
+outputs: {
+    pbarout: {
+    module_type : RootOutput
+    fileName : "sim.owner.Beam.version.sequencer.art"
+    }
+  }   
+
+services.TFileService.fileName            : "nts._USER_.testStoppedPbarGun.xxx.000001.root"
+#services.GeometryService.inputFile : "Production/JobConfig/common/geom_baseline.txt"
+services.SeedService.baseSeed : 8
+services.SeedService.maxUniqueEngines : 20
+services.scheduler.wantSummary: true

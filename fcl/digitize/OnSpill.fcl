@@ -1,0 +1,15 @@
+#
+#  Digitization specialization for on-spill simulations with no pileup mixing
+#  This should NOT be used for physics studies
+#
+# enable OnSpill trigger menu
+#
+#include "Offline/gen/fcl/Trigger/OnSpillTrigMenu/OnSpillTrigMenu.fcl"
+# set the event timing for OnSpill
+physics.producers.EWMProducer.SpillType : 1
+# keep all streams
+physics.EndPath : [ @sequence::Digitize.EndSequence, SignalOutput] #, DiagOutput, TrkOutput, CaloOutput, UntriggeredOutput ]
+physics.end_paths : [ EndPath ]
+# override the untriggered filter
+#physics.filters.UntriggeredPrescale.prescaleFactor : 1 # record 100% of the untriggered 'triggerable' events
+
