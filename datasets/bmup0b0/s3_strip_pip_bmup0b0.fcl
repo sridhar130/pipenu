@@ -1,13 +1,13 @@
 # -*- mode:tcl -*-
 #------------------------------------------------------------------------------
-# write out stopped mu-'s only 
+# write out stopped pi+'s only 
 #------------------------------------------------------------------------------
 #include "Offline/fcl/standardServices.fcl"
 #include "Production/JobConfig/beam/BeamSplitter.fcl"
 services                                   : @local::Services.Sim
 services.SeedService.baseSeed              : 8
 #------------------------------------------------------------------------------
-physics.filters.muonSelector.ParticleCodes : [ [-13, "uninitialized", "mu2eKillerVolume" ] ]
+physics.filters.muonSelector.ParticleCodes : [ [211, "uninitialized", "mu2eKillerVolume" ] ]
 physics.filters.muonSelector.SimParticles  : "TargetStopFilter"
 physics.outpath                            : [ muonout ]
 #------------------------------------------------------------------------------
@@ -17,5 +17,5 @@ physics.outpath                            : [ muonout ]
 #services.GeometryService.inputFile         : "pipenu/datasets/bmup0b0/geom_pbar2m_bmup0b0.txt"
 #services.GeometryService.bFieldFile        : "Offline/Mu2eG4/geom/bfgeom_DS50_v01.txt"
 #------------------------------------------------------------------------------
-services.TFileService.fileName             : "nts.mu2e.bmup0b0s32r0000.pbar2m.001210_00000000.root"
-outputs.muonout.fileName                   : "sim.mu2e.bmup0b0s32r0000.pbar2m.001210_00000000.art"
+services.TFileService.fileName             : "nts.mu2e.bmup0b0s31r0000.pbar2m.001210_00000000.root"
+outputs.muonout.fileName                   : "sim.mu2e.bmup0b0s31r0000.pbar2m.001210_00000000.art"

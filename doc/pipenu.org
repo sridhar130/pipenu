@@ -19,7 +19,7 @@
 
    - murat's clone of Stntuple/ana/TSpmcAnaModule.cc creates folder named "murat_SpmcAna"
 
-* histograms: file:/srv/mu2e/data/projects/pipenu/hist
+* histograms: file:/exp/mu2e/data/projects/pipenu/hist
 * ------------------------------------------------------------------------------
 * [[file:datasets.org][datasets]] :  so far, the structure  not finalized, more or less playground 
 * ------------------------------------------------------------------------------
