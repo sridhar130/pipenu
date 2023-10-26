@@ -1,0 +1,66 @@
+#+startup:fold
+
+# it would be nice to have an example of how to run the described here
+* directory:   file:./
+* ------------------------------------------------------------------------------
+* [[file:./software_setup.org][software setup]]
+* PhiClusterFinder module                                                    
+** parameters                                                                
+***   ComboHitCollection : (obsolete input)
+***   TimeClusterCollection  : "TZClusterFinder" (input to the PhiClusterFinder)
+***   diagLevel              : 0
+***   debugLevel             : 0 (set to 1 to get the basic details, set to >1 to obtain more details)
+***   minNStrawHits          : 10 (minimum number of straw hits to form a time/phi cluster)
+***   threshold              : 1 # 4 (Lower limit of hits in a phi cluster)
+***   phiMin                 : 0.0 (Phi histogram start)
+***   phiMax                 : 6.3 # 6.4 (Phi histogram end)
+***   nPhiBins               : 21  # 32 (Phi histogram N(bins))
+***   minDPhi                : 1.5 (min delta phi between two phi clusters)
+***   tMin                   : 0.0 (Time histogram start)
+***   tMax                   : 100000.0 (Time histogram end)
+***   tBin                   : 15.0 (Time histogram bin width)
+***   pitch                  : 0.6 (Average helix pitch (= dz/dflight, =sin(lambda))
+***   yMin                   : 5.0 (Minimum hit in time histo bin for peak finder)
+***   peakWidth              : 100 (Time Peak Width)
+***   maxDt                  : 150 (Maximum time difference between T0 and hit time)
+***   minSigma               : 0.1 (Min sigma cut to veto compton particles)
+***   useTC                  : true (set to true to use the TZCluster as the input)
+
+* TZClusterFinder module                                                     
+** logic                                                                     
+- hits marked as 'energy selected' : hits marked as bkg' are ignored and not used 
+  for time clustering.
+  do they end up in the time cluster ?
+
+* pileup generation                                                          
+  1) run 
+#+begin_src
+Production/Scripts/gen_MuStopPileup.sh MDC2020 k l 20 
+#+end_src
+  2) fix the input file name to run locally
+
+* analysis hints                                                             
+  DIO: mu2eStoppedMuon ??? = 166
+#+begin_src
+stnana("file","","","/mu2e/data/projects/pbar2m/stntuple/bmum1s61b0/nts.mu2e.bmum1s61b0.pbar2m.001201_00000000.stn","stn_trk_ana_05(\"TrackBlock\",11,166)/save=pbar2m.bmum1s61b0.stn_trk_ana_05.0000.hist")
+#+end_src
+* histogram file naming convention                                           
+-- start from [STNTUPLE] dataset $dsid, run an $analysis_job on it.
+   - The job makes [many] histograms and saves them into a file.
+   - presentations and the note/paper writing use histogram files as input,
+     avoiding direct use of ntuples.
+
+   - histogram file name : $project.$dsid.$analysis_job.$parameters.hist
+
+   - as more than one person might think of using the same job name, 
+     i.e. "spmc_ana" for step point MC analysis job, use namespace=$USER
+     for analysis scripts. modules, and folder names
+
+     -- example: pbar2m.bmum0b0s21r0000.murat_spmc_ana.0000.hist
+
+   - murat's clone of Stntuple/ana/TSpmcAnaModule.cc creates folder named "murat_SpmcAna"
+
+* histograms: file:/srv/mu2e/data/projects/pbar2m/hist
+* ------------------------------------------------------------------------------
+* [[file:dataset_summary.org][datasets]] :  so far, the structure  not finalized, more or less playground 
+* ------------------------------------------------------------------------------

@@ -1,0 +1,70 @@
+# 
+*------------------------------------------------------------------------------
+* PIPENU datasets (summary)       last update : <2023-10-26 Thu>
+* -----------------------------------------------------------------------------
+* *beam    datasets*                                                             
+|---------+--------+--------------------------------+-------------+-----------------------------------------------------------------------|
+| dataset | N(POT) | dataset in the DH system       | date/status | description                                                           |
+| family  |        | (3-rd field is the dataset ID) |             |                                                                       |
+|---------+--------+--------------------------------+-------------+-----------------------------------------------------------------------|
+| [[file:../datasets/bmum0b0/pbar2m.bmum0b0.org][bmum0b0]] |    1e8 |                                |             | mu- beam - produce stopped muon ntuple, 105.6 um Al foils, ShieldingM |
+|         |        | bmum0b0s11r0000                |             | stage 1 beam tracing : out of TS5                                     |
+|         |        | bmum0b0s12r0000                |             | stage 1 "neutrals"                                                    |
+|         |        |                                |             |                                                                       |
+|         |        | bmum0b0s21r0000                |             | stage 2 beam tracing : stopped in the ST                              |
+|         |        | bmum0b0s22r0000                |             | stage 2 beam tracing : stops out-of-target                            |
+|         |        | bmum0b0s23r0000                |             | stage 2 beam tracing : stopped in the IPA                             |
+|         |        |                                |             |                                                                       |
+|         |        | bmum0b0s31r0000                |             | mu- stopped in the ST : stripped from   bmum0b0s21r0000               |
+|---------+--------+--------------------------------+-------------+-----------------------------------------------------------------------|
+| [[file:../datasets/bmum1b0/pbar2m.bmum1b0.org][bmum1b0]] |    1e8 |                                |             | mu- beam - produce stopped muon ntuple, 105.6 um Al foils, QGSP_BERT  |
+|         |        | bmum1s11b0                     |             | output of the stage 1 muon tracing                                    |
+|         |        | bmum1s21b0                     |             | output of the stage 2 muon tracing                                    |
+|         |        |                                |             | output of the stage 3 muon tracing - 2 following datasets             |
+|         |        | bmum1s31b0                     |             | particles stopped in the stopping target (mu+/-, pi+/-, pbar)         |
+|         |        | bmum1s32b0                     |             | particles stopped outside the stopping target (mu+/-, pi+/-, pbar)    |
+|---------+--------+--------------------------------+-------------+-----------------------------------------------------------------------|
+| [[file:../datasets/bmumcb0/pbar2m.bmumcb0.org][bmumcb0]] |    5e6 |                                |             | mu- beam - default for the MDC2020-style Mu2e Production, ShieldingM  |
+|         |        | bmumcs11b0                     |             | output of the stage 1 muon tracing                                    |
+|         |        | bmumcs21b0                     |             | output of the stage 2 muon tracing                                    |
+|         |        |                                |             | output of the stage 3 muon tracing - 2 following datasets             |
+|         |        | bmumcs31b0                     |             | particles stopped in the stopping target (mu+/-, pi+/-, pbar)         |
+|         |        | bmumcs32b0                     |             | particles stopped outside the stopping target (mu+/-, pi+/-, pbar)    |
+|---------+--------+--------------------------------+-------------+-----------------------------------------------------------------------|
+| [[file:../datasets/bmup0b0/pbar2m.bmup0b0.org][bmup0b0]] |    5e6 |                                |             | mu+ beam - default for the MDC2020-style Mu2e Production, ShieldingM  |
+|         |        |                                |             | 50% B-field for Michel edge studies                                   |
+|         |        | bmup0b0s11r0000                |             | output of the stage 1 muon tracing                                    |
+|         |        | bmup0b0s12r0000                |             | output of the stage 2 muon tracing                                    |
+|         |        |                                |             | output of the stage 3 muon tracing - 2 following datasets             |
+|         |        | bmup0b0s21r0000                |             | particles stopped in the stopping target (mu+/-, pi+/-, pbar)         |
+|         |        | bmup0b0s22r0000                |             | particles stopped outside the stopping target (mu+/-, pi+/-, pbar)    |
+|---------+--------+--------------------------------+-------------+-----------------------------------------------------------------------|
+| [[file:../datasets/bmup1b0/pbar2m.bmup1b0.org][bmup1b0]] |    5e6 |                                |             | mu+ beam - default for the MDC2020-style Mu2e Production, ShieldingM  |
+|         |        |                                |             | 70% B-field for pi+ --> e+ nu                                         |
+|         |        | bmup1b0s11r0000                |             | output of the stage 1 muon tracing                                    |
+|         |        | bmup1b0s12r0000                |             | output of the stage 2 muon tracing                                    |
+|         |        |                                |             | output of the stage 3 muon tracing - 2 following datasets             |
+|         |        | bmup1b0s21r0000                |             | particles stopped in the stopping target (mu+/-, pi+/-, pbar)         |
+|         |        | bmup1b0s22r0000                |             | particles stopped outside the stopping target (mu+/-, pi+/-, pbar)    |
+|---------+--------+--------------------------------+-------------+-----------------------------------------------------------------------|
+
+* *physics datasets*                                                             
+  the dataset families below also include datasets with the generated pileup
+|---------+--------+--------------------------------+-------------+----------------------------------------------------|
+| dataset | N(gen) | dataset in the DH system       | date/status | description                                        |
+| family  |        | (3-rd field is the dataset ID) |             |                                                    |
+|---------+--------+--------------------------------+-------------+----------------------------------------------------|
+| [[file:../datasets/cele0b0/pbar2m.cele0b0.org][cele0b0]] |     xx |                                | ok          | mu- --> e- conversion electrons on Al, leading log |
+|---------+--------+--------------------------------+-------------+----------------------------------------------------|
+* histograms                                                                     
+  file:/srv/mu2e/data/projects/pipenu/hist                                       
+  - bmum0b0s21r0000 : 7783 events / 5.0e6
+  - bmumcb0s21r0000 : 7906 events / 5.0e6
+  - bmup0b0s21r0000 : 3068 events / 4.5e6
+* upload status: a bit word                                                      
+  - bit 0 = 1 : SAM defname created, files moved by *mu2eDatasetUpload*          
+                to a tape-backed dCache pool
+  - bit 1 = 1 : tape labels assigned with *mu2eDatasetLocation* to all files     
+* ----------------------------------------------------------------------------------
+* back to [[file:pipenu.org][pipenu]]
+* ----------------------------------------------------------------------------------

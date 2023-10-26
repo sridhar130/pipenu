@@ -1,0 +1,25 @@
+#+startup:fold
+
+* directory:   [[file:./]]
+* ------------------------------------------------------------------------------
+* [[file:./software_setup.org][software setup]]
+* histogram file naming convention                                           
+-- start from [STNTUPLE] dataset $dsid, run an $analysis_job on it.
+   - The job makes [many] histograms and saves them into a file.
+   - presentations and the note/paper writing use histogram files as input,
+     avoiding direct use of ntuples.
+
+   - histogram file name : $project.$dsid.$analysis_job.$parameters.hist
+
+   - as more than one person might think of using the same job name, 
+     i.e. "spmc_ana" for step point MC analysis job, use namespace=$USER
+     for analysis scripts. modules, and folder names
+
+     -- example: pbar2m.bmum0b0s21r0000.murat_spmc_ana.0000.hist
+
+   - murat's clone of Stntuple/ana/TSpmcAnaModule.cc creates folder named "murat_SpmcAna"
+
+* histograms: file:/srv/mu2e/data/projects/pipenu/hist
+* ------------------------------------------------------------------------------
+* [[file:datasets.org][datasets]] :  so far, the structure  not finalized, more or less playground 
+* ------------------------------------------------------------------------------

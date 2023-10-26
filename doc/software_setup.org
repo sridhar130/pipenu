@@ -1,0 +1,26 @@
+#
+* ------------------------------------------------------------------------------
+* starting point:                                                            
+#+begin_src
+# use pbar2m branch of the offline
+git clone https://github.com/NamithaChitrazee/Offline
+cd Offline
+git checkout pbar2m
+cd ..
+git clone https://github.com/mu2e/Stntuple.git
+git clone https://github.com/sridhar130/pipenu.git
+
+# ... then setup the Mu2e offline and build
+#+end_src
+* morning grid hygiene :
+#+begin_src
+getToken
+kinit
+# don't seem to need any more
+# kx509
+# voms-proxy-init -noregen -rfc -voms fermilab:/fermilab/mu2e/Role=Analysis
+#+end_src
+* ------------------------------------------------------------------------------
+* back to [[file:pipenu.org][pipenu]]
+* ------------------------------------------------------------------------------
+
