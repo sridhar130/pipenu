@@ -54,7 +54,7 @@ TSpmcAnaModule::TSpmcAnaModule(const char* name, const char* title):
 //-----------------------------------------------------------------------------
   fSpmcBlockName = "SpmcBlockVDet";
   fVDetBlockName = "SpmcBlockVDet";
-
+  
   fPdgDb = TDatabasePDG::Instance();
 
   for (int i=0; i<5000; i++) fParticleCache[i] = 0;
@@ -129,6 +129,8 @@ void TSpmcAnaModule::BookSimpHistograms(HistBase_t* Hist, const char* Folder) {
   HBook1F(hist->fStage       ,"stage"    ,Form("%s: Stage"       ,Folder),  10,     0,   10,Folder);
   HBook1F(hist->fGeneratorID ,"gen_id"   ,Form("%s: Generator ID",Folder), 200,   -10,  190,Folder);
   HBook1F(hist->fTime        ,"time"     ,Form("%s: Stop Time"   ,Folder), 200,     0, 2000,Folder);
+  HBook1F(hist->fProperTime        ,"Surv Prob"     ,Form("%s: Surv"   ,Folder), 2000,     0, 0.008,Folder);
+  HBook1F(hist->fdtau,"tau"  ,Form("%s: proper time diff"   ,Folder), 200, 0,  50,Folder);
   HBook1F(hist->fParentMom   ,"pmom"     ,Form("%s: Parent Mom"  ,Folder), 200,     0, 2000,Folder);
   HBook1F(hist->fParentPDG   ,"ppdg"     ,Form("%s: Parent PDG"  ,Folder), 200, -1000, 1000,Folder);
 
@@ -162,7 +164,7 @@ void TSpmcAnaModule::BookStepPointMCHistograms(HistBase_t* Hist, const char* Fol
 
   HBook1F(hist->fPDGCode[0] ,"pdg_0" ,Form("%s: PDG code"       ,Folder),  500,  -250,   250,Folder);
   HBook1F(hist->fPDGCode[1] ,"pdg_1" ,Form("%s: PDG code"       ,Folder), 2000, -10000, 10000,Folder);
-
+  HBook1F(hist->fProperTime        ,"Surv Prob"     ,Form("%s: Surv"   ,Folder), 2000,     0, 0.008,Folder);
   HBook1F(hist->fCreationCode   ,"cr_code",Form("%s: Creation code",Folder), 200,   0,   200,Folder);
   HBook1F(hist->fParentSimID    ,"psim_id",Form("%s: Parent SimID",Folder), 200,   0,  1000,Folder);
   HBook1F(hist->fParentPDGCode  ,"ppdg"   ,Form("%s: Parent PDG code",Folder), 200, -100,   100,Folder);
@@ -634,6 +636,15 @@ void TSpmcAnaModule::InitSpmcData(TStepPointMC* Step, SpmcData_t* SpmcData) {
   VDetData_t* vdd = fVDet+id;
   int pdg_code    = Step->PDGCode();
 
+//----------------------------
+  //float start_tau =  fSimParticle->StartProperTime();
+  //float end_tau =    fSimParticle->EndProperTime();
+  //  float surv_prob = exp(start_tau-end_tau);
+  // double WFactor= Weight*surv_prob;
+  //std::cout<<"start_tau: "<<start_tau<<std::endl;
+  //SpmcData->fsurv_prob=exp(-end_tau);
+  //----------------------------
+
   // float  q(0);
   if (abs(pdg_code) < 2500) {
     SpmcData->fParticle = GetParticleCache(pdg_code);
@@ -710,19 +721,27 @@ void TSpmcAnaModule::FillSimpHistograms(HistBase_t* Hist, TSimParticle* Simp, Si
   float ze = Simp->EndPos()->Z();
   float te = Simp->EndPos()->T();
 
-  hist->fTime->Fill(te,Weight);
+  float start_tau =  Simp->StartProperTime();
+  float end_tau =  Simp->EndProperTime();
+  float dtau = (start_tau >= 0) ? end_tau-start_tau : -1;
 
+  float surv_prob_simp = exp(-end_tau);
+  hist->fTime->Fill(te,Weight);
+  //  std::cout<<"sp_simp "<<surv_prob_simp<<std::endl;
+  //  std::cout<<"pdg: "<<pdg_code<<" sp_step: "<<surv_prob<<std::endl;
   // hist->fParentMom->Fill(fParent->StartMom()->P());
   // hist->fParentPDG->Fill(fParent->PDGCode());
 
   float p = Simp->StartMom()->P();
-  hist->fStartMom[0]->Fill(p,Weight);
-  hist->fStartMom[1]->Fill(p,Weight);
+  hist->fdtau->Fill(dtau);
+  hist->fProperTime->Fill(surv_prob_simp,Weight);
+  hist->fStartMom[0]->Fill(p,Weight*surv_prob_simp);
+  hist->fStartMom[1]->Fill(p,Weight*surv_prob_simp);
 
   hist->fYVsX->Fill(xe,ye,Weight);
   hist->fXEndVsZEnd->Fill(ze,xe,Weight);
   hist->fYcVsZEnd->Fill(ze,Sd->fY0,Weight);
-  hist->fPVD9VsZEnd->Fill(ze,Sd->fPVD9,Weight);
+  hist->fPVD9VsZEnd->Fill(ze,Sd->fPVD9,Weight*surv_prob_simp);
 //-----------------------------------------------------------------------------
 // looks like something to do with the stopping target - but this is still 34 foils..
 //-----------------------------------------------------------------------------
@@ -737,7 +756,7 @@ void TSpmcAnaModule::FillSimpHistograms(HistBase_t* Hist, TSimParticle* Simp, Si
 }
 
 //-----------------------------------------------------------------------------
-void TSpmcAnaModule::FillSpmcHistograms(HistBase_t* Hist, TStepPointMC* Step, SpmcData_t* SpmcData, double Weight) {
+  void TSpmcAnaModule::FillSpmcHistograms(HistBase_t* Hist, TStepPointMC* Step, SpmcData_t* SpmcData, double Weight) {
 
   StepPointMCHist_t* hist = (StepPointMCHist_t*) Hist;
   
@@ -745,8 +764,15 @@ void TSpmcAnaModule::FillSpmcHistograms(HistBase_t* Hist, TStepPointMC* Step, Sp
 
   int id = Step->VolumeID();
 
+  float end_tau =  Step->ProperTime();
+  float surv_prob = exp(-end_tau);
+  // hist->fTime->Fill(te,Weight);
+  //std::cout<<"pdg: "<<pdg_code<<" sp_step: "<<surv_prob<<std::endl;
+  //  float Weight_SP = SpmcData->fsurv_prob;
+  
   // VDetData_t* vdd = fVDet+id;
-
+  //  double Weight_SP=Weight*5.0;
+  hist->fProperTime->Fill(surv_prob,Weight);
   hist->fVolumeID->Fill(id,Weight);
   hist->fGenIndex->Fill(Step->GenIndex(),Weight);
   hist->fSimID   ->Fill(Step->SimID(),Weight);
@@ -757,15 +783,15 @@ void TSpmcAnaModule::FillSpmcHistograms(HistBase_t* Hist, TStepPointMC* Step, Sp
   hist->fParentPDGCode->Fill(Step->ParentPDGCode(),Weight);
   hist->fEndProcessCode->Fill(Step->EndProcessCode(),Weight);
 
-  hist->fEDepTot->Fill(Step->EDepTot(),Weight);
-  hist->fEDepNio->Fill(Step->EDepNio(),Weight);
-  hist->fTime   ->Fill(Step->Time(),Weight);
-  hist->fStepLength->Fill(Step->StepLength(),Weight);
+  hist->fEDepTot->Fill(Step->EDepTot(),Weight*surv_prob);
+  hist->fEDepNio->Fill(Step->EDepNio(),Weight*surv_prob);
+  hist->fTime   ->Fill(Step->Time(),Weight*surv_prob);
+  hist->fStepLength->Fill(Step->StepLength(),Weight*surv_prob);
 
-  hist->fMom[0]->Fill(SpmcData->fP,Weight);
-  hist->fMom[1]->Fill(SpmcData->fP,Weight);
+  hist->fMom[0]->Fill(SpmcData->fP,Weight*surv_prob);
+  hist->fMom[1]->Fill(SpmcData->fP,Weight*surv_prob);
   
-  hist->fEKin->Fill(SpmcData->fEKin,Weight);
+  hist->fEKin->Fill(SpmcData->fEKin,Weight*surv_prob);
 
   // float x = Step->Pos()->X();
   // float y = Step->Pos()->Y();

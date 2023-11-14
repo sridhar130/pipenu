@@ -27,7 +27,7 @@ physics : {
 	    makeTracks       : 0
 	    makeTrigger      : 0
 	    
-	    ## genId            : "particleGun"  ## = 1
+	    genId            : "particleGun"           ## = 1
             primaryParticleTag : "" ## no primaries
 	    
 	    genpCollTag      : "generate"

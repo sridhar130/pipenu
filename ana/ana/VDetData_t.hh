@@ -1,10 +1,11 @@
-#ifndef __murat_ana_VDetData_t__
-#define __murat_ana_VDetData_t__
+#ifndef __pipenu_ana_VDetData_t__
+#define __pipenu_ana_VDetData_t__
 //------------------------------------------------------------------------------
 //  IXLocal and IZLocal are either (1,3) or (3,1) 
 //  vector normal to the VD is pointed along IZLocal
 //------------------------------------------------------------------------------
-namespace murat {
+namespace pipenu {
+  //namespace pipenu {
   struct VDetData_t {
     int    fID;
     int    fIXLocal;			// orientation of the local axis to calculate Pt wrt to the field

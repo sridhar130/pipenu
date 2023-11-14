@@ -132,7 +132,7 @@ physics.producers.TargetMuonFinder.useEventLevelVolumeInfo : false   ## true
 
 physics.producers.ootMuonFinder.particleTypes              : [ -211, 211]
 #------------------------------------------------------------------------------
-outputs.TargetStopOutput.fileName   : "sim.mu2e.bpip1b0s21r0000.pbar2m.001210_00000000.art"
-outputs.ootStopOutput.fileName      : "sim.mu2e.bpip1b0s22r0000.pbar2m.001210_00000000.art"
-outputs.IPAStopOutput.fileName      : "sim.mu2e.bpip1b0s23r0000.pbar2m.001210_00000000.art"
+outputs.TargetStopOutput.fileName   : "sim.mu2e.bpip1b0s21r0000.pipenu.001210_00000000.art"
+outputs.ootStopOutput.fileName      : "sim.mu2e.bpip1b0s22r0000.pipenu.001210_00000000.art"
+outputs.IPAStopOutput.fileName      : "sim.mu2e.bpip1b0s23r0000.pipenu.001210_00000000.art"
 # outputs.allOutput.fileName          : "sim.mu2e.bpip1b0s2ar0000.pbar2m.001210_00000000.art"

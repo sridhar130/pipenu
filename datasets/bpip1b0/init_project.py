@@ -25,7 +25,7 @@ class Project:
 
     def __init__(self):
 
-        project                      = 'pbar2m'
+        project                      = 'pipenu'
         self.fFamilyID               = 'bpip1b0'          # in fact, this is a family name
         self.fProjectName            = project;
         self.fStage                  = {}
@@ -50,7 +50,7 @@ class Project:
         #------------------------------------------------------------------------------
         self.fDataset['bpip1b0s31r0000'] = Dataset('sim.mu2e.bpip1b0s31r0000.art','bpip1b0s31r0000','local')
 #------------------------------------------------------------------------------
-# S1 10^8 proton interactions in the PT, half field in the DS
+# S1 2.5*10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s1');
         job                          = s.new_job('sim','bpip1b0s00r0000');
@@ -58,10 +58,10 @@ class Project:
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'sim');
 
-        job.fNInputFiles             = 250                      # number of segments
+        job.fNInputFiles             = 500                      # number of segments
                                      
         job.fMaxInputFilesPerSegment =  1
-        job.fNEventsPerSegment       = 400000
+        job.fNEventsPerSegment       = 500000
         job.fResample                = 'no'   # yes/no
         job.fRequestedTime           = '20h'
         job.fIfdh                    = 'xrootd'                 # ifdh/xrootd
@@ -114,9 +114,9 @@ class Project:
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
         job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
+        job.fNEventsPerSegment       =  20000 #each file has < 10 BeamFilter
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '3h'   
+        job.fRequestedTime           = '4h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
@@ -140,10 +140,10 @@ class Project:
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
 
-        job.fNInputFiles             = 1                                # number of segments    
+        job.fNInputFiles             = 10                                # number of segments    
 
-        job.fMaxInputFilesPerSegment = 100
-        job.fNEventsPerSegment       = 50000                       
+        job.fMaxInputFilesPerSegment = 10
+        job.fNEventsPerSegment       = 50000  #does not matter?                       
         job.fResample                = 'no'                               # yes/no
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                           # ifdh/xrootd

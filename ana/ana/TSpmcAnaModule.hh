@@ -9,13 +9,13 @@
 #include "TProfile.h"
 #include "TDatabasePDG.h"
 #include "TParticlePDG.h"
-
+#include <iostream>
 #include "Stntuple/loop/TStnModule.hh"
 
 #include "Stntuple/obj/TGenpBlock.hh"
 #include "Stntuple/obj/TSimpBlock.hh"
 #include "Stntuple/obj/TStepPointMCBlock.hh"
-
+#include "Stntuple/obj/obj/TSimParticle.hh"
 #include "Stntuple/base/TStnArrayI.hh"
 
 #include "Stntuple/alg/TStntuple.hh"
@@ -56,6 +56,8 @@ public:
     TH1F*      fStage;
     TH1F*      fGeneratorID;
     TH1F*      fTime;
+    TH1F*      fProperTime;
+    TH1F*      fdtau;
     TH1F*      fParentPDG;
     TH1F*      fParentMom;
     TH1F*      fStartMom[2];
@@ -79,7 +81,7 @@ public:
     TH1F*      fParentSimID;
     TH1F*      fParentPDGCode;
     TH1F*      fEndProcessCode;
-
+    TH1F*      fProperTime;
     TH1F*      fEDepTot;
     TH1F*      fEDepNio;
     TH1F*      fTime;			// in ns
@@ -149,6 +151,8 @@ public:
     float          fR;                  // trajectory radius
     float          fX0;                 // X coordinate of the trajectory axis in the local coordinate system
     float          fY0;			// Y coordinate of the trajectory axis in the local coordinate system
+    // float fsurv_prob;
+
   };
 
 //-----------------------------------------------------------------------------
@@ -172,6 +176,7 @@ public:
   TSimpBlock*           fSimpBlock;  
   TStepPointMCBlock*    fSpmcBlock;
   TStepPointMCBlock*    fVDetBlock;
+  TSimParticle*         fSimParticle;
 					// histograms filled
   Hist_t                fHist;
 
@@ -241,7 +246,7 @@ public:
 
   void    FillEventHistograms        (HistBase_t* Hist);
   void    FillSimpHistograms         (HistBase_t* Hist, TSimParticle* Simp, SimpData_t* SimpData, double Weight = 1.);
-  void    FillSpmcHistograms         (HistBase_t* Hist, TStepPointMC* Step, SpmcData_t* SpmcData, double Weight = 1.);
+  void    FillSpmcHistograms         (HistBase_t* Hist, TStepPointMC* Step, SpmcData_t* SpmcData, double Weight = 1. );
   void    FillVDetHistograms         (HistBase_t* Hist, TStepPointMC* Step, SpmcData_t* SpmcData, double Weight = 1.);
 
   void    InitSpmcData               (TStepPointMC* Step, SpmcData_t* SpmcData);
