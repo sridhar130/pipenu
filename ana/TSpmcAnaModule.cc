@@ -43,17 +43,22 @@
 ClassImp(pipenu::TSpmcAnaModule)
 
 namespace pipenu { 
+
 //-----------------------------------------------------------------------------
 TSpmcAnaModule::TSpmcAnaModule(const char* name, const char* title):
   TStnModule(name,title)
 {
   // fPdgCode       = 11;
   // fGeneratorCode = 28;
+
+  
+
 //-----------------------------------------------------------------------------
 // assumed STNTUPLE branches 
 //-----------------------------------------------------------------------------
   fSpmcBlockName = "SpmcBlockVDet";
   fVDetBlockName = "SpmcBlockVDet";
+ 
   
   fPdgDb = TDatabasePDG::Instance();
 
@@ -62,9 +67,9 @@ TSpmcAnaModule::TSpmcAnaModule(const char* name, const char* title):
   SetParticleCache(   11,fPdgDb->GetParticle(   11)); // e
   SetParticleCache(  -11,fPdgDb->GetParticle(  -11)); // e
   SetParticleCache(   13,fPdgDb->GetParticle(   13)); // mu
-  SetParticleCache(  -13,fPdgDb->GetParticle(  -13)); // mu
+  SetParticleCache(  -13,fPdgDb->GetParticle(  -13)); // mu^+
   SetParticleCache(   22,fPdgDb->GetParticle(   22)); // photon
-  SetParticleCache(  211,fPdgDb->GetParticle(  211)); // pi^-
+  SetParticleCache(  211,fPdgDb->GetParticle(  211)); // pi^+
   SetParticleCache( -211,fPdgDb->GetParticle( -211)); // pi^-
   SetParticleCache( 2112,fPdgDb->GetParticle( 2112)); // neutron
   SetParticleCache( 2212,fPdgDb->GetParticle( 2212)); // proton
@@ -129,8 +134,8 @@ void TSpmcAnaModule::BookSimpHistograms(HistBase_t* Hist, const char* Folder) {
   HBook1F(hist->fStage       ,"stage"    ,Form("%s: Stage"       ,Folder),  10,     0,   10,Folder);
   HBook1F(hist->fGeneratorID ,"gen_id"   ,Form("%s: Generator ID",Folder), 200,   -10,  190,Folder);
   HBook1F(hist->fTime        ,"time"     ,Form("%s: Stop Time"   ,Folder), 200,     0, 2000,Folder);
-  HBook1F(hist->fProperTime        ,"Surv Prob"     ,Form("%s: Surv"   ,Folder), 2000,     0, 0.008,Folder);
-  HBook1F(hist->fdtau,"tau"  ,Form("%s: proper time diff"   ,Folder), 200, 0,  50,Folder);
+  HBook1F(hist->fProperTime        ,"Surv Prob"     ,Form("%s: Surv"   ,Folder), 20000,     0,10e-7,Folder);
+  HBook1F(hist->fdtau,"tau"  ,Form("%s: TOverTau"   ,Folder), 200, 0,  50,Folder);
   HBook1F(hist->fParentMom   ,"pmom"     ,Form("%s: Parent Mom"  ,Folder), 200,     0, 2000,Folder);
   HBook1F(hist->fParentPDG   ,"ppdg"     ,Form("%s: Parent PDG"  ,Folder), 200, -1000, 1000,Folder);
 
@@ -711,7 +716,62 @@ void TSpmcAnaModule::FillSimpHistograms(HistBase_t* Hist, TSimParticle* Simp, Si
   SimpHist_t* hist = (SimpHist_t*) Hist;
 
   int stage  = Simp->GetUniqueID()/100000;
+ 
+
+  /*
+ //---
+  SimpData_t  simp_data;
+  SimpData_t* sd = &simp_data;  // temp
+
+  for (int i=0; i<fNSimp; i++) {
+    TSimParticle* simp = fSimpBlock->Particle(i);
+    int pdg_code  = simp->PDGCode();
+    int simp_id   = simp->GetUniqueID();
+    int parent_id = simp->ParentID();
+    int    vid1   = simp->EndVolumeIndex();
+    double pend   = simp->EndMom()->P();
+    double tend   = simp->EndPos()->T();
+
+    sd->fStepVD9  = nullptr;
+    sd->fPVD9     = -1;
+    sd->fY0       = -1.e6;
+
+    // float start_tau1 =  simp->StartProperTime();
+    float end_tau1 =  simp->EndProperTime();
+    // float dtau1 = (start_tau1 >= 0) ? end_tau1-start_tau1 : -1;
+    // std::cout<<"dtau "<<dtau1<<std::endl;
+    float surv_prob_simp1 = exp(-end_tau1);
+
   
+    const int WP= GetWeightParameter();
+
+/ 2023-10-19 : ST volumes start from 2980
+    if ((pend == 0) && (vid1 >= 2950) && (vid1 < 3050)) {
+//-----------------------------------------------------------------------------
+// particle stopped in the stopping target
+// BEWARE: stopping target foil volume indices change in time...
+// for stopped particle, find its VD9 hit
+//-----------------------------------------------------------------------------
+      SpmcData_t vd9_data;
+
+      for (int i=0; i<fNVDetHits; i++) {
+	TStepPointMC* vdstep = fVDetBlock->StepPointMC(i);
+	if  ((vdstep->SimID() == simp_id) and (vdstep->VolumeID() == 9)) {
+	  sd->fStepVD9 = vdstep;
+	  sd->fPVD9    = vdstep->Mom()->Mag();
+	  break;
+	}
+      }
+
+      if (sd->fStepVD9 != nullptr) InitSpmcData(sd->fStepVD9,&vd9_data);
+      sd->fY0 = vd9_data.fY0;
+
+
+      if (WP==1){fWeight=surv_prob_simp1;}
+      //---
+
+*/
+
   hist->fVolumeID->Fill(Simp->fEndVolumeIndex,Weight);
   hist->fStage->Fill(stage,Weight);
   hist->fGeneratorID->Fill(Simp->fGeneratorID,Weight);
@@ -721,11 +781,18 @@ void TSpmcAnaModule::FillSimpHistograms(HistBase_t* Hist, TSimParticle* Simp, Si
   float ze = Simp->EndPos()->Z();
   float te = Simp->EndPos()->T();
 
-  float start_tau =  Simp->StartProperTime();
-  float end_tau =  Simp->EndProperTime();
-  float dtau = (start_tau >= 0) ? end_tau-start_tau : -1;
+  // int pdg_code  = Simp->PDGCode();
 
-  float surv_prob_simp = exp(-end_tau);
+  //float start_tau =  Simp->StartProperTime();
+    float end_tau =  Simp->EndProperTime();
+    //float dtau = (start_tau >= 0) ? end_tau-start_tau : -1;
+
+
+    //std::cout<<"st_tau: "<<start_tau<<" end_tau: "<<end_tau<<" dt_tau: "<<dtau<<" exp end_tau: "<<exp(-end_tau)<<std::endl;
+
+    float surv_prob_simp = exp(-end_tau);
+
+
   hist->fTime->Fill(te,Weight);
   //  std::cout<<"sp_simp "<<surv_prob_simp<<std::endl;
   //  std::cout<<"pdg: "<<pdg_code<<" sp_step: "<<surv_prob<<std::endl;
@@ -733,15 +800,18 @@ void TSpmcAnaModule::FillSimpHistograms(HistBase_t* Hist, TSimParticle* Simp, Si
   // hist->fParentPDG->Fill(fParent->PDGCode());
 
   float p = Simp->StartMom()->P();
-  hist->fdtau->Fill(dtau);
+
+  //  std::cout<<"PID: "<<pdg_code<<" mom: "<<p<<" st_tau: "<<start_tau<<" end_tau: "<<end_tau<<" dt_tau: "<<dtau<<" exp end_tau: "<<exp(-end_tau)<<std::endl;
+
+  hist->fdtau->Fill(end_tau);
   hist->fProperTime->Fill(surv_prob_simp,Weight);
-  hist->fStartMom[0]->Fill(p,Weight*surv_prob_simp);
-  hist->fStartMom[1]->Fill(p,Weight*surv_prob_simp);
+  hist->fStartMom[0]->Fill(p,Weight);
+  hist->fStartMom[1]->Fill(p,Weight);
 
   hist->fYVsX->Fill(xe,ye,Weight);
   hist->fXEndVsZEnd->Fill(ze,xe,Weight);
   hist->fYcVsZEnd->Fill(ze,Sd->fY0,Weight);
-  hist->fPVD9VsZEnd->Fill(ze,Sd->fPVD9,Weight*surv_prob_simp);
+  hist->fPVD9VsZEnd->Fill(ze,Sd->fPVD9,Weight);
 //-----------------------------------------------------------------------------
 // looks like something to do with the stopping target - but this is still 34 foils..
 //-----------------------------------------------------------------------------
@@ -783,15 +853,15 @@ void TSpmcAnaModule::FillSimpHistograms(HistBase_t* Hist, TSimParticle* Simp, Si
   hist->fParentPDGCode->Fill(Step->ParentPDGCode(),Weight);
   hist->fEndProcessCode->Fill(Step->EndProcessCode(),Weight);
 
-  hist->fEDepTot->Fill(Step->EDepTot(),Weight*surv_prob);
-  hist->fEDepNio->Fill(Step->EDepNio(),Weight*surv_prob);
-  hist->fTime   ->Fill(Step->Time(),Weight*surv_prob);
-  hist->fStepLength->Fill(Step->StepLength(),Weight*surv_prob);
+  hist->fEDepTot->Fill(Step->EDepTot(),Weight);
+  hist->fEDepNio->Fill(Step->EDepNio(),Weight);
+  hist->fTime   ->Fill(Step->Time(),Weight);
+  hist->fStepLength->Fill(Step->StepLength(),Weight);
 
-  hist->fMom[0]->Fill(SpmcData->fP,Weight*surv_prob);
-  hist->fMom[1]->Fill(SpmcData->fP,Weight*surv_prob);
+  hist->fMom[0]->Fill(SpmcData->fP,Weight);
+  hist->fMom[1]->Fill(SpmcData->fP,Weight);
   
-  hist->fEKin->Fill(SpmcData->fEKin,Weight*surv_prob);
+  hist->fEKin->Fill(SpmcData->fEKin,Weight);
 
   // float x = Step->Pos()->X();
   // float y = Step->Pos()->Y();
@@ -912,6 +982,18 @@ void TSpmcAnaModule::FillHistograms() {
     sd->fPVD9     = -1;
     sd->fY0       = -1.e6;
 
+    // float start_tau1 =  simp->StartProperTime();
+     float end_tau1 =  simp->EndProperTime();
+     // float dtau1 = (start_tau1 >= 0) ? end_tau1-start_tau1 : -1;
+    // std::cout<<"dtau "<<dtau1<<std::endl;
+    float surv_prob_simp1 = exp(-end_tau1);
+
+  
+    const int WP= GetWeightParameter();
+
+    //    std::cout<<"weight parameter: "<<WP<<std::endl;
+
+
     FillSimpHistograms(fHist.fSimp[  0],simp,sd);
     if (pdg_code ==    11) FillSimpHistograms(fHist.fSimp[  1],simp,sd);
     if (pdg_code ==   -11) FillSimpHistograms(fHist.fSimp[  2],simp,sd);
@@ -944,6 +1026,13 @@ void TSpmcAnaModule::FillHistograms() {
       if (sd->fStepVD9 != nullptr) InitSpmcData(sd->fStepVD9,&vd9_data);
       sd->fY0 = vd9_data.fY0;
 
+
+      if (WP==1){fWeight=surv_prob_simp1;}
+      // if (WP==1){fWeight=0.2;}
+      
+
+
+
       FillSimpHistograms(fHist.fSimp[600],simp,sd);
       if (pdg_code ==    11) FillSimpHistograms(fHist.fSimp[601],simp,sd);
       if (pdg_code ==   -11) FillSimpHistograms(fHist.fSimp[602],simp,sd);
@@ -959,7 +1048,7 @@ void TSpmcAnaModule::FillHistograms() {
       if (pdg_code ==    13) FillSimpHistograms(fHist.fSimp[703],simp,sd,fWeight);
       if (pdg_code ==   -13) FillSimpHistograms(fHist.fSimp[704],simp,sd,fWeight);
       if (pdg_code ==  -211) FillSimpHistograms(fHist.fSimp[705],simp,sd,fWeight);
-      if (pdg_code ==   211) FillSimpHistograms(fHist.fSimp[706],simp,sd);
+      if (pdg_code ==   211) FillSimpHistograms(fHist.fSimp[706],simp,sd,fWeight); //remove fWeight
       if (pdg_code == -2212) FillSimpHistograms(fHist.fSimp[721],simp,sd,fWeight);
 //-----------------------------------------------------------------------------
 // flag events with pbar stopped in the stopping target
@@ -1444,6 +1533,8 @@ void TSpmcAnaModule::FillHistograms() {
 
 
 
+
+
 //_____________________________________________________________________________
 int TSpmcAnaModule::BeginRun() {
   int rn = GetHeaderBlock()->RunNumber();
@@ -1474,6 +1565,7 @@ int TSpmcAnaModule::Event(int ientry) {
 // determine the cross section weight looking at the first particle with the PDG code of an antiproton
 //-----------------------------------------------------------------------------
   fWeight     = fGenpBlock->Weight();
+  //  std::cout<<"fweight from genblock: "<<fWeight<<std::endl;
   fTMaxSimp   = -1;
 //-----------------------------------------------------------------------------
 // using the first antiproton in the list should work for old Bobs's dataset as well 

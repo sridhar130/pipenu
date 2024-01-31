@@ -11,12 +11,15 @@ void  pipenu_spmc_ana(int DebugBit = -1) {
   pipenu::m_spmc = (pipenu::TSpmcAnaModule*) g.x->AddModule("pipenu::TSpmcAnaModule",0);  
   pipenu::m_spmc->SetSpmcBlockName("SpmcBlockVDet");
   if (DebugBit >= 0) pipenu::m_spmc->SetDebugBit(DebugBit,1);
+ // weight parameter =0,1: 0->weight=1, 1->weight=surv_prob
+  pipenu::m_spmc->SetWeightParameter(0);
 }
 
 void  pipenu_spmc_ana_1(int DebugBit = -1) {
   pipenu::m_spmc = (pipenu::TSpmcAnaModule*) g.x->AddModule("pipenu::TSpmcAnaModule",0);  
   pipenu::m_spmc->SetSpmcBlockName("SpmcBlockVDet");
   if (DebugBit >= 0) pipenu::m_spmc->SetDebugBit(DebugBit,1);
-  // plus pass a parameter defining the weight
+  // weight parameter =0,1: 0->weight=1, 1->weight=surv_prob
+  pipenu::m_spmc->SetWeightParameter(1);
   // ....
 }

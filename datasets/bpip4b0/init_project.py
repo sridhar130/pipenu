@@ -26,7 +26,7 @@ class Project:
     def __init__(self):
 
         project                      = 'pipenu'
-        self.fFamilyID               = 'bpip0b0'          # in fact, this is a family name
+        self.fFamilyID               = 'bpip4b0'          # in fact, this is a family name
         self.fProjectName            = project;
         self.fStage                  = {}
         self.fDataset                = {};
@@ -34,26 +34,26 @@ class Project:
         # datasets of this family
         # 1. stage 1 : generator input
         #------------------------------------------------------------------------------
-        self.fDataset['bpip0b0s00r0000'] = Dataset('generator'                   ,'bpip0b0s00r0000','local')
+        self.fDataset['bpip4b0s00r0000'] = Dataset('generator'                   ,'bpip4b0s00r0000','local')
         #------------------------------------------------------------------------------
         # 2. input for stage2 : datasets produced by stage1
         #------------------------------------------------------------------------------
-        self.fDataset['bpip0b0s11r0000'] = Dataset('sim.mu2e.bpip0b0s11r0000.art','bpip0b0s11r0000','local')
-        self.fDataset['bpip0b0s12r0000'] = Dataset('sim.mu2e.bpip0b0s12r0000.art','bpip0b0s12r0000','local')
+        self.fDataset['bpip4b0s11r0000'] = Dataset('sim.mu2e.bpip4b0s11r0000.art','bpip4b0s11r0000','local')
+        self.fDataset['bpip4b0s12r0000'] = Dataset('sim.mu2e.bpip4b0s12r0000.art','bpip4b0s12r0000','local')
         #------------------------------------------------------------------------------
         # 3. input for stage3: datasets produced at stage2
         #------------------------------------------------------------------------------
-        self.fDataset['bpip0b0s21r0000'] = Dataset('sim.mu2e.bpip0b0s21r0000.art','bpip0b0s21r0000','local') 
-        self.fDataset['bpip0b0s22r0000'] = Dataset('sim.mu2e.bpip0b0s22r0000.art','bpip0b0s22r0000','local') 
+        self.fDataset['bpip4b0s21r0000'] = Dataset('sim.mu2e.bpip4b0s21r0000.art','bpip4b0s21r0000','local') 
+        self.fDataset['bpip4b0s22r0000'] = Dataset('sim.mu2e.bpip4b0s22r0000.art','bpip4b0s22r0000','local') 
         #------------------------------------------------------------------------------
         # 3. Input s4 strip and s3 stn -- TargetStopOutput from s3
         #------------------------------------------------------------------------------
-        self.fDataset['bpip0b0s31r0000'] = Dataset('sim.mu2e.bpip0b0s31r0000.art','bpip0b0s31r0000','local')
+        self.fDataset['bpip4b0s31r0000'] = Dataset('sim.mu2e.bpip4b0s31r0000.art','bpip4b0s31r0000','local')
 #------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s1');
-        job                          = s.new_job('sim','bpip0b0s00r0000');
+        job                          = s.new_job('sim','bpip4b0s00r0000');
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'sim');
@@ -81,15 +81,15 @@ class Project:
 #------------------------------------------------------------------------------
 # s1:stn_beam: stntuple the beam stream
 #------------------------------------------------------------------------------  
-        job                          = s.new_job('stn_beam','bpip0b0s11r0000');
+        job                          = s.new_job('stn_beam','bpip4b0s11r0000');
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'stn_beam');
 
         job.fNInputFiles             = 1                                # number of segments    
 
-        job.fMaxInputFilesPerSegment = 500
-        job.fNEventsPerSegment       = 100000                       
+        job.fMaxInputFilesPerSegment = 1000
+        job.fNEventsPerSegment       = 10000000                       
         job.fResample                = 'no'                               # yes/no
         job.fMaxMemory               = '2000MB'
         job.fRequestedTime           = '2h'
@@ -107,7 +107,7 @@ class Project:
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
 
-        job                          = s.new_job('sim','bpip0b0s11r0000');
+        job                          = s.new_job('sim','bpip4b0s11r0000');
 
         job.fBaseFcl                 = self.base_fcl(job,'sim');
 
@@ -135,7 +135,7 @@ class Project:
 #------------------------------------------------------------------------------
 # s2:tgt_stn
 #------------------------------------------------------------------------------  
-        job                          = s.new_job('stn_tgt','bpip0b0s21r0000');
+        job                          = s.new_job('stn_tgt','bpip4b0s21r0000');
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
@@ -160,7 +160,7 @@ class Project:
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s3');
 
-        job                          = s.new_job('strip_mum','bpip0b0s21r0000');
+        job                          = s.new_job('strip_mum','bpip4b0s21r0000');
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'strip_mum');
@@ -186,7 +186,7 @@ class Project:
 #------------------------------------------------------------------------------
 # s3:strip_mup : strip mu+'s from all stopped particles, just for testing purposes
 #------------------------------------------------------------------------------        
-        job                          = s.new_job('strip_mup','bpip0b0s21r0000');
+        job                          = s.new_job('strip_mup','bpip4b0s21r0000');
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'strip_mup');

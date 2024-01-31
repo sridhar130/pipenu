@@ -12,7 +12,7 @@ process_name : S2G4MubeamStn
 #------------------------------------------------------------------------------
 # services: local re-definitions
 #------------------------------------------------------------------------------
-services.TFileService.fileName              : "nts.user.pbar2m.bpip0b0s11r0000.001210_00000000.hist"
+services.TFileService.fileName              : "nts.user.pbar2m.bpip3b0s11r0000.001210_00000000.hist"
 
 source       : { module_type : RootInput fileNames : ["undefined", "undefined"] }
 
@@ -53,4 +53,4 @@ physics : {
 #-----------------------------------------------------------------------------
 # physics.out                               : [ detectorOutput ]
 # outputs.detectorOutput.SelectEvents       : [ path_gen_digi_reco_stn_dem_dmm ]
-physics.analyzers.InitStntuple.histFileName : "nts.user.pbar2m.bpip0b0s11r0000.001210_00000000.stn"
+physics.analyzers.InitStntuple.histFileName : "nts.user.pbar2m.bpip3b0s11r0000.001210_00000000.stn"

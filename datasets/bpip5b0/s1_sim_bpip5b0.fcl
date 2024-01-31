@@ -10,7 +10,7 @@
 #include "Production/JobConfig/beam/POT.fcl"
 services.SeedService.baseSeed       : 8
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
-services.GeometryService.inputFile  : "pipenu/datasets/bpip2b0/geom_pbar2m_bpip2b0.txt"
+services.GeometryService.inputFile  : "pipenu/datasets/bpip5b0/geom_pbar2m_bpip5b0.txt"
 #------------------------------------------------------------------------------
 # redefinitions, TS3RegionCuts : stop tracing in the middle of the TS
 #------------------------------------------------------------------------------
@@ -32,8 +32,8 @@ physics.producers.g4run.Mu2eG4CommonCut: {
 }
 
 source.firstRun                 : 1210
-outputs.BeamOutput.fileName     : "sim.mu2e.bpip2b0s11r0000.pbar2m.001210_00000000.art"
-outputs.NeutralsOutput.fileName : "sim.mu2e.bpip2b0s12r0000.pbar2m.001210_00000000.art"
+outputs.BeamOutput.fileName     : "sim.mu2e.bpip5b0s11r0000.pbar2m.001210_00000000.art"
+outputs.NeutralsOutput.fileName : "sim.mu2e.bpip5b0s12r0000.pbar2m.001210_00000000.art"
 #------------------------------------------------------------------------------
 # smth is wrong with QGSP_BERT in this version of G4, has to use ShieldingM 
 #------------------------------------------------------------------------------

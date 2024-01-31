@@ -8,7 +8,7 @@
 double ts.coll3.rotationAngle       = 180.0; // DEFAULT: 0.0
 
 string degrader.filter.materialName = "G4_Ti";
-double degrader.filter.halfLength   = 1.0;
+double degrader.filter.halfLength   = 2.0;
 
 bool   degrader.build               = true;  // DEFAULT: false
 double degrader.rotation            = 60.0;   // 0:in the beam, -90: out of beam (degrees)

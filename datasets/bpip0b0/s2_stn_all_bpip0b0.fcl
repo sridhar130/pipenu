@@ -4,7 +4,6 @@
 #------------------------------------------------------------------------------
 BEGIN_PROLOG
   TRIGGER_PATHS       @protect_ignore: [ ] 
-  STN_VDHITS_COLL_TAG @protect_ignore: "TargetStopFilter:virtualdetector"
 END_PROLOG
 
 #include "Stntuple/fcl/stntuple.fcl"
@@ -31,7 +30,7 @@ physics : {
             primaryParticleTag : "" ## no primaries
 	    
 	    genpCollTag      : "generate"
-	    simpCollTag      : "TargetStopFilter"
+#	    simpCollTag      : "muonBeamFilter"
             minSimpMomentum  : -1   ## store all particles
 
 	    spmcBlockName    :[ "SpmcBlockVDet"             ]                      
@@ -49,5 +48,5 @@ physics : {
 #------------------------------------------------------------------------------
 # output files: 
 #-----------------------------------------------------------------------------
-services.TFileService.fileName              : "nts.mu2e.bpip0b0s21b0.pipenu.001210_00000000_112923.root"
-physics.analyzers.InitStntuple.histFileName : "nts.mu2e.bpip0b0s21b0.pipenu.001210_00000000_112923.stn"
+services.TFileService.fileName              : "nts.mu2e.bpip0b0s2ab0.pipenu.001210_00000000.root"
+physics.analyzers.InitStntuple.histFileName : "nts.mu2e.bpip0b0s2ab0.pipenu.001210_00000000.stn"

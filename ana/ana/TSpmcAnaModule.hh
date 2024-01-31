@@ -25,6 +25,7 @@
 #include "Stntuple/ana/AnaDefs.hh"
 #include "Stntuple/ana/HistBase_t.h"
 #include "Stntuple/ana/SimPar_t.hh"
+#include "cetlib_except/exception.h"
 
 namespace pipenu {
 
@@ -210,6 +211,7 @@ public:
 					 // antiproton-specific : in the production vertex
   double                fPbarCosThPV;
   double                fPbarMomPV;
+  //TSpmcAnaModule* TT;
 //-----------------------------------------------------------------------------
 //  functions
 //-----------------------------------------------------------------------------
@@ -226,6 +228,16 @@ public:
   void SetSpmcBlockName(const char* Name) { fSpmcBlockName = Name; }
   void SetVDetBlockName(const char* Name) { fVDetBlockName = Name; }
   void SetStageID      (int ID) { fStageID = ID; }
+
+//-----------------------------------------------------------------------------
+// getters
+//-----------------------------------------------------------------------------
+  int GetWeightParameter() const{return fParam;}
+  void SetWeightParameter(int newVal)
+  { if (newVal!=0 && newVal!=1)
+      { throw cet::exception("BADINPUT") <<"Weight Parameter has to be 0 or 1.";}
+    fParam = newVal;
+  }
 
   void          SetParticleCache(int PdgCode, TParticlePDG* P) { fParticleCache[2500+PdgCode] = P; }
   TParticlePDG* GetParticleCache(int PdgCode) { return fParticleCache[2500+PdgCode]; }
@@ -260,6 +272,9 @@ public:
 // test
 //-----------------------------------------------------------------------------
   void    Test001();
+private:
+
+  int                   fParam;  // set the weight parameter
 
   ClassDef(TSpmcAnaModule,0)
 };

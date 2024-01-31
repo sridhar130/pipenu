@@ -49,5 +49,5 @@ physics : {
 #------------------------------------------------------------------------------
 # output files: 
 #-----------------------------------------------------------------------------
-services.TFileService.fileName              : "nts.mu2e.bpip0b0s21b0.pipenu.001210_00000000_112923.root"
-physics.analyzers.InitStntuple.histFileName : "nts.mu2e.bpip0b0s21b0.pipenu.001210_00000000_112923.stn"
+services.TFileService.fileName              : "nts.mu2e.bpip5b0s21b0.pipenu.001210_00000000_112923.root"
+physics.analyzers.InitStntuple.histFileName : "nts.mu2e.bpip5b0s21b0.pipenu.001210_00000000_112923.stn"

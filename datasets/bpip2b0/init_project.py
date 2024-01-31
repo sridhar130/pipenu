@@ -34,23 +34,23 @@ class Project:
         # datasets of this family
         # 1. stage 1 : generator input
         #------------------------------------------------------------------------------
-        self.fDataset['bpip2b0s00r0000'] = Dataset('generator'                   ,'bpip2b0s00r0000','local')
+        self.fDataset['bpip2b0s00r0000'] = Dataset('generator'                   ,'bpip0b0s00r0000','local')
         #------------------------------------------------------------------------------
         # 2. input for stage2 : datasets produced by stage1
         #------------------------------------------------------------------------------
-        self.fDataset['bpip2b0s11r0000'] = Dataset('sim.mu2e.bpip2b0s11r0000.art','bpip2b0s11r0000','local')
-        self.fDataset['bpip2b0s12r0000'] = Dataset('sim.mu2e.bpip2b0s12r0000.art','bpip2b0s12r0000','local')
+        self.fDataset['bpip2b0s11r0000'] = Dataset('sim.mu2e.bpip0b0s11r0000.art','bpip0b0s11r0000','local')
+        self.fDataset['bpip2b0s12r0000'] = Dataset('sim.mu2e.bpip0b0s12r0000.art','bpip0b0s12r0000','local')
         #------------------------------------------------------------------------------
         # 3. input for stage3: datasets produced at stage2
         #------------------------------------------------------------------------------
-        self.fDataset['bpip2b0s21r0000'] = Dataset('sim.mu2e.bpip2b0s21r0000.art','bpip2b0s21r0000','local') 
-        self.fDataset['bpip2b0s22r0000'] = Dataset('sim.mu2e.bpip2b0s22r0000.art','bpip2b0s22r0000','local') 
+        self.fDataset['bpip2b0s21r0000'] = Dataset('sim.mu2e.bpip0b0s21r0000.art','bpip0b0s21r0000','local') 
+        self.fDataset['bpip2b0s22r0000'] = Dataset('sim.mu2e.bpip0b0s22r0000.art','bpip0b0s22r0000','local') 
         #------------------------------------------------------------------------------
         # 3. Input s4 strip and s3 stn -- TargetStopOutput from s3
         #------------------------------------------------------------------------------
-        self.fDataset['bpip2b0s31r0000'] = Dataset('sim.mu2e.bpip2b0s31r0000.art','bpip2b0s31r0000','local')
+        self.fDataset['bpip2b0s31r0000'] = Dataset('sim.mu2e.bpip0b0s31r0000.art','bpip0b0s31r0000','local')
 #------------------------------------------------------------------------------
-# S1 5*10^6 proton interactions in the PT, half field in the DS
+# S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s1');
         job                          = s.new_job('sim','bpip2b0s00r0000');
@@ -58,12 +58,12 @@ class Project:
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'sim');
 
-        job.fNInputFiles             = 10                      # number of segments
+        job.fNInputFiles             = 500                      # number of segments
                                      
         job.fMaxInputFilesPerSegment =  1
-        job.fNEventsPerSegment       = 50000
+        job.fNEventsPerSegment       = 500000
         job.fResample                = 'no'   # yes/no
-        job.fRequestedTime           = '10h'
+        job.fRequestedTime           = '25h'
         job.fIfdh                    = 'xrootd'                 # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
@@ -123,11 +123,12 @@ class Project:
         odsid21                      = self.fFamilyID+'s21'+'r0000';
         odsid22                      = self.fFamilyID+'s22'+'r0000';
         odsid23                      = self.fFamilyID+'s23'+'r0000';
+        odsid24                      = self.fFamilyID+'s24'+'r0000';
 
-        job.fOutputStream            = ['TargetStopOutput'            , 'ootStopOutput'               , 'IPAStopOutput'               ]
-        job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
+        job.fOutputStream            = ['TargetStopOutput'            , 'ootStopOutput'               , 'IPAStopOutput','DegraderStopOutput'               ]
+        job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23 , odsid24                      ]
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
-        job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
+        job.fOutputFormat            = ['art'                         , 'art'                         , 'art', 'art'                         ]
 
         # job description defined the grid output directory
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
@@ -140,9 +141,9 @@ class Project:
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
 
-        job.fNInputFiles             = 1                                # number of segments    
+        job.fNInputFiles             = 10                                # number of segments    
 
-        job.fMaxInputFilesPerSegment = 100
+        job.fMaxInputFilesPerSegment = 10
         job.fNEventsPerSegment       = 50000                       
         job.fResample                = 'no'                               # yes/no
         job.fRequestedTime           = '3h'
