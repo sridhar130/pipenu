@@ -1,0 +1,78 @@
+# -*- mode:tcl -*- 
+#------------------------------------------------------------------------------
+# use "MDC2020_perfect" calibrations
+#------------------------------------------------------------------------------
+BEGIN_PROLOG
+  PROCESS_NAME  @protect_ignore: S4Digi
+  TRIGGER_PATHS @protect_ignore: [ p1 ]
+  END_PATHS     @protect_ignore: [ e1 ]      # defined below
+END_PROLOG 
+
+#include "Production/JobConfig/digitize/Digitize.fcl"
+#include "Production/JobConfig/digitize/OnSpill.fcl"
+
+process_name : @local::PROCESS_NAME
+#------------------------------------------------------------------------------
+# services 
+#------------------------------------------------------------------------------
+services : { @table::Services.SimAndReco
+    TimeTracker : {
+	printSummary : true
+	dbOutput : {
+	    filename  : ""
+	    overwrite : false
+	}
+    }
+   message: @local::default_message
+} 
+#------------------------------------------------------------------------------
+# control random seeds and the output 
+#------------------------------------------------------------------------------
+services.SeedService.baseSeed         : 8
+services.SeedService.maxUniqueEngines : 100
+#------------------------------------------------------------------------------
+# geometry and magnetic field
+#------------------------------------------------------------------------------
+services.GeometryService.inputFile  : "pipenu/common/geom_baseline.txt"
+services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
+#------------------------------------------------------------------------------
+#  DB constants
+#------------------------------------------------------------------------------
+services.DbService.purpose : MDC2020_perfect
+services.DbService.version : v1_0
+# services.DbService.verbose : 2
+#------------------------------------------------------------------------------
+# Limit the amount of "Begin processing the ... record" messages
+#------------------------------------------------------------------------------
+services.scheduler.wantSummary                                     : true
+services.message.destinations.log.categories.ArtReport.reportEvery : 1
+services.message.destinations.log.categories.ArtReport.limit       : 10000
+services.message.destinations.log.categories.ArtReport.timespan    : 300
+services.message.destinations.log.outputStatistics                 : true
+#------------------------------------------------------------------------------
+# redefine physics , avoid splitting 
+#------------------------------------------------------------------------------
+physics.p1            : [ @sequence::Digitize.DigitizeSequence ]
+physics.e1            : [ defaultOutput        ]
+physics.trigger_paths : [ @sequence::TRIGGER_PATHS ]
+physics.end_paths     : [ @sequence::END_PATHS     ]
+#------------------------------------------------------------------------------
+# redefine outputs, no splitting
+#------------------------------------------------------------------------------
+outputs: {
+    defaultOutput      : { module_type : RootOutput
+	SelectEvents   : [ @sequence::TRIGGER_PATHS ]
+        outputCommands : [ "drop *_*_*_*", 
+                           @sequence::Digitize.DigiProducts 
+                          ]
+        fileName       : "dig.mu2e.bpip0b0s41r0000.pipenu.001210_00000000.art"
+    }
+}
+#------------------------------------------------------------------------------
+# output files
+#------------------------------------------------------------------------------
+services.TFileService.fileName                   : "nts.mu2e.bpip0b0s41r0000.pipenu.001210_00000000.root"
+outputs.defaultOutput.fileName                   : "dig.mu2e.bpip0b0s41r0000.pipenu.001210_00000000.art"
+#------------------------------------------------------------------------------
+# everything below is appended by generate_fcl
+#------------------------------------------------------------------------------
