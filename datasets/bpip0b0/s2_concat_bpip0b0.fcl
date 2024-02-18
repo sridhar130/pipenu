@@ -1,0 +1,33 @@
+# -*- mode: tcl -*-
+#------------------------------------------------------------------------------
+# concatenation job
+#------------------------------------------------------------------------------
+BEGIN_PROLOG
+  INPUT_MODULE  @protect_ignore: RootInput           # choices: EmptyEvent / RootInput
+  TRIGGER_PATHS @protect_ignore: [ production_p100 ] # empty, defined in Stntuple/fcl/stntuple_.fcl
+  PROCESS_NAME  @protect_ignore: S2Concat
+  GEN_ID        @protect_ignore: "unknown"
+END_PROLOG
+
+#include "Stntuple/fcl/stntuple.fcl"
+
+process_name  : S2Concat
+source        : { module_type: RootInput }
+
+physics : {
+    producers : { }
+    filters   : { }
+
+    p1            : [ ]
+    trigger_paths : [ p1 ]
+    
+    e1            : [ defaultOutput ]
+    end_paths     : [ e1            ]
+}
+
+physics.output_path                     : [ defaultOutput ]
+outputs.defaultOutput.SelectEvents      : [               ]
+#------------------------------------------------------------------------------
+services.GeometryService.inputFile      : "pipenu/common/geom_baseline.txt"
+services.TFileService.fileName          : "nts.mu2e.bpip0b0s21r0000.pipenu.001210_00000000.root"
+outputs.defaultOutput.fileName          : "sim.mu2e.bpip0b0s21r0000.pipenu.001210_00000000.art"

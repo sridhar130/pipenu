@@ -23,7 +23,7 @@ class Project:
     def job_description(self,job):
         return self.fProjectName+'.'+job.input_dataset().id()+'.'+job.stage().name()+'_'+job.name()
 
-    def __init__(self):
+    def __init__(self,idsid=None):
 
         project                      = 'pipenu'
         self.fFamilyID               = 'bpip0b0'          # in fact, this is a family name
@@ -45,6 +45,7 @@ class Project:
         #------------------------------------------------------------------------------
         self.fDataset['bpip0b0s21r0000'] = Dataset('sim.mu2e.bpip0b0s21r0000.art','bpip0b0s21r0000','local') 
         self.fDataset['bpip0b0s22r0000'] = Dataset('sim.mu2e.bpip0b0s22r0000.art','bpip0b0s22r0000','local') 
+        self.fDataset['bpip0b0s23r0000'] = Dataset('sim.mu2e.bpip0b0s23r0000.art','bpip0b0s23r0000','local') 
         #------------------------------------------------------------------------------
         # 3. Input s4 strip and s3 stn -- TargetStopOutput from s3
         #------------------------------------------------------------------------------
@@ -133,6 +134,32 @@ class Project:
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
+# s2:concat: concatenation of the input dataset, has to be defined ! 
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('concat',idsid);
+
+        job.fBaseFcl                 = self.base_fcl(job,'concat');
+
+        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
+             
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  20000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        odsid                        = idsid;                 # this is concatenation...
+
+        job.fOutputStream            = ['defaultOutput'                ]
+        job.fOutputDsID              = [odsid                          ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0] ]
+        job.fOutputFormat            = ['art'                          ]
+
+        # job description defined the grid output directory
+        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = desc;
+#------------------------------------------------------------------------------
 # s2:tgt_stn
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_tgt','bpip0b0s21r0000');
@@ -153,60 +180,6 @@ class Project:
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
-#------------------------------------------------------------------------------
-# s3:strip_mum : strip mu-'s to create input for the detector simulation
-#------------------------------------------------------------------------------        
-        s                            = self.new_stage('s3');
-
-        job                          = s.new_job('strip_mum','bpip0b0s21r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'strip_mum');
-
-        job.fNInputFiles             = -1                      # number of segments defined by the input dataset
-             
-        job.fMaxInputFilesPerSegment = 100 
-        job.fNEventsPerSegment       =  5000
-        job.fResample                = 'no'   # yes/no
-        job.fRequestedTime           = '2h'   
-        job.fIfdh                    = 'ifdh'                 # ifdh/xrootd
-
-        odsid31                      = self.fFamilyID+'s31'+'r0000';
-
-        job.fOutputStream            = ['muonout'                     ]
-        job.fOutputDsID              = [odsid31                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0]]
-        job.fOutputFormat            = ['art'                         ]
-
-        # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
-#------------------------------------------------------------------------------
-# s3:strip_mup : strip mu+'s from all stopped particles, just for testing purposes
-#------------------------------------------------------------------------------        
-        job                          = s.new_job('strip_mup','bpip0b0s21r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'strip_mup');
-
-        job.fNInputFiles             = -1                      # number of segments
-             
-        job.fMaxInputFilesPerSegment = 100   
-        job.fNEventsPerSegment       = 5000
-        job.fResample                = 'no'   # yes/no
-        job.fRequestedTime           = '2h'   
-        job.fIfdh                    = 'ifdh'                 # ifdh/xrootd
-
-        odsid32                      = self.fFamilyID+'s32'+'r0000';
-
-        job.fOutputStream            = ['muonout'                     ]
-        job.fOutputDsID              = [odsid32                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0]]
-        job.fOutputFormat            = ['art'                         ]
-
-        # grid output dir
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------

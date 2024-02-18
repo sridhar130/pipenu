@@ -50,8 +50,11 @@ services.message.destinations.log.categories.ArtReport.limit       : 10000
 services.message.destinations.log.categories.ArtReport.timespan    : 300
 services.message.destinations.log.outputStatistics                 : true
 #------------------------------------------------------------------------------
-# redefine physics , avoid splitting 
+# move the digitization start to 100 ns
 #------------------------------------------------------------------------------
+services.ProditionsService.strawElectronics.digitizationStart : 100.
+physics.producers.CaloDigiMaker.digitizationStart             : 100
+
 physics.p1            : [ @sequence::Digitize.DigitizeSequence ]
 physics.e1            : [ defaultOutput        ]
 physics.trigger_paths : [ @sequence::TRIGGER_PATHS ]
@@ -76,3 +79,5 @@ outputs.defaultOutput.fileName                   : "dig.mu2e.bpip0b0s41r0000.pip
 #------------------------------------------------------------------------------
 # everything below is appended by generate_fcl
 #------------------------------------------------------------------------------
+# physics.producers.makeSD.printLevel                  : 100
+

@@ -1,7 +1,7 @@
 f# -*- mode:org -*-
 #+startup:fold
   *bpip0b0* : trace only pions , TS3 collimator in a rotated position 
-  - produce stopped pion output files 
+  - s2: produce stopped pion output files : TGT, OOT, IPA
   - default configuration with full magnetic field
 # ----------------------------------------------------------------------------------------------------
  - directory       : file:./
@@ -93,6 +93,41 @@ f# -*- mode:org -*-
 * ---------------------------------------------------------------------------------------------------------------
 * data formats                                                                                                
 * ---------------------------------------------------------------------------------------------------------------
+* dts.user.bpip0b0s41r0000.pipenu.art                                                                         
+murat@mu2egpvm06:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-02-16-09-29.s4_gen_sim_bpip0b0.mu2egpvm06.17759/dts.user.bpip0b0s41r0000.pipenu.001210_00000000.art 
+   ************************** Mu2e Offline **************************
+     art v3_14_03    root v6_28_10a    KinKal v02_05_00b
+     build  /exp/mu2e/app/users/murat/muse_002
+     build  sl7-debug-e28-p055    02/16/24 08:30:49
+   ******************************************************************
+17-Feb-2024 09:53:23 CST  Initiating request to open input file "results/2024-02-16-09-29.s4_gen_sim_bpip0b0.mu2egpvm06.17759/dts.user.bpip0b0s41r0000.pipenu.001210_00000000.art"
+17-Feb-2024 09:53:25 CST  Opened input file "results/2024-02-16-09-29.s4_gen_sim_bpip0b0.mu2egpvm06.17759/dts.user.bpip0b0s41r0000.pipenu.001210_00000000.art"
+Begin processing the 1st record. run: 1210 subRun: 0 event: 1 at 17-Feb-2024 09:53:26 CST
+Found 13 data products in this Event
+Data products: 
+                                Friendly Class Name         Module Label    Instance Name  Process Name     Product ID
+                                art::TriggerResults       TriggerResults                        Primary   295524022
+                                 mu2e::GenParticles   compressDetStepMCs                        Primary   828754613
+                              mu2e::CaloShowerSteps   compressDetStepMCs                        Primary  1068845632
+mu2e::SimParticleart::Ptrmu2e::MCTrajectorystd::map   compressDetStepMCs                        Primary  1347746658
+                                mu2e::SimParticlemv   compressDetStepMCs                        Primary  1654144812
+                                 mu2e::StepPointMCs   compressDetStepMCs   stoppingtarget       Primary  1793089545
+                                     mu2e::StatusG4                g4run                        Primary  1820700010
+                                 mu2e::StepPointMCs   compressDetStepMCs  virtualdetector       Primary  2163254307
+                                     mu2e::CrvSteps   compressDetStepMCs                        Primary  2800030113
+                              mu2e::PrimaryParticle        FindMCPrimary                        Primary  3038438559
+                                mu2e::StrawGasSteps   compressDetStepMCs                        Primary  3564764404
+                                 mu2e::StepPointMCs   compressDetStepMCs   protonabsorber       Primary  3893820483
+                                      art::EventIDs  TargetStopResampler                        Primary  4151855573
+
+Found 1 data products in this SubRun
+Data products: 
+Friendly Class Name  Module Label  Instance Name  Process Name     Product ID
+mu2e::GenEventCount    genCounter                      Primary  2659886210
+
+Found 0 data products in this Run
+17-Feb-2024 09:53:29 CST  Closed input file "results/2024-02-16-09-29.s4_gen_sim_bpip0b0.mu2egpvm06.17759/dts.user.bpip0b0s41r0000.pipenu.001210_00000000.art"
+Art has completed and will exit with status 0.
 * mcs.mu2e.bpip0b0s51r0000.pipenu.art                                                                         
 murat@mu2egpvm06:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-02-16-10-33.s5_reco_bpip0b0.mu2egpvm06.27620/mcs.mu2e.bpip0b0s51r0000.pipenu.001210_00000000.art 
    ************************** Mu2e Offline **************************

@@ -48,10 +48,10 @@ physics : {
 #------------------------------------------------------------------------------
 	    helixBlockName       : [ "HelixBlock" ]
 	    helixCollTag         : [ "MHFinderDe" ]
-            helixKsCollTag       : [ "KSFDe"      ]   # KalSeed collection corresponding to helices
+            helixKsCollTag       : [ "KSFDe"      ]     ## KalSeed collection corresponding to helices
 
-	    timeClusterCollTag   : ["TZClusterFinder" , "PhiClusterFinder" ]  ## 
-	    timeClusterBlockName : ["TimeClusterBlock", "PhiClusterBlock"  ]  ##
+	    timeClusterCollTag   : ["TZClusterFinder" ] ## , "PhiClusterFinder" ]  ## 
+	    timeClusterBlockName : ["TimeClusterBlock"] ## , "PhiClusterBlock"  ]  ##
 
             trackCollTag         : [ "KFFDe"    ]
             trackSeedCollTag     : [ "KSFDe"    ]
