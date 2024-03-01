@@ -7,9 +7,9 @@ int load_stnana_scripts_pipenu() {
   const char* script[] = { 
     //    "global_vars.cc",
     //    "init_geometry.C",
-    "spmc.C"        ,  "PWD",
-    0 
-  };
+    "spmc.C", "PWD",
+    "trkpipenu.C","PWD",
+    0 };
 
   TString work_dir = gEnv->GetValue("Stnana.TestReleaseDir",gSystem->Getenv("PWD"));
 

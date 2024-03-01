@@ -50,38 +50,85 @@ MCvsReconstruction : {
     mcUtils       : { @table::TrkReco.McUtils }
 }
 
+TZClusterFilter : {
+    module_type         : TZClusterFilter
+    diagLevel           : 0
+    runDisplay          : 0
+    chCollLabel         : "FlagBkgHits"
+    tcCollLabel         : "TZClusterFinder"
+    minSHsInCluster     : 15
+    minCHsInCluster     : 10
+    nPairs              : 1
+    minCHsInCubes       : 2
+    maxDeltaRInStn      : 100
+    maxDeltaRBtwStns    : 120
+    maxDeltaPhiInStn    : 0.4
+    maxDeltaPhiBtwStns  : 0.6
+    thirdStation        : true
+}
+
+TZRefineAnalysis : {
+    module_type             : TZRefineAnalysis
+    display                 : 1
+    chCollLabel             : "FlagBkgHits"
+    tcCollLabel             : "TimeClusterFinderDe"
+    particlePdgID           : 11
+    particleMomentum        : 100.0
+    particleDirection       : "down"
+    particleStrawHitThresh  : 15
+    particleScatterThresh   : 3.0
+    mcUtils                 : { @table::TrkReco.McUtils }
+}
+
 HelixFinder : {
     module_type : HelixFinder
+    diagLevel               : 0
     debug                   : 0
+    runDisplay              : 0
     chCollLabel             : "FlagBkgHits"
     tcCollLabel             : "TimeClusterFinderDe"
     ccCollLabel             : "CaloClusterMaker"
-    nPhiBins                : 36
-    nPhiPeakBins            : 3
-    phiPeakThresh           : 5 # number of combo hits needed to be considered a phi peak
-    phiWindow               : 45.0 # this is +/- so actual window is 2 x value
+    findMultipleHelices     : true # whether or not to allow more than 1 helix per tc
+    useStoppingTarget       : true
+    intenseEventThresh      : 30
+    intenseClusterThresh    : 60
+    doLineFlag              : false
+    doIsolationFlag         : true
     isoRad                  : 150.0
     isoMinHitsNear          : 2
+    doAverageFlag           : true
     minDistCut              : 20.0
-    updateCircleErrThresh   : 5.0
+    minTripletSeedZ         : 0.0
+    minTripletDz            : 50.0
+    maxTripletDz            : 500.0
+    minTripletDist          : 50.0
+    minTripletArea          : 1.0e4
     maxSeedCircleResidual   : 1.0
     minSeedCircleHits       : 7
     maxDeltaPhi             : 2.0
     maxZWindow              : 500.0
+    minLineSegmentHits      : 3
+    segMultiplier           : 3.0
     max2PiAmbigResidual     : 2.0
     maxPhiZResidual         : 2.0
     minFinalSeedHits        : 7
-    maxCircleRecoverSigma   : 5.0
-    maxLineRecoverSigma     : 5.0
+    maxCircleRecoverSigma   : 3.0
+    maxLineRecoverSigma     : 3.0
     caloClusterSigma        : 30.0
-    minNHelixHits           : 15
+    minNHelixComboHits      : 8
+    minNHelixStrawHits      : 12
+    minHelixPerpMomentum    : 40.0
+    maxHelixPerpMomentum    : 140.0
+    minHelixMomentum        : 60.0
+    maxHelixMomentum        : 400.0
     chi2LineSaveThresh      : 5.0
     debugPdgID              : 11
     debugMomentum           : 100.0
     debugDirection          : "down"
-    debugStrawHitThresh     : 15
+    debugStrawHitThresh     : 12
     debugScatterThresh      : 3.0
     mcUtils                 : { @table::TrkReco.McUtils }
+    diagPlugin              : { tool_type : "HelixFinderDiag" }
 }
 
 TimeClusterAnalysis : {

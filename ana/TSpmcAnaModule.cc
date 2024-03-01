@@ -38,7 +38,7 @@
 #include "Stntuple/val/stntuple_val_functions.hh"
 //-----------------------------------------------------------------------------
 #include "Stntuple/ana/InitVirtualDetectors.hh"
-#include "pipenu/ana/TSpmcAnaModule.hh"
+#include "pipenu/ana/ana/TSpmcAnaModule.hh"
 
 ClassImp(pipenu::TSpmcAnaModule)
 
@@ -888,15 +888,18 @@ void TSpmcAnaModule::FillSimpHistograms(HistBase_t* Hist, TSimParticle* Simp, Si
   VDetHist_t* hist = (VDetHist_t*) Hist;
 
   int id = Step->VolumeID();
-
+  //double tau= Step->ProperTime();
+  float end_tau =  Step->ProperTime();
+  float surv_prob = exp(-end_tau);
+ 
   hist->fIndex   ->Fill(id              ,Weight);
   hist->fPDGCode ->Fill(Step->PDGCode() ,Weight);
   hist->fGenCode ->Fill(Step->GenIndex(),Weight);
 
-  hist->fMom[0]->Fill(SpmcData->fP,Weight);
-  hist->fMom[1]->Fill(SpmcData->fP,Weight);
+  hist->fMom[0]->Fill(SpmcData->fP,Weight*surv_prob);
+  hist->fMom[1]->Fill(SpmcData->fP,Weight*surv_prob);
 
-  hist->fTime    ->Fill(Step->Time (),Weight);
+  hist->fTime    ->Fill(Step->Time (),Weight*surv_prob);
   hist->fPTTau   ->Fill(Step->ProperTime(),Weight);
 
   hist->fYVsX    ->Fill(SpmcData->fXLoc,SpmcData->fYLoc,Weight);
@@ -988,9 +991,8 @@ void TSpmcAnaModule::FillHistograms() {
     // std::cout<<"dtau "<<dtau1<<std::endl;
     float surv_prob_simp1 = exp(-end_tau1);
 
-  
     const int WP= GetWeightParameter();
-
+    if (WP==1){fWeight=surv_prob_simp1;}
     //    std::cout<<"weight parameter: "<<WP<<std::endl;
 
 
@@ -1027,7 +1029,7 @@ void TSpmcAnaModule::FillHistograms() {
       sd->fY0 = vd9_data.fY0;
 
 
-      if (WP==1){fWeight=surv_prob_simp1;}
+     
       // if (WP==1){fWeight=0.2;}
       
 

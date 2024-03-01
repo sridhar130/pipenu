@@ -17,8 +17,8 @@ services.GeometryService.inputFile    : "pipenu/common/geom_baseline.txt"
 services.GeometryService.bFieldFile   : "pipenu/common/bfgeom_DS70_v01.txt"
 
 
-source.fileNames    : [ "define_yours_001.art", "define_yours_002.art" ]
-
+#source.fileNames    : [ "define_yours_001.art", "define_yours_002.art" ]
+source.fileNames    : [ "dig.mu2e.bpip0b0s41r0000.pipenu.001210_00000000.art" ]
 source.inputCommands:[ "keep *",
                        "drop mu2e::ComboHitCollection_*_*_*"
                      ]
