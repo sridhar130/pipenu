@@ -39,8 +39,17 @@
 #include "Stntuple/geom/TDisk.hh"
 #include "Stntuple/val/stntuple_val_functions.hh"
 #include "Stntuple/ana/InitVirtualDetectors.hh"
+
+
 #include "pipenu/ana/ana/TTrackAnaModule.hh"
 
+
+
+#include "Stntuple/obj/TGenpBlock.hh"
+#include "Stntuple/obj/TSimpBlock.hh"
+#include "Stntuple/ana/HistBase_t.h"
+#include "Stntuple/ana/SimPar_t.hh"
+#include "cetlib_except/exception.h"
 //------------------------------------------------------------------------------
 // Mu2e offline includes
 //-----------------------------------------------------------------------------
@@ -68,7 +77,7 @@ TTrackAnaModule::TTrackAnaModule(const char* name, const char* title):
   fTrackBlockName = "TrackBlock";
   fPdgCode        = 11;
   fGeneratorCode  = 56;			// stopped mu+ decay
-  fBField         = 1.0;
+  fBField         = 0.7; //1.0
 }
 
 //-----------------------------------------------------------------------------
@@ -331,7 +340,7 @@ void TTrackAnaModule::BookHistograms() {
 //-----------------------------------------------------------------------------
 // need MC truth branch
 //-----------------------------------------------------------------------------
-void TTrackAnaModule::FillEventHistograms(EventHist_t* Hist) {
+  void TTrackAnaModule::FillEventHistograms(EventHist_t* Hist) {
   double            cos_th(-2), dio_wt(-1.), vx(-1.e6), vy(-1.e6), rv(-1.e6), vz(-1.e6), p(-1.);
   //  double            e, m, r;
   const TLorentzVector*    mom;
@@ -345,7 +354,12 @@ void TTrackAnaModule::FillEventHistograms(EventHist_t* Hist) {
     rv     = sqrt(vx*vx+vy*vy);
     vz     = fParticle->StartPos()->Z();
     dio_wt = TStntuple::DioWeightAl(p);
+    std::cout<<"---not a null pointer---"<<std::endl;
   }
+
+  //  TSimParticle* Simpp;
+  //   double pp = Simpp->fMomTrackerFront;
+  //  std::cout<<pp<<std::endl;
 
   Hist->fEleMom->Fill(p);
   Hist->fDioMom->Fill(p,dio_wt);
@@ -365,6 +379,9 @@ void TTrackAnaModule::FillEventHistograms(EventHist_t* Hist) {
   int nch = GetHeaderBlock()->NComboHits();
   Hist->fNComboHits[0]->Fill(nch);
   Hist->fNComboHits[1]->Fill(nch);
+
+  //  int evt = GetHeaderBlock()->EventNumber();
+  //  std::cout<<"No. Combo: "<<nch<<" No. Straw: "<<nsh<<" event: "<<evt<<std::endl;
 
   double emax   = -1;
   double dt     = 9999.;
@@ -427,10 +444,18 @@ void TTrackAnaModule::FillTrackHistograms(TrackHist_t* Hist, TStnTrack* Track) {
   double          r;
   int             itrk;
   TrackPar_t*     tp;
+  int ncc = GetHeaderBlock()->NComboHits();
+  //int evt = GetHeaderBlock()->EventNumber();
 					// pointer to local track parameters
   itrk = Track->Number();
   tp   = fTrackPar+itrk;
+  //if (ncc==0)
+    //  {
+  //std::cout<<"Event Number: "<<evt<<" Track mom: "<< Track->fP0 <<std::endl;
+//}
 
+  if (ncc>1)
+    {
   Hist->fP[0]->Fill (Track->fP);
   Hist->fP[1]->Fill (Track->fP);
   Hist->fP[2]->Fill (Track->fP);
@@ -470,6 +495,7 @@ void TTrackAnaModule::FillTrackHistograms(TrackHist_t* Hist, TStnTrack* Track) {
   Hist->fXc->Fill(tp->fXc);
   Hist->fYc->Fill(tp->fYc);
   Hist->fPhic->Fill(tp->fPhic);
+}
 //-----------------------------------------------------------------------------
 // track-cluster matching part: 
 // - for residuals, determine intersection with the most energetic cluster
@@ -711,7 +737,8 @@ int TTrackAnaModule::Event(int ientry) {
   TSimParticle* simp;
   int           pdg_code, generator_code;
 
-  fParticle = NULL;
+   
+ fParticle = NULL;
   for (int i=fNSimp-1; i>=0; i--) {
     simp           = fSimpBlock->Particle(i);
     pdg_code       = simp->PDGCode();
@@ -721,7 +748,7 @@ int TTrackAnaModule::Event(int ientry) {
       break;
     }
   }
-
+  
   if (fParticle) p = fParticle->StartMom()->P();
   else           p = 0.;
 
