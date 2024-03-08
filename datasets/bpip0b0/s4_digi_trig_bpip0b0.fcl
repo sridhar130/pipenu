@@ -8,7 +8,6 @@ BEGIN_PROLOG
   END_PATHS     @protect_ignore: [ e1 ]      # defined below
 END_PROLOG 
 
-#include "Production/JobConfig/digitize/Digitize.fcl"
 #include "Production/JobConfig/digitize/OnSpill.fcl"
 
 process_name : @local::PROCESS_NAME
