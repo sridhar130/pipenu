@@ -124,7 +124,7 @@ physics.producers.g4run.SDConfig.preSimulatedHits:  ["BeamFilter:virtualdetector
 # !!!! overrides have to be placed after all includes .... 
 #------------------------------------------------------------------------------
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
-services.GeometryService.inputFile  : "pipenu/datasets/bpip0b0/geom_pbar2m_bpip0b0.txt"
+services.GeometryService.inputFile  : "pipenu/datasets/bpip0b0/geom_pipenu_bpip0b0.txt"
 #------------------------------------------------------------------------------
 # disable pion decays 
 #------------------------------------------------------------------------------

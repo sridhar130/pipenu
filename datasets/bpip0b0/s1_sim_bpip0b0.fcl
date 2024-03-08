@@ -14,11 +14,11 @@ source : { module_type : RootInput }
 #include "Production/JobConfig/beam/POT.fcl"
 
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
-services.GeometryService.inputFile  : "pipenu/datasets/bpip0b0/geom_pbar2m_bpip0b0.txt"
+services.GeometryService.inputFile  : "pipenu/datasets/bpip0b0/geom_pipenu_bpip0b0.txt"
 #------------------------------------------------------------------------------
 # redefinitions, TS3RegionCuts : stop tracing in the middle of the TS
 #------------------------------------------------------------------------------
-## -------------- #include "pbar2m/common/TS3RegionCuts.fcl"
+## -------------- #include "pipenu/common/TS3RegionCuts.fcl"
 
 kinematic_cuts : {
     type : intersection
