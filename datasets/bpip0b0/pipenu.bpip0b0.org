@@ -7,10 +7,10 @@ f# -*- mode:org -*-
  - directory       : file:./
  - configuration   : [[file:./init_project.py][init_project.py]]
  - submitted jobs  : file:../../AAA_SUBMITTED_JOBS.org
- - grid input      : file:../../../tmp/pbar2m/fcl
+ - grid input      : file:../../../tmp/pipenu/fcl
  - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow
- - output_location : file:/srv/mu2e/data/projects/pbar2m
- - log files       : file:/srv/mu2e/data/projects/pbar2m/log
+ - output_location : file:/exp/mu2e/data/projects/pipenu
+ - log files       : file:/exp/mu2e/data/projects/pipenu/log
  - catalogs        : file:./catalog
  - summary         : [[file:../../doc/][../../doc/]]
  - fcl             : 
@@ -19,7 +19,7 @@ f# -*- mode:org -*-
 | stage            | step             | status          | N(events) | N(files) | org file                                                        |
 |------------------+------------------+-----------------+-----------+----------+-----------------------------------------------------------------|
 | s1:sim           | input_dataset    | bpip0b0s00r0000 | 100000000 |          | none                                                            |
-|                  | fcl_tarball      | completed       | 100000000 |      249 | file:../../../tmp/pbar2m/fcl/                                   |
+|                  | fcl_tarball      | completed       | 100000000 |      249 | file:../../../tmp/pipenu/fcl/                             |
 |                  | grid_job         |                 |           |          | file:/pnfs/mu2e/scratch/users/murat/workflow/                   |
 |                  | job_output_check | completed       |  10000000 |      249 | file:../../AAA_SUBMITTED_JOBS.org                               |
 |                  | output_dataset   | bpip0b0s11r0000 |           |      249 | file:catalog/s1/su2020.bmum.s1_sim.art.files                    |
