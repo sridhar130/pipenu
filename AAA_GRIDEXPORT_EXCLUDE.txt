@@ -22,7 +22,7 @@ libmu2e_ExtinctionMonitorFNAL_*_module.*
 libmu2e_ExtinctionMonitorFNAL_Analyses.so
 libmu2e_ExtinctionMonitorFNAL_Digitization.so
 libmu2e_ExtinctionMonitorFNAL_Reconstruction.so
-libmu2e_ExtinctionMonitorFNAL_Utilities.so
+# libmu2e_ExtinctionMonitorFNAL_Utilities.so     # needed now by CosmicCRY
 libmu2e_EventDisplay_*.*
 libmu2e_EventDisplay.*
 #
@@ -94,5 +94,11 @@ libmurat*.*
 murat/lib/*.pcm
 murat/tmp/*/*.*
 #
-libpbar2m_ana.so
-
+pbar2m/lib/libpbar2m_ana.so
+pbar2m/lib/*_rdict.pcm
+#
+pipenu/lib/*_rdict.pcm
+pipenu/lib/libpipenu_ana.so
+# 
+daqana/lib
+daqana/tmp
