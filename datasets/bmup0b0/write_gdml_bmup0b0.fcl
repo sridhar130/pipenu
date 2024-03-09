@@ -27,7 +27,7 @@ physics : {
 	g4run: { @table::Mu2eG4.producers.g4run
 	    debug  : { @table::Mu2eG4.producers.g4run.debug 
 		writeGDML    : true 
-		GDMLFileName : "mu2e_geometry_pbar2m_bmup0b0.gdml"
+		GDMLFileName : "mu2e_geometry_pipenu_bmup0b0.gdml"
 	    }
 	}
     }
@@ -43,4 +43,4 @@ physics : {
 physics.producers.g4run.physics.physicsListName : "Minimal"
 
 # template for changing the geometry file, if needed
-services.GeometryService.inputFile: "pbar2m/datasets/bmup0b0/geom_pbar2m_bmup0b0.txt"
+services.GeometryService.inputFile: "pipenu/datasets/bmup0b0/geom_pipenu_bmup0b0.txt"

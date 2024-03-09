@@ -9,39 +9,39 @@ f# -*- mode:org -*-
  - submitted jobs  : file:../AAA_SUBMITTED_JOBS
  - grid input      : file:/pnfs/mu2e/resilient/users/murat/
  - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow
- - output_location : file:/mu2e/data/users/murat/datasets/su2020/bmum0
+ - output_location : file:/exp/mu2e/data/projects/pipenu/
  - catalogs        : file:./catalog
- - summary         : [[file:../doc/su2020_summary.org][su2020/doc/su2020_summary.org]]
- - fcl             : file:../../tmp/su2020/fcl
+ - summary         : 
+ - fcl             : 
 # ----------------------------------------------------------------------------------------------------
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-| stage            | step             | status          | N(events) | N(files) | org file                                                                                    |
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-| [[file:catalog/s1/su2020.736_6013.s1.org][s1_sim]]           | input_dataset    | bmup0b0s00r0000 | 100000000 |          | none                                                                                        |
-|                  | fcl_tarball      | completed       | 100000000 |      400 | file:../tmp_fcl/su2020.bmum.gen_50_200000.s1_sim.fcl.tbz                                    |
-| [2020-06-20 Sat] | grid_job         | 9387862         |           |          | file:/pnfs/mu2e/scratch/users/murat/workflow/su2020.bmum.s0_gen.s1_sim/outstage/xxxxxxxx/00 |
-|                  | job_output_check | completed       |  10000000 |      400 | file:catalog/s1/su2020.bmum.gen_s0.s1_sim.check_grid_output.log                             |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s1][output_location]]  | output_dataset   | bmum0s11b0.art  |   2917160 |      400 | file:catalog/s1/su2020.bmum.s1_sim.art.files                                                |
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-| [[file:catalog/s2/su2020.bmum.s2.org][s2_sim]]           | input_dataset    | bmum0s11b0.art  |   2917160 |      400 | file:catalog/s1/su2020.bmum.s1_sim.art.files                                                |
-|                  | fcl_tarball      | completed       |   2917160 |       20 | file:../tmp_fcl/su2020.bmum.s1_sim.s2_sim.fcl.tbz                                           |
-| [2020-06-07 Sun] | grid_job         | 34359763        |           |          |                                                                                             |
-|                  | job_output_check | completed       |   2917160 |       20 | file:catalog/s2/su2020.bmum.s1_sim.s2_sim.check_grid_output.log                             |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s2][output_location]]  | output_dataset   | bmum0s21b0.art  |    537239 |       20 | file:catalog/s2/su2020.bmum.s2_sim.art.files                                                |
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-| [[file:catalog/s3/su2020.bmum.s3.org][s3_sim]]           | input_dataset    | bmum0s21b0      |    537239 |       20 | file:catalog/s2/su2020.bmum.s2_sim.art.files                                                |
-|                  | fcl_tarball      | completed       |    537239 |       10 | file:../tmp_fcl/su2020.bmum.s2_sim.s3_sim.fcl.tbz                                           |
-|                  | grid_job         |                 |           |          |                                                                                             |
-|                  | job_output_check | completed       |           |       10 | file:catalog/s3/su2020.bmum0.s2_s1.s3_sim.check_grid_output.log                             |
-|                  | output_dataset   | bmum0s31b0.art  |    360417 |       10 | file:catalog/s3/su2020.bmum0.s3_ootstops.art.files                                          |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s3][output_location]]  | output_dataset   | bmum0s32b0.art  |    159886 |       10 | file:catalog/s3/su2020.bmum0.s3_tgtstops.art.files                                          |
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-| [[file:catalog/s3/su2020.bmum.s3.org][s3_stn_tgtstops]]  | input_dataset    | bmum0s31b0.art  |    159886 |       10 | file:catalog/s3/su2020.bmum.s3_tgtstops.art.files                                           |
-|                  | fcl_tarball      | completed       |           |        1 | file:../tmp_fcl/su2020.bmum.s3_tgtstops.s3_stn.fcl.tbz                                      |
-|                  | grid_job         | intractv        |           |          |                                                                                             |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s3_stn_tgtstops][output_location]]  | output_dataset   | bmum0s31b0.stn  |           |        1 | file:catalog/s3/su2020.bmum.s3_tgtstops.stn.files                                           |
-|                  | stntuple_catalog | completed       |           |        1 | file:/publicweb/m/murat/cafdfc/su2020/bmum.s3_tgtstops                                      |
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
+| stage            | step             | status          | N(events) | N(files) | org file                                                                     |
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
+| [[file:catalog/s1/su2020.736_6013.s1.org][s1_sim]]           | input_dataset    | bmup0b0s00r0000 | 100000000 |          | none                                                                         |
+|                  | fcl_tarball      | completed       | 100000000 |      400 | file:../../../tmp/pipenu/fcl/cnf.murat.bmup0b0s00r0000.s1_sim.pipenu.fcl.tbz |
+| [2020-06-20 Sat] | grid_job         | 9387862         |           |          | file:/pnfs/mu2e/scratch/users/murat/workflow/                                |
+|                  | job_output_check | completed       |  10000000 |      400 | file:catalog/                                                                |
+| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s1][output_location]]  | output_dataset   | bmum0s11b0.art  |   2917160 |      400 | file:catalog/                                                                |
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
+| [[file:catalog/s2/su2020.bmum.s2.org][s2_sim]]           | input_dataset    | bmum0s11b0.art  |   2917160 |      400 | file:catalog/s1/su2020.bmum.s1_sim.art.files                                 |
+|                  | fcl_tarball      | completed       |   2917160 |       20 | file:../tmp_fcl/su2020.bmum.s1_sim.s2_sim.fcl.tbz                            |
+| [2020-06-07 Sun] | grid_job         | 34359763        |           |          |                                                                              |
+|                  | job_output_check | completed       |   2917160 |       20 | file:catalog/s2/su2020.bmum.s1_sim.s2_sim.check_grid_output.log              |
+| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s2][output_location]]  | output_dataset   | bmum0s21b0.art  |    537239 |       20 | file:catalog/s2/su2020.bmum.s2_sim.art.files                                 |
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
+| [[file:catalog/s3/su2020.bmum.s3.org][s3_sim]]           | input_dataset    | bmum0s21b0      |    537239 |       20 | file:catalog/s2/su2020.bmum.s2_sim.art.files                                 |
+|                  | fcl_tarball      | completed       |    537239 |       10 | file:../tmp_fcl/su2020.bmum.s2_sim.s3_sim.fcl.tbz                            |
+|                  | grid_job         |                 |           |          |                                                                              |
+|                  | job_output_check | completed       |           |       10 | file:catalog/s3/su2020.bmum0.s2_s1.s3_sim.check_grid_output.log              |
+|                  | output_dataset   | bmum0s31b0.art  |    360417 |       10 | file:catalog/s3/su2020.bmum0.s3_ootstops.art.files                           |
+| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s3][output_location]]  | output_dataset   | bmum0s32b0.art  |    159886 |       10 | file:catalog/s3/su2020.bmum0.s3_tgtstops.art.files                           |
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
+| [[file:catalog/s3/su2020.bmum.s3.org][s3_stn_tgtstops]]  | input_dataset    | bmum0s31b0.art  |    159886 |       10 | file:catalog/s3/su2020.bmum.s3_tgtstops.art.files                            |
+|                  | fcl_tarball      | completed       |           |        1 | file:../tmp_fcl/su2020.bmum.s3_tgtstops.s3_stn.fcl.tbz                       |
+|                  | grid_job         | intractv        |           |          |                                                                              |
+| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s3_stn_tgtstops][output_location]]  | output_dataset   | bmum0s31b0.stn  |           |        1 | file:catalog/s3/su2020.bmum.s3_tgtstops.stn.files                            |
+|                  | stntuple_catalog | completed       |           |        1 | file:/publicweb/m/murat/cafdfc/su2020/bmum.s3_tgtstops                       |
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
 
 
 
@@ -213,31 +213,9 @@ Art has completed and will exit with status 0.
 * ---------------------------------------------------------------------------------------------------------------
 * performance testing (prof build)                                                                            
 ** stage 1 (up to DS)                                                                                         
-
-|    nevents | mode  | BField           | N(mu) | N(muon stops) | N(oot) |    CPU |    real | comment                   |
-|------------+-------+------------------+-------+---------------+--------+--------+---------+---------------------------|
-|      10000 | debug |                  |       |               |        | 939.23 | 730.937 |                           |
-|      10000 | prof  |                  |       |               |        | 383.67 | 224.188 |                           |
-|      20000 | prof  | bfgeom_v01       |    74 |            28 |        | 701.42 | 383.228 |                           |
-|      20000 | prof  | bfgeom_no_ds_v01 |    73 |            25 |        | 701.42 | 383.228 |                           |
-|     200000 | prof  | bfgeom_no_ds_v01 |   883 |           317 |    539 |        |         |                           |
-|     200000 | prof  | bfgeom_v01       |   887 |           332 |    532 |        |         |                           |
-|------------+-------+------------------+-------+---------------+--------+--------+---------+---------------------------|
-| w/o offset |       |                  |       |               |        | 317.75 |         |                           |
-|  per event |       |                  |       |               |        | 3.2e-2 |         | count on 100K events/hour |
-|            |       |                  |       |               |        |        |         |                           |
-#+TBLFM: @4$7=@3$7-@2$7
-
-MemReport  ---------- Memory summary [base-10 MB] ------
-MemReport  VmPeak = 2690.95 VmHWM = 1964.63
-*** Aug 2022                                                                                                  
-       : (230 sec ~ 4min) / 5000 events on mu2ebuild01: 75,000 events/hour
-	  250,000 events     : < 4 hours
-          100,000,000 events : 400 segments with the time request of, say, 10 hours
-
-	  MemReport          : VmPeak = 2254.73 VmHWM = 1659.85 < 2 GBytes
-
-	  output             : 154 events out of 5000
+  29 events out of 10000 : about 3e-3 
+  average time : 3e-2 sec/events ...
+  4e5 events /job: 4e5*3e-2 - 12e3 sec /job < 4h
 * test no DS field option  N(POT)=20000             
 ** stopped muons no DS    field : 25 stopped muons                                                            
 TrigReport ---------- Module summary ------------

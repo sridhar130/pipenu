@@ -128,10 +128,10 @@ physics.producers.TargetMuonFinder.physVolInfoInput        : "g4run" ## "g4run:e
 physics.producers.TargetMuonFinder.useEventLevelVolumeInfo : false   ## true
 # physics.producers.TargetMuonFinder.verbosityLevel          : 100
 #------------------------------------------------------------------------------
-services.GeometryService.inputFile  : "pipenu/datasets/bmup0b0/geom_pbar2m_bmup0b0.txt"
+services.GeometryService.inputFile  : "pipenu/datasets/bmup0b0/geom_pipenu_bmup0b0.txt"
 services.GeometryService.bFieldFile : "Offline/Mu2eG4/geom/bfgeom_DS50_v01.txt"
 #------------------------------------------------------------------------------
-outputs.TargetStopOutput.fileName   : "sim.mu2e.bmup0b0s21r0000.pbar2m.001210_00000000.art"
-outputs.ootStopOutput.fileName      : "sim.mu2e.bmup0b0s22r0000.pbar2m.001210_00000000.art"
-outputs.IPAStopOutput.fileName      : "sim.mu2e.bmup0b0s23r0000.pbar2m.001210_00000000.art"
+outputs.TargetStopOutput.fileName   : "sim.mu2e.bmup0b0s21r0000.pipenu.001210_00000000.art"
+outputs.ootStopOutput.fileName      : "sim.mu2e.bmup0b0s22r0000.pipenu.001210_00000000.art"
+outputs.IPAStopOutput.fileName      : "sim.mu2e.bmup0b0s23r0000.pipenu.001210_00000000.art"
 # filenames should be s21, s22 ... or s31, s32...
