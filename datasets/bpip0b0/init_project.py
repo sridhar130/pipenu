@@ -70,7 +70,7 @@ class Project:
 # S1 10^8 proton interactions in the PT, half field in the DS
 #-------v----------------------------------------------------------------------        
         s                            = self.new_stage('s1');
-        job                          = s.new_job('sim','bpip0b0s00r0000');
+        job                          = s.new_job('sim',idsid);
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'sim');
