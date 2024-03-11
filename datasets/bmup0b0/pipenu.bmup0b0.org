@@ -8,49 +8,48 @@ f# -*- mode:org -*-
  - configuration   : [[file:./init_project.py][init_project.py]]
  - submitted jobs  : file:../AAA_SUBMITTED_JOBS
  - grid input      : file:/pnfs/mu2e/resilient/users/murat/
- - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow
- - output_location : file:/mu2e/data/users/murat/datasets/su2020/bmum0
+ - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup0b0s00r0000.s1_sim/outstage
+ - output_location : file:/exp/mu2e/data/projects/pipenu/
  - catalogs        : file:./catalog
- - summary         : [[file:../doc/su2020_summary.org][su2020/doc/su2020_summary.org]]
- - fcl             : file:../../tmp/su2020/fcl
+ - summary         : 
+ - fcl             : 
 # ----------------------------------------------------------------------------------------------------
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-| stage            | step             | status          | N(events) | N(files) | org file                                                                                    |
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-| [[file:catalog/s1/su2020.736_6013.s1.org][s1_sim]]           | input_dataset    | bmup0b0s00r0000 | 100000000 |          | none                                                                                        |
-|                  | fcl_tarball      | completed       | 100000000 |      400 | file:../tmp_fcl/su2020.bmum.gen_50_200000.s1_sim.fcl.tbz                                    |
-| [2020-06-20 Sat] | grid_job         | 9387862         |           |          | file:/pnfs/mu2e/scratch/users/murat/workflow/su2020.bmum.s0_gen.s1_sim/outstage/xxxxxxxx/00 |
-|                  | job_output_check | completed       |  10000000 |      400 | file:catalog/s1/su2020.bmum.gen_s0.s1_sim.check_grid_output.log                             |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s1][output_location]]  | output_dataset   | bmum0s11b0.art  |   2917160 |      400 | file:catalog/s1/su2020.bmum.s1_sim.art.files                                                |
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-| [[file:catalog/s2/su2020.bmum.s2.org][s2_sim]]           | input_dataset    | bmum0s11b0.art  |   2917160 |      400 | file:catalog/s1/su2020.bmum.s1_sim.art.files                                                |
-|                  | fcl_tarball      | completed       |   2917160 |       20 | file:../tmp_fcl/su2020.bmum.s1_sim.s2_sim.fcl.tbz                                           |
-| [2020-06-07 Sun] | grid_job         | 34359763        |           |          |                                                                                             |
-|                  | job_output_check | completed       |   2917160 |       20 | file:catalog/s2/su2020.bmum.s1_sim.s2_sim.check_grid_output.log                             |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s2][output_location]]  | output_dataset   | bmum0s21b0.art  |    537239 |       20 | file:catalog/s2/su2020.bmum.s2_sim.art.files                                                |
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-| [[file:catalog/s3/su2020.bmum.s3.org][s3_sim]]           | input_dataset    | bmum0s21b0      |    537239 |       20 | file:catalog/s2/su2020.bmum.s2_sim.art.files                                                |
-|                  | fcl_tarball      | completed       |    537239 |       10 | file:../tmp_fcl/su2020.bmum.s2_sim.s3_sim.fcl.tbz                                           |
-|                  | grid_job         |                 |           |          |                                                                                             |
-|                  | job_output_check | completed       |           |       10 | file:catalog/s3/su2020.bmum0.s2_s1.s3_sim.check_grid_output.log                             |
-|                  | output_dataset   | bmum0s31b0.art  |    360417 |       10 | file:catalog/s3/su2020.bmum0.s3_ootstops.art.files                                          |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s3][output_location]]  | output_dataset   | bmum0s32b0.art  |    159886 |       10 | file:catalog/s3/su2020.bmum0.s3_tgtstops.art.files                                          |
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-| [[file:catalog/s3/su2020.bmum.s3.org][s3_stn_tgtstops]]  | input_dataset    | bmum0s31b0.art  |    159886 |       10 | file:catalog/s3/su2020.bmum.s3_tgtstops.art.files                                           |
-|                  | fcl_tarball      | completed       |           |        1 | file:../tmp_fcl/su2020.bmum.s3_tgtstops.s3_stn.fcl.tbz                                      |
-|                  | grid_job         | intractv        |           |          |                                                                                             |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s3_stn_tgtstops][output_location]]  | output_dataset   | bmum0s31b0.stn  |           |        1 | file:catalog/s3/su2020.bmum.s3_tgtstops.stn.files                                           |
-|                  | stntuple_catalog | completed       |           |        1 | file:/publicweb/m/murat/cafdfc/su2020/bmum.s3_tgtstops                                      |
-|------------------+------------------+-----------------+-----------+----------+---------------------------------------------------------------------------------------------|
-
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
+| stage            | step             | status          | N(events) | N(files) | org file                                                                     |
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
+| [[file:catalog/s1/su2020.736_6013.s1.org][s1_sim]]           | input_dataset    | bmup0b0s00r0000 | 100000000 |          | none                                                                         |
+|                  | fcl_tarball      | completed       | 100000000 |      400 | file:../../../tmp/pipenu/fcl/cnf.murat.bmup0b0s00r0000.s1_sim.pipenu.fcl.tbz |
+| [2020-06-20 Sat] | grid_job         | 9387862         |           |          | file:/pnfs/mu2e/scratch/users/murat/workflow/                                |
+|                  | job_output_check | completed       |  10000000 |      400 | file:catalog/                                                                |
+| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s1][output_location]]  | output_dataset   | bmum0s11b0.art  |   2917160 |      400 | file:catalog/                                                                |
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
+| [[file:catalog/s2/su2020.bmum.s2.org][s2_sim]]           | input_dataset    | bmum0s11b0.art  |   2917160 |      400 | file:catalog/s1/su2020.bmum.s1_sim.art.files                                 |
+|                  | fcl_tarball      | completed       |   2917160 |       20 | file:../tmp_fcl/su2020.bmum.s1_sim.s2_sim.fcl.tbz                            |
+| [2020-06-07 Sun] | grid_job         | 34359763        |           |          |                                                                              |
+|                  | job_output_check | completed       |   2917160 |       20 | file:catalog/s2/su2020.bmum.s1_sim.s2_sim.check_grid_output.log              |
+| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s2][output_location]]  | output_dataset   | bmum0s21b0.art  |    537239 |       20 | file:catalog/s2/su2020.bmum.s2_sim.art.files                                 |
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
+| [[file:catalog/s3/su2020.bmum.s3.org][s3_sim]]           | input_dataset    | bmum0s21b0      |    537239 |       20 | file:catalog/s2/su2020.bmum.s2_sim.art.files                                 |
+|                  | fcl_tarball      | completed       |    537239 |       10 | file:../tmp_fcl/su2020.bmum.s2_sim.s3_sim.fcl.tbz                            |
+|                  | grid_job         |                 |           |          |                                                                              |
+|                  | job_output_check | completed       |           |       10 | file:catalog/s3/su2020.bmum0.s2_s1.s3_sim.check_grid_output.log              |
+|                  | output_dataset   | bmum0s31b0.art  |    360417 |       10 | file:catalog/s3/su2020.bmum0.s3_ootstops.art.files                           |
+| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s3][output_location]]  | output_dataset   | bmum0s32b0.art  |    159886 |       10 | file:catalog/s3/su2020.bmum0.s3_tgtstops.art.files                           |
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
+| [[file:catalog/s3/su2020.bmum.s3.org][s3_stn_tgtstops]]  | input_dataset    | bmum0s31b0.art  |    159886 |       10 | file:catalog/s3/su2020.bmum.s3_tgtstops.art.files                            |
+|                  | fcl_tarball      | completed       |           |        1 | file:../tmp_fcl/su2020.bmum.s3_tgtstops.s3_stn.fcl.tbz                       |
+|                  | grid_job         | intractv        |           |          |                                                                              |
+| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s3_stn_tgtstops][output_location]]  | output_dataset   | bmum0s31b0.stn  |           |        1 | file:catalog/s3/su2020.bmum.s3_tgtstops.stn.files                            |
+|                  | stntuple_catalog | completed       |           |        1 | file:/publicweb/m/murat/cafdfc/su2020/bmum.s3_tgtstops                       |
+|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
 
 
 |-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
 | job                           | input dsid                      |  Nevents | Resampling | Nfiles | Nfiles | Njobs | output_dsid                     | Nfiles |  Nevents |    Nev | upload  | comments                          |
 |                               |                                 |          |     factor |        |  / job |       |                                 |        |          |  /file |         |                                   |
 |-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| [[file:s1_muon_beam_bmum0.fcl][s1_sim_e9]]                     | bmum0s00b0                      |      1e9 |          1 |        |      1 |  4000 | bmum0s11b0                      |   3996 | 29502600 |   7400 |         | S1, everything relevant           |
-| [[file:s1_concat_bmum0.fcl][s1_concat]]                     | bmum0s11b0                      | 29502600 |          1 |   3996 |     20 |   200 | sim.murat.bmum0s11b0.su2020.art |    200 | 29502600 | 147500 | on tape |                                   |
+| [[file:s1_sim_bmup0b0.fcl][s1_sim]]                        | bmup0b0s00r0000                 |      1e8 |          1 |        |      1 |   400 | bmum0b0s11r0000                 |   3996 | 29502600 |   7400 |         | S1, everything relevant           |
+| [[file:s1_concat_bmum0.fcl][s1_concat]]                     | bmup0b0s11r0000                 | 29502600 |          1 |   3996 |     20 |   200 | sim.murat.bmum0s11b0.su2020.art |    200 | 29502600 | 147500 | on tape |                                   |
 |-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
 | s1_spmc_ele_filter            | sim.murat.bmum0s11b0.su2020.art | 29502600 |          1 |    200 |     20 |    10 | sim.murat.bmum0s16b0.su2020.art |     10 |   247071 |  24700 |         | S1, events with P>100 MeV/c e-    |
 |-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
@@ -88,20 +87,34 @@ f# -*- mode:org -*-
 | s5_stn_s5b                    | sim.murat.bmum0s5bb0.su2020.art |          |          1 |      1 |      1 |     1 | nts.murat.bmum0s5bb0.su2020.stn |      1 |          |        |         | mu- decays in flight              |
 |-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
 
+* ------------------------------------------------------------------------------
+* stage output
+* ------------------------------------------------------------------------------
+* s1_sim                                                                     
+  /pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup0b0s00r0000.s1_sim/outstage/53594253/00/00000:
+  total used in directory 3949 available 885576482235072
+  drwxr-xr-x   8 murat mu2e     512 Mar  9 20:18 .
+  drwxr-xr-x 251 murat mu2e     512 Mar  9 22:17 ..
+  -rw-r--r--   1 murat mu2e    3408 Mar  9 20:15 cnf.murat.bmup0b0s00r0000_s1_sim.pipenu.00000_001210_00000000.fcl
+  -rw-r--r--   1 murat mu2e  142148 Mar  9 20:16 log.murat.bmup0b0s00r0000_s1_sim.pipenu.00000_001210_00000000.log
+  -rw-r--r--   1 murat mu2e 2104439 Mar  9 20:16 sim.murat.bmup0b0s11r0000.pipenu.001210_00000000.art
+  -rw-r--r--   1 murat mu2e     986 Mar  9 20:17 sim.murat.bmup0b0s11r0000.pipenu.001210_00000000.art.json
+  -rw-r--r--   1 murat mu2e 1789609 Mar  9 20:18 sim.murat.bmup0b0s12r0000.pipenu.001210_00000000.art
+  -rw-r--r--   1 murat mu2e     985 Mar  9 20:19 sim.murat.bmup0b0s12r0000.pipenu.001210_00000000.art.json
 * ---------------------------------------------------------------------------------------------------------------
 * data formats                                                                                                
 * ---------------------------------------------------------------------------------------------------------------
-* sim.mu2e.pbar2m.bmup0b0s11r0000.art                                                                         
-** 16-Oct-2023                                                                                                
-murat@mu2ebuild01:/mu2e/app/users/murat/muse>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl results/2023-10-16-20-26.s1_sim_bmup0b0.mu2ebuild01.12844/sim.mu2e.bmup0b0s11r0000.pbar2m.001210_00000000.art
+* sim.mu2e.pipenu.bmup0b0s11r0000.art                                                                         
+#+begin_src 
+murat@mu2egpvm06:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-03-09-09-46.cnf.murat.bmup0b0s00r0000_s1_sim.pipenu.00000_001210_00000000.mu2egpvm06.18888/sim.murat.bmup0b0s11r0000.pipenu.001210_00000000.art 
    ************************** Mu2e Offline **************************
-     art v3_13_02    root v6_28_04c    KinKal v02_04_02
-     build  /mu2e/app/users/murat/muse
-     build  sl7-prof-e20-p047    10/16/23 20:25:33
+     art v3_14_03    root v6_28_10a    KinKal v02_05_00b
+     build  /exp/mu2e/app/users/murat/muse_002
+     build  sl7-prof-e28-p055    03/09/24 16:44:22
    ******************************************************************
-16-Oct-2023 21:15:45 CDT  Initiating request to open input file "results/2023-10-16-20-26.s1_sim_bmup0b0.mu2ebuild01.12844/sim.mu2e.bmup0b0s11r0000.pbar2m.001210_00000000.art"
-16-Oct-2023 21:15:45 CDT  Opened input file "results/2023-10-16-20-26.s1_sim_bmup0b0.mu2ebuild01.12844/sim.mu2e.bmup0b0s11r0000.pbar2m.001210_00000000.art"
-Begin processing the 1st record. run: 1210 subRun: 0 event: 214 at 16-Oct-2023 21:15:47 CDT
+09-Mar-2024 17:33:01 CST  Initiating request to open input file "results/2024-03-09-09-46.cnf.murat.bmup0b0s00r0000_s1_sim.pipenu.00000_001210_00000000.mu2egpvm06.18888/sim.murat.bmup0b0s11r0000.pipenu.001210_00000000.art"
+09-Mar-2024 17:33:02 CST  Opened input file "results/2024-03-09-09-46.cnf.murat.bmup0b0s00r0000_s1_sim.pipenu.00000_001210_00000000.mu2egpvm06.18888/sim.murat.bmup0b0s11r0000.pipenu.001210_00000000.art"
+Begin processing the 1st record. run: 1210 subRun: 0 event: 119 at 09-Mar-2024 17:33:03 CST
 Found 5 data products in this Event
 Data products: 
 Friendly Class Name  Module Label    Instance Name  Process Name     Product ID
@@ -118,79 +131,20 @@ Data products:
 mu2e::PhysicalVolumeInfomvs  compressPVBeam                          POT  3480116073
 
 Found 0 data products in this Run
-16-Oct-2023 21:15:47 CDT  Closed input file "results/2023-10-16-20-26.s1_sim_bmup0b0.mu2ebuild01.12844/sim.mu2e.bmup0b0s11r0000.pbar2m.001210_00000000.art"
+09-Mar-2024 17:33:03 CST  Closed input file "results/2024-03-09-09-46.cnf.murat.bmup0b0s00r0000_s1_sim.pipenu.00000_001210_00000000.mu2egpvm06.18888/sim.murat.bmup0b0s11r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
-** 17-Aug-2022                                                                                                
-murat@mu2ebuild01:/mu2e/app/users/murat/muse>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s /mu2e/app/users/nigrelli/r001/results/bmum0_s1_sim/sim.mu2e.pbar2m.bmum0s11b0.001000_00000000.art 
+#+end_src 
+* sim.mu2e.pipenu.bmup0b0s21r0000.art                                                                         
+#+begin_src 
+murat@mu2egpvm06:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s21r0000.pipenu.001210_00000000.art
    ************************** Mu2e Offline **************************
-     art v3_11_01    root v6_26_00    KinKal v02_01_00
-     build  /mu2e/app/users/murat/muse
-     build  sl7-debug-e20-p026    08/16/22 18:16:09
+     art v3_14_03    root v6_28_10a    KinKal v02_05_00b
+     build  /exp/mu2e/app/users/murat/muse_002
+     build  sl7-prof-e28-p055    03/09/24 16:44:22
    ******************************************************************
-17-Aug-2022 17:36:21 CDT  Initiating request to open input file "/mu2e/app/users/nigrelli/r001/results/bmum0_s1_sim/sim.mu2e.pbar2m.bmum0s11b0.001000_00000000.art"
-17-Aug-2022 17:36:21 CDT  Opened input file "/mu2e/app/users/nigrelli/r001/results/bmum0_s1_sim/sim.mu2e.pbar2m.bmum0s11b0.001000_00000000.art"
-Begin processing the 1st record. run: 1 subRun: 0 event: 2 at 17-Aug-2022 17:36:23 CDT
-Found 5 data products in this Event
-Data products: 
-Friendly Class Name  Module Label    Instance Name  Process Name     Product ID
-     mu2e::StatusG4         g4run                          S1Sim  1104244220
- mu2e::StepPointMCs    BeamFilter           mubeam         S1Sim  1188941664
- mu2e::StepPointMCs    BeamFilter  virtualdetector         S1Sim  1902879461
-mu2e::SimParticlemv    BeamFilter                          S1Sim  1934371984
- mu2e::GenParticles      generate                          S1Sim  2398351477
-
-Found 2 data products in this SubRun
-Data products: 
-        Friendly Class Name    Module Label  Instance Name  Process Name     Product ID
-mu2e::PhysicalVolumeInfomvs  compressPVBeam                        S1Sim   766382810
-        mu2e::GenEventCount      genCounter                        S1Sim  2509493737
-
-Found 0 data products in this Run
-17-Aug-2022 17:36:23 CDT  Closed input file "/mu2e/app/users/nigrelli/r001/results/bmum0_s1_sim/sim.mu2e.pbar2m.bmum0s11b0.001000_00000000.art"
-Art has completed and will exit with status 0.
-
-* sim.mu2e.pbar2m.bmup0b0s21r0000.art                                                                         
-** 16-Aug-2022                                                                                                
-murat@mu2ebuild01:/mu2e/app/users/murat/muse>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/pbar2m.bmum0.s2_sim/sim.owner.pbar2m.bmum0s21b0.001000_00000000.art 
-   ************************** Mu2e Offline **************************
-     art v3_11_01    root v6_26_00    KinKal v02_01_00
-     build  /mu2e/app/users/murat/muse
-     build  sl7-debug-e20-p026    08/14/22 10:44:43
-   ******************************************************************
-16-Aug-2022 17:10:55 CDT  Initiating request to open input file "results/pbar2m.bmum0.s2_sim/sim.owner.pbar2m.bmum0s21b0.001000_00000000.art"
-16-Aug-2022 17:10:55 CDT  Opened input file "results/pbar2m.bmum0.s2_sim/sim.owner.pbar2m.bmum0s21b0.001000_00000000.art"
-Begin processing the 1st record. run: 1 subRun: 0 event: 663 at 16-Aug-2022 17:10:58 CDT
-Found 6 data products in this Event
-Data products: 
-Friendly Class Name  Module Label    Instance Name  Process Name     Product ID
-     mu2e::StatusG4         g4run                          S2Sim   108074796
-mu2e::SimParticlemv    BeamFilter                          S2Sim   887903808
- mu2e::StepPointMCs    BeamFilter         DSVacuum         S2Sim   910930626
- mu2e::StepPointMCs    BeamFilter  virtualdetector         S2Sim   919328821
-     mu2e::StatusG4         g4run                          S1Sim  1104244220
- mu2e::GenParticles      generate                          S1Sim  2398351477
-
-Found 3 data products in this SubRun
-Data products: 
-        Friendly Class Name    Module Label  Instance Name  Process Name     Product ID
-mu2e::PhysicalVolumeInfomvs  compressPVBeam                        S1Sim   766382810
-mu2e::PhysicalVolumeInfomvs  compressPVBeam                        S2Sim  1779329034
-        mu2e::GenEventCount      genCounter                        S1Sim  2509493737
-
-Found 0 data products in this Run
-16-Aug-2022 17:10:58 CDT  Closed input file "results/pbar2m.bmum0.s2_sim/sim.owner.pbar2m.bmum0s21b0.001000_00000000.art"
-Art has completed and will exit with status 0.
-1* ---------------------------------------------------------------------------------------------------------------
-* sim.mu2e.pbar2m.bmup0b0s31r0000.art    <2023-10-17 Tue>                                                     
-murat@mu2ebuild01:/mu2e/app/users/murat/muse>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s sim.mu2e.bmup0b0s31r0000.pbar2m.001210_00000000.art
-   ************************** Mu2e Offline **************************
-     art v3_13_02    root v6_28_04c    KinKal v02_04_02
-     build  /mu2e/app/users/murat/muse
-     build  sl7-prof-e20-p047    10/16/23 20:25:33
-   ******************************************************************
-17-Oct-2023 06:48:50 CDT  Initiating request to open input file "sim.mu2e.bmup0b0s31r0000.pbar2m.001210_00000000.art"
-17-Oct-2023 06:48:51 CDT  Opened input file "sim.mu2e.bmup0b0s31r0000.pbar2m.001210_00000000.art"
-Begin processing the 1st record. run: 1210 subRun: 0 event: 1086 at 17-Oct-2023 06:48:52 CDT
+09-Mar-2024 17:35:23 CST  Initiating request to open input file "results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s21r0000.pipenu.001210_00000000.art"
+09-Mar-2024 17:35:23 CST  Opened input file "results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s21r0000.pipenu.001210_00000000.art"
+Begin processing the 1st record. run: 1210 subRun: 241 event: 950 at 09-Mar-2024 17:35:25 CST
 Found 5 data products in this Event
 Data products: 
 Friendly Class Name      Module Label    Instance Name  Process Name     Product ID
@@ -207,37 +161,72 @@ mu2e::PhysicalVolumeInfomvs  compressPVTargetStops                        S3Sim 
         mu2e::GenEventCount             genCounter                          POT  3358959612
 
 Found 0 data products in this Run
-17-Oct-2023 06:48:52 CDT  Closed input file "sim.mu2e.bmup0b0s31r0000.pbar2m.001210_00000000.art"
+09-Mar-2024 17:35:25 CST  Closed input file "results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s21r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
+#+end_src
+* sim.mu2e.pipenu.bmup0b0s22r0000.art                                                                         
+#+begin_src
+murat@mu2egpvm06:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s22r0000.pipenu.001210_00000000.art 
+   ************************** Mu2e Offline **************************
+     art v3_14_03    root v6_28_10a    KinKal v02_05_00b
+     build  /exp/mu2e/app/users/murat/muse_002
+     build  sl7-prof-e28-p055    03/09/24 16:44:22
+   ******************************************************************
+09-Mar-2024 17:37:07 CST  Initiating request to open input file "results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s22r0000.pipenu.001210_00000000.art"
+09-Mar-2024 17:37:08 CST  Opened input file "results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s22r0000.pipenu.001210_00000000.art"
+Begin processing the 1st record. run: 1210 subRun: 241 event: 523 at 09-Mar-2024 17:37:09 CST
+Found 5 data products in this Event
+Data products: 
+Friendly Class Name   Module Label    Instance Name  Process Name     Product ID
+ mu2e::GenParticles       generate                            POT   590160162
+     mu2e::StatusG4          g4run                          S3Sim   990985884
+mu2e::SimParticlemv  ootStopFilter                          S3Sim  1557511930
+ mu2e::StepPointMCs  ootStopFilter  virtualdetector         S3Sim  3150118251
+     mu2e::StatusG4          g4run                            POT  4179471200
 
+Found 2 data products in this SubRun
+Data products: 
+        Friendly Class Name        Module Label  Instance Name  Process Name     Product ID
+mu2e::PhysicalVolumeInfomvs  compressPVOOTStops                        S3Sim  2346625485
+        mu2e::GenEventCount          genCounter                          POT  3358959612
+
+Found 0 data products in this Run
+09-Mar-2024 17:37:09 CST  Closed input file "results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s22r0000.pipenu.001210_00000000.art"
+Art has completed and will exit with status 0.
+#+end_src
 * ---------------------------------------------------------------------------------------------------------------
 * performance testing (prof build)                                                                            
 ** stage 1 (up to DS)                                                                                         
+  29 events out of 10000 : about 3e-3 
+  average time : 3e-2 sec/events ...
+  4e5 events /job: 4e5*3e-2 - 12e3 sec /job < 4h
+** stage 2 : 0.01 sec/event on mu2egpvm06                                                                     
+   ==================================================================================================================================================
+TimeTracker printout (sec)                                          Min           Avg           Max         Median          RMS         nEvts   
+==================================================================================================================================================
+Full event                                                       0.0041187     0.0103158     0.135632     0.00828371    0.00766771       972    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+source:RootInput(read)                                          4.9011e-05    7.38678e-05   0.00145196    6.86735e-05   4.7804e-05       972    
+IPAStopPath:g4run:Mu2eG4                                        0.00350323    0.00935479     0.127323     0.00732408    0.00743173       972    
+IPAStopPath:g4consistentFilter:FilterStatusG4                    7.87e-06     1.04651e-05   0.000126229   9.4895e-06    4.65833e-06      972    
+IPAStopPath:IPAMuonFinder:StoppedParticlesFinder                1.2458e-05    2.49399e-05   0.00147758    2.08085e-05   5.13408e-05      972    
+IPAStopPath:IPAStopFilter:FilterG4Out                           2.2457e-05    2.74105e-05   0.000334672   2.54705e-05   1.10101e-05      972    
+ootStopPath:ootMuonFinder:StoppedParticlesFinder                 8.255e-06    1.18014e-05    6.11e-05     1.11115e-05   3.23246e-06      972    
+ootStopPath:ootStopFilter:FilterG4Out                           1.8506e-05    0.000161532   0.00487524    0.000206158   0.000184144      972    
+ootStopPath:compressPVOOTStops:CompressPhysicalVolumes           5.14e-06     7.2464e-06    6.6635e-05     6.68e-06     3.03629e-06      649    
+targetStopPath:TargetStopPrescaleFilter:RandomPrescaleFilter     8.81e-07     1.39652e-06   1.3916e-05     1.247e-06    7.26582e-07      972    
+targetStopPath:TargetMuonFinder:StoppedParticlesFinder           7.824e-06    1.14479e-05   4.3939e-05    1.07405e-05   3.08393e-06      972    
+targetStopPath:TargetStopFilter:FilterG4Out                     1.8662e-05    7.60521e-05   0.000494373   2.17925e-05   8.37905e-05      972    
+[art]:TriggerResults:TriggerResultInserter                       5.168e-06    6.78273e-06   5.7653e-05    6.3055e-06    2.50054e-06      972    
+end_path:TargetStopOutput:RootOutput                             3.557e-06    5.72118e-06   0.000345617   4.9015e-06    1.10674e-05      972    
+end_path:ootStopOutput:RootOutput                                1.408e-06    2.58729e-06   5.0436e-05    2.3935e-06    1.85533e-06      972    
+end_path:IPAStopOutput:RootOutput                                1.285e-06    1.77904e-06   3.9225e-05     1.639e-06    1.34656e-06      972    
+end_path:IPAStopOutput:RootOutput(write)                         1.74e-06     2.33729e-06   4.0272e-05     2.14e-06     1.58089e-06      972    
+end_path:TargetStopOutput:RootOutput(write)                      1.047e-06    0.000102373   0.00117562     1.219e-06    0.000216741      972    
+end_path:ootStopOutput:RootOutput(write)                         1.018e-06    0.000270375    0.0366018    0.000124145    0.0012078       972    
+targetStopPath:compressPVTargetStops:CompressPhysicalVolumes     5.676e-06    8.3695e-06    2.4434e-05     7.927e-06    2.13816e-06      296    
+==================================================================================================================================================
 
-|    nevents | mode  | BField           | N(mu) | N(muon stops) | N(oot) |    CPU |    real | comment                   |
-|------------+-------+------------------+-------+---------------+--------+--------+---------+---------------------------|
-|      10000 | debug |                  |       |               |        | 939.23 | 730.937 |                           |
-|      10000 | prof  |                  |       |               |        | 383.67 | 224.188 |                           |
-|      20000 | prof  | bfgeom_v01       |    74 |            28 |        | 701.42 | 383.228 |                           |
-|      20000 | prof  | bfgeom_no_ds_v01 |    73 |            25 |        | 701.42 | 383.228 |                           |
-|     200000 | prof  | bfgeom_no_ds_v01 |   883 |           317 |    539 |        |         |                           |
-|     200000 | prof  | bfgeom_v01       |   887 |           332 |    532 |        |         |                           |
-|------------+-------+------------------+-------+---------------+--------+--------+---------+---------------------------|
-| w/o offset |       |                  |       |               |        | 317.75 |         |                           |
-|  per event |       |                  |       |               |        | 3.2e-2 |         | count on 100K events/hour |
-|            |       |                  |       |               |        |        |         |                           |
-#+TBLFM: @4$7=@3$7-@2$7
-
-MemReport  ---------- Memory summary [base-10 MB] ------
-MemReport  VmPeak = 2690.95 VmHWM = 1964.63
-*** Aug 2022                                                                                                  
-       : (230 sec ~ 4min) / 5000 events on mu2ebuild01: 75,000 events/hour
-	  250,000 events     : < 4 hours
-          100,000,000 events : 400 segments with the time request of, say, 10 hours
-
-	  MemReport          : VmPeak = 2254.73 VmHWM = 1659.85 < 2 GBytes
-
-	  output             : 154 events out of 5000
 * test no DS field option  N(POT)=20000             
 ** stopped muons no DS    field : 25 stopped muons                                                            
 TrigReport ---------- Module summary ------------

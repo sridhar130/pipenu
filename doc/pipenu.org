@@ -2,7 +2,9 @@
 
 * directory:   [[file:./]]
 * ------------------------------------------------------------------------------
-* [[file:./software_setup.org][software setup]]
+* [[file:./software_setup.org][software setup]]        
+* mu2e-41916: forcing muon decays                                            
+  https://mu2e-docdb.fnal.gov/cgi-bin/sso/RetrieveFile?docid=41916
 * histogram file naming convention                                           
 -- start from [STNTUPLE] dataset $dsid, run an $analysis_job on it.
    - The job makes [many] histograms and saves them into a file.

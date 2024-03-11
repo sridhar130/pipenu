@@ -23,9 +23,9 @@ class Project:
     def job_description(self,job):
         return self.fProjectName+'.'+job.input_dataset().id()+'.'+job.stage().name()+'_'+job.name()
 
-    def __init__(self):
+    def __init__(self,idsid=None):
 
-        project                      = 'pbar2m'
+        project                      = 'pipenu'
         self.fFamilyID               = 'bmup0b0'          # in fact, this is a family name
         self.fProjectName            = project;
         self.fStage                  = {}
@@ -48,6 +48,11 @@ class Project:
         # Input s4 strip and s3 stn -- TargetStopOutput from s3
         self.fDataset['bmup0b0s31r0000'] = Dataset('sim.mu2e.bmup0b0s31r0000.art','bmup0b0s31r0000','local')
 #------------------------------------------------------------------------------
+# a job always has an input dataset, but...
+#------------------------------------------------------------------------------
+        self.fInputDsID = None;
+        if (idsid) : self.fInputDataset = self.fDataset[idsid];
+#------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s1');
@@ -61,7 +66,7 @@ class Project:
         job.fMaxInputFilesPerSegment =  1
         job.fNEventsPerSegment       = 400000
         job.fResample                = 'no'   # yes/no
-        job.fRequestedTime           = '20h'
+        job.fRequestedTime           = '16h'
         job.fIfdh                    = 'xrootd'                 # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 

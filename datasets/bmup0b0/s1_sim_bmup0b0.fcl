@@ -8,9 +8,11 @@
 # MDC2020 assumes the "correct perfect" run number is 1210
 #------------------------------------------------------------------------------
 #include "Production/JobConfig/beam/POT.fcl"
-services.SeedService.baseSeed : 8
+services.SeedService.baseSeed       : 8
+services.GeometryService.inputFile  : "pipenu/datasets/bmup0b0/geom_pipenu_bmup0b0.txt"
+services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
 #------------------------------------------------------------------------------
-# redefinitions, TS3RegionCuts : stop tracing in the middle of the TS
+# redefinitions, TS3RegionCuts : don't stop tracing in the middle of the TS
 #------------------------------------------------------------------------------
 ## -------------- #include "pbar2m/common/TS3RegionCuts.fcl"
 
@@ -30,8 +32,8 @@ physics.producers.g4run.Mu2eG4CommonCut: {
 }
 
 source.firstRun                 : 1210
-outputs.BeamOutput.fileName     : "sim.mu2e.bmup0b0s11r0000.pbar2m.001210_00000000.art"
-outputs.NeutralsOutput.fileName : "sim.mu2e.bmup0b0s12r0000.pbar2m.001210_00000000.art"
+outputs.BeamOutput.fileName     : "sim.mu2e.bmup0b0s11r0000.pipenu.001210_00000000.art"
+outputs.NeutralsOutput.fileName : "sim.mu2e.bmup0b0s12r0000.pipenu.001210_00000000.art"
 #------------------------------------------------------------------------------
 # smth is wrong with QGSP_BERT in this version of G4, has to use ShieldingM 
 #------------------------------------------------------------------------------
@@ -42,6 +44,3 @@ outputs.NeutralsOutput.fileName : "sim.mu2e.bmup0b0s12r0000.pbar2m.001210_000000
 physics.producers.g4run.physics.minRangeCut             : 1. # mm
 physics.producers.g4run.physics.protonProductionCut     : 1. # mm
 physics.producers.g4run.physics.turnOffRadioactiveDecay : true
-
-services.GeometryService.inputFile                      : "pipenu/datasets/bmup0b0/geom_pbar2m_bmup0b0.txt"
-services.GeometryService.bFieldFile                     : "Offline/Mu2eG4/geom/bfgeom_DS50_v01.txt"

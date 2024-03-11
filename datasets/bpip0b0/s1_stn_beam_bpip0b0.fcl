@@ -13,8 +13,6 @@ services.SeedService.baseSeed       :  8
 #------------------------------------------------------------------------------
 # services: local re-definitions
 #------------------------------------------------------------------------------
-#services.TFileService.fileName              : "nts.user.pbar2m.bpip0b0s11r0000.001210_00000000.hist"
-
 source       : { module_type:RootInput}
 
 physics : { 

@@ -54,6 +54,6 @@ physics : {
 # physics.out                               : [ detectorOutput ]
 # outputs.detectorOutput.SelectEvents       : [ path_gen_digi_reco_stn_dem_dmm ]
 
-services.TFileService.fileName              : "nts.user.pbar2m.pbar0s11b0.000000_00000000.hist"
-physics.analyzers.InitStntuple.histFileName : "nts.user.pbar2m.pbar0s11b0.000000_00000000.stn"
-outputs.detectorOutput.fileName             : "sim.user.pbar2m.pbar0sq1b0.000000_00000000.art"
+services.TFileService.fileName              : "nts.user.pipenu.pbar0s11b0.000000_00000000.hist"
+physics.analyzers.InitStntuple.histFileName : "nts.user.pipenu.pbar0s11b0.000000_00000000.stn"
+outputs.detectorOutput.fileName             : "sim.user.pipenu.pbar0sq1b0.000000_00000000.art"

@@ -19,11 +19,16 @@
 
 process_name: S3Sim
 
+#------------------------------------------------------------------------------
+services                            : @local::Services.Sim
+services.SeedService.baseSeed       :  8
+services.GeometryService.inputFile  : "pipenu/datasets/bmup0b0/geom_pipenu_bmup0b0.txt"
+services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
+
+#------------------------------------------------------------------------------
 source : { module_type : RootInput }
 
-services : @local::Services.Sim
-services.SeedService.baseSeed   :  8
-
+#------------------------------------------------------------------------------
 physics: {
   producers : {
     @table::Common.producers
@@ -41,7 +46,8 @@ physics: {
   ootStopPath    : [ @sequence::Common.g4Sequence, ootMuonFinder, ootStopFilter, compressPVOOTStops]
   IPAStopPath    : [ @sequence::Common.g4Sequence, IPAMuonFinder, IPAStopFilter, compressPVIPAStops]
   trigger_paths  : [ targetStopPath  , ootStopPath  , IPAStopPath   ]
-  outPath        : [ TargetStopOutput, ootStopOutput, IPAStopOutput ]
+  outPath        : [ TargetStopOutput, ootStopOutput, IPAStopOutput ]#------------------------------------------------------------------------------
+
   end_paths      : [ outPath ]
 }
 #------------------------------------------------------------------------------
@@ -128,10 +134,7 @@ physics.producers.TargetMuonFinder.physVolInfoInput        : "g4run" ## "g4run:e
 physics.producers.TargetMuonFinder.useEventLevelVolumeInfo : false   ## true
 # physics.producers.TargetMuonFinder.verbosityLevel          : 100
 #------------------------------------------------------------------------------
-services.GeometryService.inputFile  : "pipenu/datasets/bmup0b0/geom_pbar2m_bmup0b0.txt"
-services.GeometryService.bFieldFile : "Offline/Mu2eG4/geom/bfgeom_DS50_v01.txt"
-#------------------------------------------------------------------------------
-outputs.TargetStopOutput.fileName   : "sim.mu2e.bmup0b0s21r0000.pbar2m.001210_00000000.art"
-outputs.ootStopOutput.fileName      : "sim.mu2e.bmup0b0s22r0000.pbar2m.001210_00000000.art"
-outputs.IPAStopOutput.fileName      : "sim.mu2e.bmup0b0s23r0000.pbar2m.001210_00000000.art"
+outputs.TargetStopOutput.fileName   : "sim.mu2e.bmup0b0s21r0000.pipenu.001210_00000000.art"
+outputs.ootStopOutput.fileName      : "sim.mu2e.bmup0b0s22r0000.pipenu.001210_00000000.art"
+outputs.IPAStopOutput.fileName      : "sim.mu2e.bmup0b0s23r0000.pipenu.001210_00000000.art"
 # filenames should be s21, s22 ... or s31, s32...

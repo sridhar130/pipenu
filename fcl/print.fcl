@@ -27,6 +27,7 @@ physics :{
       kalRepPrinter                : { verbose : 1              }
       kalSeedPrinter               : { verbose : 3              }      # this one ahs many print levels
       physicalVolumePrinter        : { verbose : 1              }
+      primaryParticlePrinter       : { verbose : 1              }
       ProtonBunchTimePrinter       : { verbose : 1              }
       ProtonBunchTimeMCPrinter     : { verbose : 1              }
       ProtonBunchIntensityPrinter  : { verbose : 1              }

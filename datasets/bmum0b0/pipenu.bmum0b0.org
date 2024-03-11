@@ -7,7 +7,7 @@ f# -*- mode:org -*-
  - configuration   : [[file:./init_project.py][init_project.py]]
  - submitted jobs  : file:../AAA_SUBMITTED_JOBS
  - grid input      : file:/pnfs/mu2e/resilient/users/murat/
- - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow
+ - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup0b0s00r0000.s1_sim/outstage
  - output_location : file:/mu2e/data2/users/murat/
  - catalogs        : file:./catalog
  - summary         : [[file:../doc/su2020_summary.org][su2020/doc/su2020_summary.org]]

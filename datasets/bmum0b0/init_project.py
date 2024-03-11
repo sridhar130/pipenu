@@ -23,9 +23,9 @@ class Project:
     def job_description(self,job):
         return self.fProjectName+'.'+job.input_dataset().id()+'.'+job.stage().name()+'_'+job.name()
 
-    def __init__(self):
+    def __init__(self,idsid=None):
 
-        project                      = 'pbar2m'
+        project                      = 'pipenu'
         self.fFamilyID               = 'bmum0b0'          # in fact, this is a family name
         self.fProjectName            = project;
         self.fStage                  = {}
@@ -53,7 +53,7 @@ class Project:
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s1');
-        job                          = s.new_job('sim','bmum0b0s00r0000');
+        job                          = s.new_job('sim',idsid);
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'sim');
@@ -81,7 +81,7 @@ class Project:
 #------------------------------------------------------------------------------
 # s1:stn_beam: stntuple the beam stream
 #------------------------------------------------------------------------------  
-        job                          = s.new_job('stn_beam','bmum0b0s11r0000');
+        job                          = s.new_job('stn_beam',idsid);
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'stn_beam');
@@ -107,7 +107,7 @@ class Project:
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
 
-        job                          = s.new_job('sim','bmum0b0s11r0000');
+        job                          = s.new_job('sim',idsid);
 
         job.fBaseFcl                 = self.base_fcl(job,'sim');
 
@@ -135,7 +135,7 @@ class Project:
 #------------------------------------------------------------------------------
 # s2:tgt_stn
 #------------------------------------------------------------------------------  
-        job                          = s.new_job('stn_tgt','bmum0b0s21r0000');
+        job                          = s.new_job('stn_tgt',idsid);
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
@@ -160,7 +160,7 @@ class Project:
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s3');
 
-        job                          = s.new_job('strip_mum','bmum0b0s21r0000');
+        job                          = s.new_job('strip_mum',idsid);
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'strip_mum');
@@ -186,7 +186,7 @@ class Project:
 #------------------------------------------------------------------------------
 # s3:strip_mup : strip mu+'s from all stopped particles, just for testing purposes
 #------------------------------------------------------------------------------        
-        job                          = s.new_job('strip_mup','bmum0b0s21r0000');
+        job                          = s.new_job('strip_mup',idsid);
 
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'strip_mup');
