@@ -1,8 +1,10 @@
 # -*- mode:tcl -*-
 #------------------------------------------------------------------------------
-# original: Production/JobConfig/pileup/MuonBeamResampler.fcl
-# Re-sample input particles, propagate them to the detectors 
-# and write out the corresponding DetectorSteps mustops.
+# P.M. : mu+ decays in flight
+# - start from muons reaching the DS
+# - re-sample input particles, propagate them to the detectors and write out 
+#   the corresponding DetectorSteps 
+# - filter out events with stopped muons
 #------------------------------------------------------------------------------
 #include "Offline/fcl/standardServices.fcl"
 #include "Production/JobConfig/common/prolog.fcl"
@@ -55,13 +57,15 @@ physics: {
         @table::Common.analyzers
     }
 #------------------------------------------------------------------------------
-# p1: select events with hits in detectors
+# p24: select events with hits in detectors
 #------------------------------------------------------------------------------
     p24 : [ @sequence::Pileup.beamResamplerSequence, 
             @sequence::Common.g4Sequence, 
+            TargetMuonFinder, "!TargetStopFilter",       ## filter out muon stops in ST
+            ootMuonFinder   , "!ootStopFilter"   ,       ## filter out out-of-target stops
             @sequence::Pileup.flashSequence, 
             @sequence::Pileup.DetStepSequence,
-            FindMCPrimary 
+            FindMCPrimary
            ]
 
     trigger_paths  : [ p24 ]
@@ -114,10 +118,19 @@ physics.producers.g4run.Mu2eG4CommonCut:{
           ]
 }
 #------------------------------------------------------------------------------
-# defined range of muon decays times to increase teh simulation efficiency
+# defined range of muon decays times to increase the simulation efficiency
 #------------------------------------------------------------------------------
 physics.producers.g4run.physics.muonMinPreAssignedDecayProperTime:   0. // ns
 physics.producers.g4run.physics.muonMaxPreAssignedDecayProperTime: 150. // ns
+
+# physics.producers.TargetMuonFinder.physVolInfoInput        : "g4run" ## "g4run:eventlevel"
+
+physics.producers.ootMuonFinder.vetoedMaterials              : [ "StoppingTarget_Al" ]
+#------------------------------------------------------------------------------
+# useEventLevelVolumeInfo=true and 'g4run:eventlevel' come together
+#------------------------------------------------------------------------------
+physics.producers.ootMuonFinder.useEventLevelVolumeInfo      : true
+physics.producers.ootMuonFinder.physVolInfoInput             : "g4run:eventlevel"   ## "g4run" or "g4run:eventlevel"
 #------------------------------------------------------------------------------
 # reconfigure StepPoint producers to avoid double-counting particles 
 # from the mustop filter deep copy
