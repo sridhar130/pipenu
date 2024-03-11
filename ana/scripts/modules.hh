@@ -9,6 +9,7 @@
 namespace pipenu {
   TSpmcAnaModule*          m_spmc  = NULL;
   TTrackAnaModule*         m_trk  = NULL;
+  THelixAnaModule*         m_hel  = NULL;
 }
 
 #endif

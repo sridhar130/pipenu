@@ -19,7 +19,7 @@
 // #include "Stntuple/obj/TStrawHitBlock.hh"
 #include "Stntuple/obj/TGenpBlock.hh"
 #include "Stntuple/obj/TSimpBlock.hh"
-
+#include "Stntuple/obj/TSimParticle.hh"
 #include "Stntuple/base/TStnArrayI.hh"
 
 #include "Stntuple/geom/TStnCrystal.hh"
@@ -190,6 +190,7 @@ public:
     TH1F*    fMomTargetEnd;
     TH1F*    fMomTrackerFront;
     TH1F*    fNStrawHits;
+    TH1F*    fTau;
   };
 
 //-----------------------------------------------------------------------------
@@ -240,6 +241,8 @@ public:
   double            fPtMin;
 
   TSimParticle*     fParticle;		// electron or muon
+  TSimParticle*     fParticle1;		// for FSimpHistograms
+  TSimParticle*     fParticle2;		// for FSimpHistograms
   int               fPdgCode;		// determines which one
   int               fGeneratorCode;      
 
@@ -267,6 +270,8 @@ public:
 
   double            fMinT0;
   double            fBField;
+  double            WP;
+  double            WP2=0.;
 //-----------------------------------------------------------------------------
 //  functions
 //-----------------------------------------------------------------------------
@@ -307,10 +312,10 @@ public:
   void    BookSimpHistograms    (SimpHist_t*    Hist, const char* Folder);
   void    BookTrackHistograms   (TrackHist_t*   Hist, const char* Folder);
 
-  void    FillEventHistograms    (EventHist_t* Hist);
-  void    FillGenpHistograms     (GenpHist_t*    Hist, TGenParticle* Genp   );
-  void    FillSimpHistograms     (SimpHist_t*    Hist, TSimParticle* Simp   );
-  void    FillTrackHistograms    (TrackHist_t*   Hist, TStnTrack*    Trk    );
+  void    FillEventHistograms    (EventHist_t* Hist,double Weight = 1.);
+  void    FillGenpHistograms     (GenpHist_t*    Hist, TGenParticle* Genp,double Weight = 1.   );
+  void    FillSimpHistograms     (SimpHist_t*    Hist, TSimParticle* Simp,double Weight = 1.   );
+  void    FillTrackHistograms    (TrackHist_t*   Hist, TStnTrack*    Trk,double Weight = 1.    );
 
   void    BookHistograms();
   void    FillHistograms();

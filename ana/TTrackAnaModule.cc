@@ -50,6 +50,9 @@
 #include "Stntuple/ana/HistBase_t.h"
 #include "Stntuple/ana/SimPar_t.hh"
 #include "cetlib_except/exception.h"
+
+#include "TDatabasePDG.h"
+#include "TParticlePDG.h"
 //------------------------------------------------------------------------------
 // Mu2e offline includes
 //-----------------------------------------------------------------------------
@@ -242,8 +245,9 @@ void TTrackAnaModule::BookSimpHistograms(SimpHist_t* Hist, const char* Folder) {
 
   HBook1F(Hist->fPdgCode   ,"pdg"         ,Form("%s: PDG code"                     ,Folder),200,-100,100,Folder);
   HBook1F(Hist->fNStrawHits,"nsth"        ,Form("%s: n straw hits"                 ,Folder),200,   0,200,Folder);
-  HBook1F(Hist->fMomTargetEnd    ,"ptarg" ,Form("%s: CE mom after Stopping Target" ,Folder),400,  90,110,Folder);
-  HBook1F(Hist->fMomTrackerFront ,"pfront",Form("%s: CE mom at the Tracker Front"  ,Folder),400,  90,110,Folder);
+  HBook1F(Hist->fMomTargetEnd    ,"ptarg" ,Form("%s: CE mom after Stopping Target" ,Folder),400,  40,80,Folder);
+  HBook1F(Hist->fMomTrackerFront ,"pfront",Form("%s: CE mom at the Tracker Front"  ,Folder),400,  40,80,Folder);
+  HBook1F(Hist->fTau   ,"tau"         ,Form("%s: t/tau"                     ,Folder),60,-0,30,Folder);
 }
 
 
@@ -340,7 +344,7 @@ void TTrackAnaModule::BookHistograms() {
 //-----------------------------------------------------------------------------
 // need MC truth branch
 //-----------------------------------------------------------------------------
-  void TTrackAnaModule::FillEventHistograms(EventHist_t* Hist) {
+  void TTrackAnaModule::FillEventHistograms(EventHist_t* Hist,double Weight) {
   double            cos_th(-2), dio_wt(-1.), vx(-1.e6), vy(-1.e6), rv(-1.e6), vz(-1.e6), p(-1.);
   //  double            e, m, r;
   const TLorentzVector*    mom;
@@ -354,7 +358,7 @@ void TTrackAnaModule::BookHistograms() {
     rv     = sqrt(vx*vx+vy*vy);
     vz     = fParticle->StartPos()->Z();
     dio_wt = TStntuple::DioWeightAl(p);
-    std::cout<<"---not a null pointer---"<<std::endl;
+    // std::cout<<"---not a null pointer---"<<std::endl;
   }
 
   //  TSimParticle* Simpp;
@@ -373,12 +377,12 @@ void TTrackAnaModule::BookHistograms() {
   Hist->fNTracks->Fill  (fNTracks[0]);
 
   int nsh = GetHeaderBlock()->NStrawHits();
-  Hist->fNStrawHits[0]->Fill(nsh);
-  Hist->fNStrawHits[1]->Fill(nsh);
+  Hist->fNStrawHits[0]->Fill(nsh,Weight);
+  Hist->fNStrawHits[1]->Fill(nsh,Weight);
 
   int nch = GetHeaderBlock()->NComboHits();
-  Hist->fNComboHits[0]->Fill(nch);
-  Hist->fNComboHits[1]->Fill(nch);
+  Hist->fNComboHits[0]->Fill(nch,Weight);
+  Hist->fNComboHits[1]->Fill(nch,Weight);
 
   //  int evt = GetHeaderBlock()->EventNumber();
   //  std::cout<<"No. Combo: "<<nch<<" No. Straw: "<<nsh<<" event: "<<evt<<std::endl;
@@ -396,7 +400,7 @@ void TTrackAnaModule::BookHistograms() {
 }
 
 //-----------------------------------------------------------------------------
-void TTrackAnaModule::FillGenpHistograms(GenpHist_t* Hist, TGenParticle* Genp) {
+  void TTrackAnaModule::FillGenpHistograms(GenpHist_t* Hist, TGenParticle* Genp,double Weight) {
   int    gen_id;
   float  p, cos_th, z0, t0, r0, x0, y0;
 
@@ -427,24 +431,61 @@ void TTrackAnaModule::FillGenpHistograms(GenpHist_t* Hist, TGenParticle* Genp) {
 }
 
 //-----------------------------------------------------------------------------
-void TTrackAnaModule::FillSimpHistograms(SimpHist_t* Hist, TSimParticle* Simp) {
+  void TTrackAnaModule::FillSimpHistograms(SimpHist_t* Hist, TSimParticle* Simp,double Weight) {
 
-  Hist->fPdgCode->Fill(Simp->fPdgCode);
-  Hist->fMomTargetEnd->Fill(Simp->fMomTargetEnd);
-  Hist->fMomTrackerFront->Fill(Simp->fMomTrackerFront);
-  Hist->fNStrawHits->Fill(Simp->fNStrawHits);
+
+//------weighting---------------  
+  int fN2Simp    = fSimpBlock->NParticles();
+ 
+  TSimParticle* simp2;
+  //  int           pdg_code, generator_code;
+
+   
+  fParticle2 = NULL;
+  for (int i=fN2Simp-1; i>=0; i--) {
+    simp2           = fSimpBlock->Particle(i);
+    //    pdg_code       = simp->PDGCode();
+    // generator_code = simp->GeneratorID();
+    // if ((pdg_code == fPdgCode) && (generator_code == fGeneratorCode)) {
+      fParticle2 = simp2;
+      // break;
+      // }
+      //std::cout<<" fMomTrackerFront: "<<simp2->fMomTargetEnd<<" Stage: "<<simp2->SimStage()<<" NStraw: "<<simp2->NStrawHits()<<" Creation code: "<<simp2->CreationCode()<<" Generator ID: "<<simp2->GeneratorID()<<" Parent ID: "<<simp2->ParentID()<<" pdg code: "<<simp2->PDGCode()<<" t/tau: "<<simp2->fEndProperTime<<std::endl;
+  
+      double end_t2= simp2->fEndProperTime;
+      double ttau2 = exp(-end_t2);
+  //set the weight
+      if (simp2->GeneratorID()==56 && simp2->PDGCode()==211)
+        {WP2=ttau2;
+         Hist->fTau->Fill(simp2->fEndProperTime);
+         std::cout<<"setting WP2: "<<WP2<<std::endl;
+
+         }
+  //------weighting end---------------  
+ 
+  if (simp2->GeneratorID()==181 && simp2->PDGCode()==-11)
+  {
+    std::cout<<"getting WP2: "<<WP2<<std::endl;
+    Hist->fPdgCode->Fill((simp2->PDGCode()),WP2);
+    Hist->fMomTargetEnd->Fill((simp2->fMomTargetEnd),WP2);
+    Hist->fMomTrackerFront->Fill((simp2->fMomTrackerFront),WP2);
+    Hist->fNStrawHits->Fill((simp2->NStrawHits()),WP2);
+
+   }
+  } //i loop
+ 
 }
 
 //-----------------------------------------------------------------------------
 // for DIO : ultimately, one would need to renormalize the distribution
 //-----------------------------------------------------------------------------
-void TTrackAnaModule::FillTrackHistograms(TrackHist_t* Hist, TStnTrack* Track) {
+  void TTrackAnaModule::FillTrackHistograms(TrackHist_t* Hist, TStnTrack* Track,double Weight) {
 
   TLorentzVector  mom;
   double          r;
   int             itrk;
   TrackPar_t*     tp;
-  int ncc = GetHeaderBlock()->NComboHits();
+  //int ncc = GetHeaderBlock()->NComboHits();
   //int evt = GetHeaderBlock()->EventNumber();
 					// pointer to local track parameters
   itrk = Track->Number();
@@ -454,48 +495,46 @@ void TTrackAnaModule::FillTrackHistograms(TrackHist_t* Hist, TStnTrack* Track) {
   //std::cout<<"Event Number: "<<evt<<" Track mom: "<< Track->fP0 <<std::endl;
 //}
 
-  if (ncc>1)
-    {
-  Hist->fP[0]->Fill (Track->fP);
-  Hist->fP[1]->Fill (Track->fP);
-  Hist->fP[2]->Fill (Track->fP);
-  Hist->fP0->  Fill (Track->fP0);
-  Hist->fP2->  Fill (Track->fP2);
+  Hist->fP[0]->Fill (Track->fP,Weight);
+  Hist->fP[1]->Fill (Track->fP,Weight);
+  Hist->fP[2]->Fill (Track->fP,Weight);
+  Hist->fP0->  Fill (Track->fP0,Weight);
+  Hist->fP2->  Fill (Track->fP2,Weight);
 
   Hist->fPDio->Fill(Track->fP,tp->fDioWt);
 
-  Hist->fFitMomErr->Fill(Track->fFitMomErr);
+  Hist->fFitMomErr->Fill(Track->fFitMomErr,Weight);
 
-  Hist->fPt    ->Fill(Track->fPt    );
-  Hist->fPFront->Fill(Track->fPFront);
-  Hist->fPStOut->Fill(Track->fPStOut);
+  Hist->fPt    ->Fill(Track->fPt,Weight );
+  Hist->fPFront->Fill(Track->fPFront,Weight);
+  Hist->fPStOut->Fill(Track->fPStOut,Weight);
 					// dp: Tracker-only resolution
-  Hist->fDpFront ->Fill(tp->fDpF);
-  Hist->fDpFront0->Fill(tp->fDp0);
-  Hist->fDpFront2->Fill(tp->fDp2);
-  Hist->fDpFSt   ->Fill(tp->fDpFSt);
+  Hist->fDpFront ->Fill(tp->fDpF,Weight);
+  Hist->fDpFront0->Fill(tp->fDp0,Weight);
+  Hist->fDpFront2->Fill(tp->fDp2,Weight);
+  Hist->fDpFSt   ->Fill(tp->fDpFSt,Weight);
   Hist->fDpFVsZ1 ->Fill(Track->fZ1,tp->fDpF);
 
-  Hist->fCosTh->Fill(Track->Momentum()->CosTheta());
-  Hist->fChi2->Fill (Track->fChi2);
-  Hist->fNDof->Fill(Track->NActive()-5.);
-  Hist->fChi2Dof->Fill(Track->fChi2/(Track->NActive()-5.));
-  Hist->fNActive->Fill(Track->NActive());
-  Hist->fT0->Fill(Track->fT0);
+  Hist->fCosTh->Fill(Track->Momentum()->CosTheta(),Weight);
+  Hist->fChi2->Fill (Track->fChi2,Weight);
+  Hist->fNDof->Fill(Track->NActive()-5.,Weight);
+  Hist->fChi2Dof->Fill(Track->fChi2/(Track->NActive()-5.),Weight);
+  Hist->fNActive->Fill(Track->NActive(),Weight);
+  Hist->fT0->Fill(Track->fT0,Weight);
   Hist->fT0Err->Fill(Track->fT0Err);
-  Hist->fQ->Fill(Track->Charge());
-  Hist->fFitCons[0]->Fill(Track->fFitCons);
-  Hist->fFitCons[1]->Fill(Track->fFitCons);
+  Hist->fQ->Fill(Track->Charge(),Weight);
+  Hist->fFitCons[0]->Fill(Track->fFitCons,Weight);
+  Hist->fFitCons[1]->Fill(Track->fFitCons,Weight);
 
-  Hist->fD0->Fill(Track->fD0);
-  Hist->fZ0->Fill(Track->fZ0);
-  Hist->fTanDip->Fill(Track->fTanDip);
-  Hist->fAlgMask->Fill(Track->AlgMask());
+  Hist->fD0->Fill(Track->fD0,Weight);
+  Hist->fZ0->Fill(Track->fZ0,Weight);
+  Hist->fTanDip->Fill(Track->fTanDip,Weight);
+  Hist->fAlgMask->Fill(Track->AlgMask(),Weight);
 
-  Hist->fXc->Fill(tp->fXc);
-  Hist->fYc->Fill(tp->fYc);
-  Hist->fPhic->Fill(tp->fPhic);
-}
+  Hist->fXc->Fill(tp->fXc,Weight);
+  Hist->fYc->Fill(tp->fYc,Weight);
+  Hist->fPhic->Fill(tp->fPhic,Weight);
+
 //-----------------------------------------------------------------------------
 // track-cluster matching part: 
 // - for residuals, determine intersection with the most energetic cluster
@@ -505,13 +544,13 @@ void TTrackAnaModule::FillTrackHistograms(TrackHist_t* Hist, TStnTrack* Track) {
 
   if (vt) {
     Hist->fVaneID->Fill(vt->fID  );
-    Hist->fXTrk->Fill  (vt->fXTrk);
-    Hist->fYTrk->Fill  (vt->fYTrk);
+    Hist->fXTrk->Fill  (vt->fXTrk,Weight);
+    Hist->fYTrk->Fill  (vt->fYTrk,Weight);
 
     r = sqrt(vt->fXTrk*vt->fXTrk+vt->fYTrk*vt->fYTrk);
-    Hist->fRTrk->Fill  (r);
+    Hist->fRTrk->Fill  (r,Weight);
 
-    Hist->fZTrk->Fill  (vt->fZTrk);
+    Hist->fZTrk->Fill  (vt->fZTrk,Weight);
   }
   else {
 //-----------------------------------------------------------------------------
@@ -665,17 +704,53 @@ void TTrackAnaModule::FillHistograms() {
   //   cl_e    = cl0->Energy();
   //   disk_id = cl0->DiskID();
   // }
+ 
+  //-----------------------------------------------------------------------------
+  // Weight- pi+ survival probablity
+  //-----------------------------------------------------------------------------
+ //------weighting---------------  
+  //int ID = TObject::GetUniqueID();
+  // int fN1Genp    = fGenpBlock->NParticles();
+  int fN1Simp    = fSimpBlock->NParticles();
+
+  TSimParticle* simp1;
+  //  int           pdg_code, generator_code;
+
+   
+  fParticle1 = NULL;
+  for (int i=fN1Simp-1; i>=0; i--) {
+    simp1           = fSimpBlock->Particle(i);
+    //    pdg_code       = simp->PDGCode();
+    // generator_code = simp->GeneratorID();
+    // if ((pdg_code == fPdgCode) && (generator_code == fGeneratorCode)) {
+      fParticle = simp1;
+      // break;
+      // }
+  
+  
+      // std::cout<<"ID: "<<ID<<" No Gen particles: "<<fN1Genp<<" No Simp particles: "<<fN1Simp<<std::endl;
+  //----Printing---------------------------------
+      //std::cout<<"Entry: "<<i<<" fMomTrackerFront: "<<simp1->fMomTargetEnd<<" Stage: "<<simp1->SimStage()<<" NStraw: "<<simp1->NStrawHits()<<" Creation code: "<<simp1->CreationCode()<<" Generator ID: "<<simp1->GeneratorID()<<" Parent ID: "<<simp1->ParentID()<<" pdg code: "<<simp1->PDGCode()<<" t/tau: "<<simp1->fEndProperTime<<" unique ID: "<<ID<<std::endl;
+      double end_t = simp1->fEndProperTime;
+      double ttau = exp(-end_t);
+  //set the weight
+      if (simp1->GeneratorID()==56 && simp1->PDGCode()==211)
+        {WP=ttau;}
+      //         std::cout<<"---ttau---"<<ttau<<std::endl;}
+  }
+  //------weighting end---------------
   //-----------------------------------------------------------------------------
   // event histograms
   //-----------------------------------------------------------------------------
-  FillEventHistograms(fHist.fEvent[0]);
+  //WP=1;
+  FillEventHistograms(fHist.fEvent[0],WP);
 
-  if (fNTracks[0]> 0) FillEventHistograms(fHist.fEvent[1]);
-//-----------------------------------------------------------------------------
-// Simp histograms
-//-----------------------------------------------------------------------------
+  if (fNTracks[0]> 0) FillEventHistograms(fHist.fEvent[1],WP);
+  //-----------------------------------------------------------------------------
+  // Simp histograms
+  //-----------------------------------------------------------------------------
   if (fParticle) {
-    FillSimpHistograms(fHist.fSimp[0],fParticle);
+    FillSimpHistograms(fHist.fSimp[0],fParticle,WP);
   }
 //-----------------------------------------------------------------------------
 // track histograms, fill them only for the downstream e- hypothesis
@@ -687,13 +762,13 @@ void TTrackAnaModule::FillHistograms() {
     trk = fTrackBlock->Track(i);
     //    tp  = fTrackPar+i;
 
-    FillTrackHistograms(fHist.fTrack[0],trk);
-
-    if (trk->NActive() >= 20)   FillTrackHistograms(fHist.fTrack[1],trk);
-    if (trk->NActive() >= 30)   FillTrackHistograms(fHist.fTrack[2],trk);
+    FillTrackHistograms(fHist.fTrack[0],trk,WP);
+    std::cout<<" Velue of WP inside: "<<WP<<std::endl;
+    if (trk->NActive() >= 20)   FillTrackHistograms(fHist.fTrack[1],trk,WP);
+    if (trk->NActive() >= 30)   FillTrackHistograms(fHist.fTrack[2],trk,WP);
     if (trk->TanDip()  > 0.8) { 
-                                FillTrackHistograms(fHist.fTrack[3],trk);
-      if (trk->NActive() >= 30) FillTrackHistograms(fHist.fTrack[4],trk);
+      FillTrackHistograms(fHist.fTrack[3],trk,WP);
+      if (trk->NActive() >= 30) FillTrackHistograms(fHist.fTrack[4],trk,WP);
     }
   }
 //-----------------------------------------------------------------------------
@@ -735,18 +810,18 @@ int TTrackAnaModule::Event(int ientry) {
   fNSimp    = fSimpBlock->NParticles();
 
   TSimParticle* simp;
-  int           pdg_code, generator_code;
+  //  int           pdg_code, generator_code;
 
    
  fParticle = NULL;
   for (int i=fNSimp-1; i>=0; i--) {
     simp           = fSimpBlock->Particle(i);
-    pdg_code       = simp->PDGCode();
-    generator_code = simp->GeneratorID();
-    if ((pdg_code == fPdgCode) && (generator_code == fGeneratorCode)) {
+    //    pdg_code       = simp->PDGCode();
+    // generator_code = simp->GeneratorID();
+    // if ((pdg_code == fPdgCode) && (generator_code == fGeneratorCode)) {
       fParticle = simp;
-      break;
-    }
+      // break;
+      // }
   }
   
   if (fParticle) p = fParticle->StartMom()->P();
