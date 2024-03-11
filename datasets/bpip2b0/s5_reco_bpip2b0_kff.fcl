@@ -18,7 +18,7 @@ services.GeometryService.bFieldFile   : "pipenu/common/bfgeom_DS70_v01.txt"
 
 
 #source.fileNames    : [ "define_yours_001.art", "define_yours_002.art" ]
-source.fileNames    : [ "FileTransfer/dig.mu2e.bpip2b0s41r0000.pipenu.001210_00000000.art" ]
+source.fileNames    : [ "FileTransfer3/FileTransfer3/bpip2b0_test/dig.mu2e.bpip2b0s41r0000.pipenu.001210_00000000.art" ]
 source.inputCommands:[ "keep *",
                        "drop mu2e::ComboHitCollection_*_*_*"
                      ]
@@ -82,8 +82,10 @@ physics.producers.HelixFinderDe.ComboHitCollection             : "makePH"
 physics.producers.HelixFinderDe.TimeClusterCollection          : "TZClusterFinder"
 physics.filters.CalHelixFinderDe.TimeClusterCollectionLabel    :  CalTimePeakFinder # PhiClusterFinder
 #------------------------------------------------------------------------------
-services.TFileService.fileName        : "nts.mu2e.bpip2b0s51r0000.pipenu.001210_00000000.root"
-outputs.defaultOutput.fileName        : "mcs.mu2e.bpip2b0s51r0000.pipenu.001210_00000000.art"
+services.TFileService.fileName        : "FileTransfer3/FileTransfer3/bpip2b0_test/nts.mu2e.bpip2b0s51r0000.pipenu.001210_00000000.root"
+
+outputs.defaultOutput.fileName        : "FileTransfer3/FileTransfer3/bpip2b0_test/mcs.mu2e.bpip2b0s51r0000.pipenu.001210_00000000.art"
+
 #------------------------------------------------------------------------------
 # Uncomment the below lines if one wants a truncated report i.e with the "Run,Event,SubRun" 
 # numbers not mentioned for every event

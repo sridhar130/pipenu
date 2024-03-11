@@ -37,7 +37,7 @@ physics : {
 	    makeTrigger      : 0
 
 	    simpCollTag      : "compressDigiMCs"
-
+            minSimpMomentum  : -1  ## to get stopped pi+
 	    spmcBlockName    : [ "SpmcBlock"     , "VDetBlock"             , "IPABlock"             ]
 	    spmcCollTag      : [ "g4run:tracker" , "g4run:virtualdetector" , "g4run:protonabsorber" ]
 	    statusG4Tag      : [ "g4run"         , "g4run"                 , "g4run"                ]
@@ -73,6 +73,6 @@ physics : {
 }
 
 #------------------------------------------------------------------------------
-services.TFileService.fileName              : "nts.mu2e.bpip0b0s51r0100.pipenu.001210_00000000.root"
-physics.analyzers.InitStntuple.histFileName : "nts.mu2e.bpip0b0s51r0100.pipenu.001210_00000000.stn"
+services.TFileService.fileName              : "FileTransfer3/FileTransfer3/bpip2b0_test/nts.mu2e.bpip2b0s51r0100.pipenu.001210_00000000.root"
+physics.analyzers.InitStntuple.histFileName : "FileTransfer3/FileTransfer3/bpip2b0_test/nts.mu2e.bpip2b0s51r0100.pipenu.001210_00000000.stn"
 # outputs.defaultOutput.fileName              : "sim.mu2e.bpip0b0s51r0100.pipenu.001210_00000000.art"

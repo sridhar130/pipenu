@@ -24,6 +24,7 @@
 
 #include "Stntuple/geom/TStnCrystal.hh"
 #include "Stntuple/geom/TDiskCalorimeter.hh"
+#include "cetlib_except/exception.h"
 
 namespace  pipenu {
 class THelixAnaModule: public TStnModule {
@@ -105,6 +106,7 @@ public:
     TH1F*    fMomTargetEnd;
     TH1F*    fMomTrackerFront;
     TH1F*    fNStrawHits;
+    TH1F*    fTau;
   };
 
   struct TrackEffHist_t {
@@ -148,6 +150,9 @@ public:
   double            fPtMin;
 
   TGenParticle*     fParticle;		// electron or muon
+  TSimParticle*     fParticle1;	
+  TSimParticle*     fParticle2;		// for FSimpHistograms
+  // TSimParticle*     fParticle3;		// for FSimpHistograms
   int               fPdgCode;		// determines which one
   int               fProcessCode;      
 
@@ -169,6 +174,8 @@ public:
   int               fFillDioHist;
 
   double            fMinT0;
+  double            WP= 1.;
+  double            WP2=1.;
 //-----------------------------------------------------------------------------
 //  functions
 //-----------------------------------------------------------------------------
@@ -186,6 +193,15 @@ public:
   void     SetProcessCode(int Code ) { fProcessCode = Code ; }
   void     SetHelixBlockName(const char* Name) { fHelixBlockName = Name; }
 //-----------------------------------------------------------------------------
+// getters
+//-----------------------------------------------------------------------------
+  int GetWeightParameter() const{return fParam;}
+  void SetWeightParameter(int newVal)
+  { if (newVal!=0 && newVal!=1)
+      { throw cet::exception("BADINPUT") <<"Weight Parameter has to be 0 or 1.";}
+    fParam = newVal;
+  }
+//-----------------------------------------------------------------------------
 // overloaded methods of TStnModule
 //-----------------------------------------------------------------------------
   int     BeginJob();
@@ -202,12 +218,12 @@ public:
   void    BookTimeClusterHistograms (TimeClusterHist_t* Hist, const char* Folder);
   void    BookHelixHistograms       (HelixHist_t*       Hist, const char* Folder);
 
-  void    FillEventHistograms       (EventHist_t* Hist);
+  void    FillEventHistograms       (EventHist_t* Hist,double Weight = 1.);
   void    FillGenpHistograms        (GenpHist_t*  Hist, TGenParticle* Genp   );
-  void    FillSimpHistograms        (SimpHist_t*  Hist, TSimParticle* Genp   );
+  void    FillSimpHistograms        (SimpHist_t*  Hist, TSimParticle* Simp,double Weight = 1.   );
 
-  void    FillHelixHistograms       (HelixHist_t*       Hist, TStnHelix*       Helix      );
-  void    FillTimeClusterHistograms (TimeClusterHist_t* Hist, TStnTimeCluster* TimeCluster);
+  void    FillHelixHistograms       (HelixHist_t*       Hist, TStnHelix*       Helix,double Weight = 1.      );
+  void    FillTimeClusterHistograms (TimeClusterHist_t* Hist, TStnTimeCluster* TimeCluster,double Weight = 1.);
 
   void    BookHistograms();
   void    FillHistograms();
@@ -218,6 +234,7 @@ public:
 // test
 //-----------------------------------------------------------------------------
   void    Test001();
+  int     fParam;  // set the weight parameter
 
   ClassDef(THelixAnaModule,0)
 };

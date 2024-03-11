@@ -730,7 +730,7 @@ void TTrackAnaModule::FillHistograms() {
     //    pdg_code       = simp->PDGCode();
     // generator_code = simp->GeneratorID();
     // if ((pdg_code == fPdgCode) && (generator_code == fGeneratorCode)) {
-      fParticle = simp1;
+      fParticle1 = simp1;
       // break;
       // }
   
@@ -743,7 +743,7 @@ void TTrackAnaModule::FillHistograms() {
       const int WeightParam1= GetWeightParameter();
   //set the weight
       if (simp1->GeneratorID()==56 && simp1->PDGCode()==211)
-        if(WeightParam1)
+        if(WeightParam1==1)
           {{WP=ttau;}}
       //         std::cout<<"---ttau---"<<ttau<<std::endl;}
   }
@@ -758,7 +758,7 @@ void TTrackAnaModule::FillHistograms() {
   //-----------------------------------------------------------------------------
   // Simp histograms
   //-----------------------------------------------------------------------------
-  if (fParticle) {
+  if (fParticle1) {
     FillSimpHistograms(fHist.fSimp[0],fParticle,WP);
   }
 //-----------------------------------------------------------------------------

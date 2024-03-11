@@ -147,6 +147,7 @@ void THelixAnaModule::BookSimpHistograms(SimpHist_t* Hist, const char* Folder) {
   HBook1F(Hist->fNStrawHits,"nsth"        ,Form("%s: n straw hits"                 ,Folder),200,   0,200,Folder);
   HBook1F(Hist->fMomTargetEnd    ,"ptarg" ,Form("%s: CE mom after Stopping Target" ,Folder),400,  90,110,Folder);
   HBook1F(Hist->fMomTrackerFront ,"pfront",Form("%s: CE mom at the Tracker Front"  ,Folder),400,  90,110,Folder);
+  HBook1F(Hist->fTau   ,"tau"         ,Form("%s: t/tau"                     ,Folder),60,-0,30,Folder);
 }
 
 
@@ -258,7 +259,7 @@ void THelixAnaModule::BookHistograms() {
 //-----------------------------------------------------------------------------
 // need MC truth branch
 //-----------------------------------------------------------------------------
-void THelixAnaModule::FillEventHistograms(EventHist_t* Hist) {
+void THelixAnaModule::FillEventHistograms(EventHist_t* Hist,double Weight) {
   double            cos_th(-2.), xv(-1.e6), yv(-1.e6), rv(-1.e6), zv(-1.e6), p(-1.);
   TLorentzVector    mom;
 
@@ -272,25 +273,25 @@ void THelixAnaModule::FillEventHistograms(EventHist_t* Hist) {
     zv = fParticle->Vz();
   }
 
-  Hist->fEleMom->Fill(p);
-  Hist->fEleCosTh->Fill(cos_th);
-  Hist->fRv->Fill(rv);
-  Hist->fZv->Fill(zv);
+  Hist->fEleMom->Fill(p,Weight);
+  Hist->fEleCosTh->Fill(cos_th,Weight);
+  Hist->fRv->Fill(rv,Weight);
+  Hist->fZv->Fill(zv,Weight);
 
   for (int i=0; i<3; i++) {
-    Hist->fNHelices->Fill(fNHelices);
+    Hist->fNHelices->Fill(fNHelices,Weight);
     // Hist->fNHelPos [i]->Fill(fNHelPos [i]);
     // Hist->fNHelNeg [i]->Fill(fNHelNeg [i]);
   }
 
-  Hist->fNTimeClusters[0]->Fill(fNTimeClusters[0]);
-  Hist->fNTimeClusters[1]->Fill(fNTimeClusters[1]);
+  Hist->fNTimeClusters[0]->Fill(fNTimeClusters[0],Weight);
+  Hist->fNTimeClusters[1]->Fill(fNTimeClusters[1],Weight);
 }
 
 //--------------------------------------------------------------------------------
 // function to fill Helix block
 //--------------------------------------------------------------------------------
-void THelixAnaModule::FillTimeClusterHistograms(TimeClusterHist_t*   Hist, TStnTimeCluster*    TimeCluster){
+void THelixAnaModule::FillTimeClusterHistograms(TimeClusterHist_t*   Hist, TStnTimeCluster*    TimeCluster,double Weight){
   
   int         nhits      = TimeCluster->NHits      ();
   int         ncombohits = TimeCluster->NComboHits ();
@@ -298,17 +299,17 @@ void THelixAnaModule::FillTimeClusterHistograms(TimeClusterHist_t*   Hist, TStnT
   double      time       = TimeCluster->T0();
   double      clusterE   = TimeCluster->ClusterEnergy();
 
-  Hist->fNHits         ->Fill(nhits);	 
-  Hist->fNComboHits    ->Fill(ncombohits);	 
-  Hist->fT0            ->Fill(time);
-  Hist->fClusterEnergy ->Fill(clusterE);
+  Hist->fNHits         ->Fill(nhits,Weight);	 
+  Hist->fNComboHits    ->Fill(ncombohits,Weight);	 
+  Hist->fT0            ->Fill(time,Weight);
+  Hist->fClusterEnergy ->Fill(clusterE,Weight);
 
 }
 
 //--------------------------------------------------------------------------------
 // function to fill Helix block
 //--------------------------------------------------------------------------------
-void THelixAnaModule::FillHelixHistograms(HelixHist_t*   Hist, TStnHelix*    Helix){
+void THelixAnaModule::FillHelixHistograms(HelixHist_t*   Hist, TStnHelix*    Helix,double Weight){
   
   int         nhits    = Helix->NHits      ();
   double      clusterT = Helix->ClusterTime();
@@ -325,22 +326,22 @@ void THelixAnaModule::FillHelixHistograms(HelixHist_t*   Hist, TStnHelix*    Hel
   
 
   Hist->fHelicity      ->Fill(Helix->Helicity());	 
-  Hist->fNHits         ->Fill(nhits);	 
-  Hist->fClusterTime   ->Fill(clusterT);
-  Hist->fClusterEnergy ->Fill(clusterE);
+  Hist->fNHits         ->Fill(nhits,Weight);	 
+  Hist->fClusterTime   ->Fill(clusterT,Weight);
+  Hist->fClusterEnergy ->Fill(clusterE,Weight);
   
-  Hist->fRadius        ->Fill(radius);
-  Hist->fMom           ->Fill(p);
-  Hist->fPt            ->Fill(pT);
-  Hist->fLambda        ->Fill(lambda);
+  Hist->fRadius        ->Fill(radius,Weight);
+  Hist->fMom           ->Fill(p,Weight);
+  Hist->fPt            ->Fill(pT,Weight);
+  Hist->fLambda        ->Fill(lambda,Weight);
   		       
   Hist->fBestAlg       ->Fill(Helix->BestAlg());
   Hist->fAlgMask       ->Fill(Helix->AlgMask());
-  Hist->fD0            ->Fill(Helix->D0());
-  Hist->fT0            ->Fill(Helix->T0());
-  Hist->fT0Err         ->Fill(Helix->T0Err());
-  Hist->fChi2XY        ->Fill(Helix->Chi2XY());
-  Hist->fChi2ZPhi      ->Fill(Helix->Chi2ZPhi());
+  Hist->fD0            ->Fill(Helix->D0(),Weight);
+  Hist->fT0            ->Fill(Helix->T0(),Weight);
+  Hist->fT0Err         ->Fill(Helix->T0Err(),Weight);
+  Hist->fChi2XY        ->Fill(Helix->Chi2XY(),Weight);
+  Hist->fChi2ZPhi      ->Fill(Helix->Chi2ZPhi(),Weight);
 }
 
 //-----------------------------------------------------------------------------
@@ -375,12 +376,41 @@ void THelixAnaModule::FillGenpHistograms(GenpHist_t* Hist, TGenParticle* Genp) {
 }
 
 //-----------------------------------------------------------------------------
-void THelixAnaModule::FillSimpHistograms(SimpHist_t* Hist, TSimParticle* Simp) {
+void THelixAnaModule::FillSimpHistograms(SimpHist_t* Hist, TSimParticle* Simp,double Weight) {
 
-  Hist->fPdgCode->Fill(Simp->fPdgCode);
-  Hist->fMomTargetEnd->Fill(Simp->fMomTargetEnd);
-  Hist->fMomTrackerFront->Fill(Simp->fMomTrackerFront);
-  Hist->fNStrawHits->Fill(Simp->fNStrawHits);
+//-----------------------------------------------------------------------------
+//------weighting---------------  
+//-----------------------------------------------------------------------------
+  int fN2Simp    = fSimpBlock->NParticles();
+  TSimParticle* simp2;
+   fParticle2 = NULL;
+  for (int i=fN2Simp-1; i>=0; i--) 
+    { 
+      simp2 = fSimpBlock->Particle(i);
+      fParticle2 = simp2;
+      //std::cout<<" fMomTrackerFront: "<<simp2->fMomTargetEnd<<" Stage: "<<simp2->SimStage()<<" NStraw: "<<simp2->NStrawHits()<<" Creation code: "<<simp2->CreationCode()<<" Generator ID: "<<simp2->GeneratorID()<<" Parent ID: "<<simp2->ParentID()<<" pdg code: "<<simp2->PDGCode()<<" t/tau: "<<simp2->fEndProperTime<<std::endl;
+
+      const int WeightParam= GetWeightParameter();
+      double end_t2= simp2->fEndProperTime;
+      double ttau2 = exp(-end_t2);
+      //set the weight
+      if (simp2->GeneratorID()==56 && simp2->PDGCode()==211)
+        {
+          if (WeightParam==1)
+            {
+              WP2=ttau2;
+            }
+          Hist->fTau->Fill(simp2->fEndProperTime);
+          //std::cout<<"setting WP2: "<<WP2<<std::endl;
+        }
+      if (simp2->GeneratorID()==181 && simp2->PDGCode()==-11)
+        {
+          Hist->fPdgCode->Fill(Simp->fPdgCode,WP2);
+          Hist->fMomTargetEnd->Fill(Simp->fMomTargetEnd,WP2);
+          Hist->fMomTrackerFront->Fill(Simp->fMomTrackerFront,WP2);
+          Hist->fNStrawHits->Fill(Simp->fNStrawHits,WP2);
+        }
+    } // i loop
 }
 
 //-----------------------------------------------------------------------------
@@ -421,12 +451,38 @@ void THelixAnaModule::FillHistograms() {
   //  float        pfront;
 
 //-----------------------------------------------------------------------------
+// Weight- pi+ survival probablity
+//-----------------------------------------------------------------------------
+  int fN1Simp    = fSimpBlock->NParticles();
+  TSimParticle* simp1;
+  fParticle1 = NULL;
+  for (int i=fN1Simp-1; i>=0; i--)
+    {
+      simp1 = fSimpBlock->Particle(i);
+      fParticle1 = simp1;
+      //----Printing---------------------------------
+      //std::cout<<"Entry: "<<i<<" fMomTrackerFront: "<<simp1->fMomTargetEnd<<" Stage: "<<simp1->SimStage()<<" NStraw: "<<simp1->NStrawHits()<<" Creation code: "<<simp1->CreationCode()<<" Generator ID: "<<simp1->GeneratorID()<<" Parent ID: "<<simp1->ParentID()<<" pdg code: "<<simp1->PDGCode()<<" t/tau: "<<simp1->fEndProperTime<<" unique ID: "<<ID<<std::endl;
+      double end_t = simp1->fEndProperTime;
+      double ttau = exp(-end_t);
+      const int WeightParam1= GetWeightParameter();
+      //set the weight
+      if (simp1->GeneratorID()==56 && simp1->PDGCode()==211)
+        {
+          if(WeightParam1==1)
+            {
+              WP = ttau;
+              //std::cout<<"---WP---"<<WP<<std::endl;
+            }
+        }
+    } //i loop
+//-----------------------------------------------------------------------------
 // event histograms
 //-----------------------------------------------------------------------------
-  FillEventHistograms(fHist.fEvent[0]);
+  FillEventHistograms(fHist.fEvent[0],WP);
 
-  if (fNHelices > 0) FillEventHistograms(fHist.fEvent[1]);
-  else               FillEventHistograms(fHist.fEvent[2]);
+  if (fNHelices > 0) FillEventHistograms(fHist.fEvent[1],WP);
+  else               FillEventHistograms(fHist.fEvent[2],WP);
+  //std::cout<<"---WP event---"<<WP<<std::endl;
 //-----------------------------------------------------------------------------
 // fill GENP histograms
 // GEN_0: all particles
@@ -440,7 +496,8 @@ void THelixAnaModule::FillHistograms() {
 // Simp histograms
 //-----------------------------------------------------------------------------
   if (fSimp) {
-    FillSimpHistograms(fHist.fSimp[0],fSimp);
+    FillSimpHistograms(fHist.fSimp[0],fParticle1,WP);
+    //std::cout<<"---WP simp---"<<WP<<std::endl;
   }
 
 //--------------------------------------------------------------------------------
@@ -450,11 +507,12 @@ void THelixAnaModule::FillHistograms() {
   for (int i=0; i<fNTimeClusters[0]; ++i){
     tCluster = fTimeClusterBlock[0]->TimeCluster(i);
     
-    FillTimeClusterHistograms(fHist.fTimeCluster[0], tCluster);
+    FillTimeClusterHistograms(fHist.fTimeCluster[0], tCluster,WP);
     
     int nhits = tCluster->NHits();
-    if (nhits >= 10 ) FillTimeClusterHistograms(fHist.fTimeCluster[1], tCluster);
-    if (nhits >= 15 ) FillTimeClusterHistograms(fHist.fTimeCluster[2], tCluster);
+    if (nhits >= 10 ) FillTimeClusterHistograms(fHist.fTimeCluster[1], tCluster,WP);
+    if (nhits >= 15 ) FillTimeClusterHistograms(fHist.fTimeCluster[2], tCluster,WP);
+    //std::cout<<"---WP tc---"<<WP<<std::endl;
   }  
 //--------------------------------------------------------------------------------
 // fill helix histograms
@@ -468,7 +526,7 @@ void THelixAnaModule::FillHistograms() {
     
     helix = fHelixBlock->Helix(i);
     
-    FillHelixHistograms(fHist.fHelix[hist_offset+0], helix);
+    FillHelixHistograms(fHist.fHelix[hist_offset+0], helix,WP);
     
     // int         nhits    = helix->NHits();
     double      radius   = helix->Radius();
@@ -479,7 +537,7 @@ void THelixAnaModule::FillHistograms() {
     // double      chi2xy   = helix->Chi2XY();
     // double      chi2zphi = helix->Chi2ZPhi();
     
-    if (p >  80.) FillHelixHistograms(fHist.fHelix[hist_offset+1], helix);
+    if (p >  80.) FillHelixHistograms(fHist.fHelix[hist_offset+1], helix,WP);
   }
 
   //  first_entry = 0;
