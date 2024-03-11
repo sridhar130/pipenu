@@ -25,6 +25,7 @@
 #include "Stntuple/geom/TStnCrystal.hh"
 #include "Stntuple/alg/TStnTrackID.hh"
 #include "Stntuple/alg/TEmuLogLH.hh"
+#include "cetlib_except/exception.h"
 
 namespace pipenu {
 class TTrackAnaModule: public TStnModule {
@@ -270,8 +271,8 @@ public:
 
   double            fMinT0;
   double            fBField;
-  double            WP;
-  double            WP2=0.;
+  double            WP= 1.;
+  double            WP2=1.;
 //-----------------------------------------------------------------------------
 //  functions
 //-----------------------------------------------------------------------------
@@ -297,6 +298,16 @@ public:
   void               SetPdgCode      (int Code ) { fPdgCode       = Code ; }
   void               SetGeneratorCode(int Code ) { fGeneratorCode = Code ; }
   void               SetTrackBlockName(const char* Name) { fTrackBlockName = Name; }
+//-----------------------------------------------------------------------------
+// getters
+//-----------------------------------------------------------------------------
+  int GetWeightParameter() const{return fParam;}
+  void SetWeightParameter(int newVal)
+  { if (newVal!=0 && newVal!=1)
+      { throw cet::exception("BADINPUT") <<"Weight Parameter has to be 0 or 1.";}
+    fParam = newVal;
+  }
+
 //-----------------------------------------------------------------------------
 // overloaded methods of TStnModule
 //-----------------------------------------------------------------------------
@@ -326,6 +337,8 @@ public:
 // test
 //-----------------------------------------------------------------------------
   void    Test001();
+
+  int     fParam;  // set the weight parameter
 
   ClassDef(TTrackAnaModule,0)
 };

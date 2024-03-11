@@ -452,20 +452,27 @@ void TTrackAnaModule::BookHistograms() {
       // }
       //std::cout<<" fMomTrackerFront: "<<simp2->fMomTargetEnd<<" Stage: "<<simp2->SimStage()<<" NStraw: "<<simp2->NStrawHits()<<" Creation code: "<<simp2->CreationCode()<<" Generator ID: "<<simp2->GeneratorID()<<" Parent ID: "<<simp2->ParentID()<<" pdg code: "<<simp2->PDGCode()<<" t/tau: "<<simp2->fEndProperTime<<std::endl;
   
+      const int WeightParam= GetWeightParameter();
+    
+
       double end_t2= simp2->fEndProperTime;
       double ttau2 = exp(-end_t2);
   //set the weight
       if (simp2->GeneratorID()==56 && simp2->PDGCode()==211)
-        {WP2=ttau2;
-         Hist->fTau->Fill(simp2->fEndProperTime);
-         std::cout<<"setting WP2: "<<WP2<<std::endl;
+        {
+          if   (WeightParam==1)
+            {        
+            WP2=ttau2;
+            }
+          Hist->fTau->Fill(simp2->fEndProperTime);
+          //std::cout<<"setting WP2: "<<WP2<<std::endl;
 
          }
   //------weighting end---------------  
  
   if (simp2->GeneratorID()==181 && simp2->PDGCode()==-11)
   {
-    std::cout<<"getting WP2: "<<WP2<<std::endl;
+    //std::cout<<"getting WP2: "<<WP2<<std::endl;
     Hist->fPdgCode->Fill((simp2->PDGCode()),WP2);
     Hist->fMomTargetEnd->Fill((simp2->fMomTargetEnd),WP2);
     Hist->fMomTrackerFront->Fill((simp2->fMomTrackerFront),WP2);
@@ -733,9 +740,11 @@ void TTrackAnaModule::FillHistograms() {
       //std::cout<<"Entry: "<<i<<" fMomTrackerFront: "<<simp1->fMomTargetEnd<<" Stage: "<<simp1->SimStage()<<" NStraw: "<<simp1->NStrawHits()<<" Creation code: "<<simp1->CreationCode()<<" Generator ID: "<<simp1->GeneratorID()<<" Parent ID: "<<simp1->ParentID()<<" pdg code: "<<simp1->PDGCode()<<" t/tau: "<<simp1->fEndProperTime<<" unique ID: "<<ID<<std::endl;
       double end_t = simp1->fEndProperTime;
       double ttau = exp(-end_t);
+      const int WeightParam1= GetWeightParameter();
   //set the weight
       if (simp1->GeneratorID()==56 && simp1->PDGCode()==211)
-        {WP=ttau;}
+        if(WeightParam1)
+          {{WP=ttau;}}
       //         std::cout<<"---ttau---"<<ttau<<std::endl;}
   }
   //------weighting end---------------
@@ -763,7 +772,7 @@ void TTrackAnaModule::FillHistograms() {
     //    tp  = fTrackPar+i;
 
     FillTrackHistograms(fHist.fTrack[0],trk,WP);
-    std::cout<<" Velue of WP inside: "<<WP<<std::endl;
+    //std::cout<<" Velue of WP inside: "<<WP<<std::endl;
     if (trk->NActive() >= 20)   FillTrackHistograms(fHist.fTrack[1],trk,WP);
     if (trk->NActive() >= 30)   FillTrackHistograms(fHist.fTrack[2],trk,WP);
     if (trk->TanDip()  > 0.8) { 

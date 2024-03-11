@@ -274,7 +274,7 @@ public:
   void    Test001();
 private:
 
-  int                   fParam;  // set the weight parameter
+  int     fParam;  // set the weight parameter
 
   ClassDef(TSpmcAnaModule,0)
 };
