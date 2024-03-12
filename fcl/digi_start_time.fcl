@@ -1,9 +1,9 @@
 # -*- mode:tcl -*-
 #------------------------------------------------------------------------------
-# DIGI_START_TIME can be redefined in the top-level FCL (via @protect_ignore)
+# DIGI_START_TIME has to be defined not here,  but in the top-level FCL (via @protect_ignore)
 # defines the minimal time for the digi making algorithms
 #------------------------------------------------------------------------------
-DIGI_START_TIME : 400
+# DIGI_START_TIME : 400
 #------------------------------------------------------------------------------
 # tracker 
 services.ProditionsService.strawElectronics.digitizationStart : @local::DIGI_START_TIME

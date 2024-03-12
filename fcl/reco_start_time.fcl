@@ -3,7 +3,7 @@
 # RECO_START_TIME can be redefined in the top-level FCL (via @protect_ignore)
 # this is the minimum time for the hit making algorithms
 #------------------------------------------------------------------------------
-RECO_START_TIME : 400
+# RECO_START_TIME : 400
 #------------------------------------------------------------------------------
 # tracker 
 physics.producers.makeSH.MinimumTime                      : 100
