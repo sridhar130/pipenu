@@ -248,6 +248,14 @@ void TTrackAnaModule::BookSimpHistograms(SimpHist_t* Hist, const char* Folder) {
   HBook1F(Hist->fMomTargetEnd    ,"ptarg" ,Form("%s: CE mom after Stopping Target" ,Folder),400,  40,80,Folder);
   HBook1F(Hist->fMomTrackerFront ,"pfront",Form("%s: CE mom at the Tracker Front"  ,Folder),400,  40,80,Folder);
   HBook1F(Hist->fTau   ,"tau"         ,Form("%s: t/tau"                     ,Folder),60,-0,30,Folder);
+  HBook1F(Hist->fTime        ,"time"     ,Form("%s: Stop Time"   ,Folder), 200,     0, 1000,Folder);
+  HBook1F(Hist->fPTime        ,"pi+ time"     ,Form("%s: pi+ Stop Time"   ,Folder), 200,     0, 2000,Folder);
+  HBook1F(Hist->fParentMom   ,"pmom"     ,Form("%s: Parent Mom"  ,Folder), 100,     0, 100,Folder);
+  HBook1F(Hist->fParentZEnd   ,"pzend"     ,Form("%s: Parent End Z location"  ,Folder), 50, 5400., 6400.,Folder);
+  HBook2F(Hist->fTVsTau   ,"time_vs_tau",Form("%s: time vs tau"   ,Folder),  100,   0 ,1000,50, 0., 50.,Folder);
+  HBook2F(Hist->fTimeVsPMom   ,"PMom_vs_Time",Form("%s: time vs pmom"   ,Folder),  100,   0 ,1000,50, 0., 100.,Folder);
+  HBook2F(Hist->fTimeVsPEndz   ,"PEndz_vs_Time",Form("%s: time vs pendz"   ,Folder),  100,   0 ,1000,50, 5400., 6400.,Folder);
+  HBook2F(Hist->fTimeVsPTime   ,"PTime_vs_Time",Form("%s: time vs ptime"   ,Folder),  100, 0 ,1000,100,0.,1000.,Folder);
 }
 
 
@@ -310,6 +318,7 @@ void TTrackAnaModule::BookHistograms() {
   book_track_histset[  2] = 1;		// tracks  Na > 30 hits
   book_track_histset[  3] = 1;		// tracks  tdip > 0.8 hits
   book_track_histset[  4] = 1;		// tracks  Na > 30 tdip > 0.8 hits
+  book_track_histset[  5] = 1;		// tracks  t0> 500 ns
 
   for (int i=0; i<kNTrackHistSets; i++) {
     if (book_track_histset[i] != 0) {
@@ -442,7 +451,9 @@ void TTrackAnaModule::BookHistograms() {
 
    
   fParticle2 = NULL;
-  for (int i=fN2Simp-1; i>=0; i--) {
+  //  for (int i=fN2Simp-1; i>=0; i--) 
+  for (int i=0; i<fN2Simp;i++) 
+{
     simp2           = fSimpBlock->Particle(i);
     //    pdg_code       = simp->PDGCode();
     // generator_code = simp->GeneratorID();
@@ -460,25 +471,36 @@ void TTrackAnaModule::BookHistograms() {
   //set the weight
       if (simp2->GeneratorID()==56 && simp2->PDGCode()==211)
         {
+          ParentTime = simp2->EndPos()->T();   //pi+ stop time
+          ParentEndZ = simp2->EndPos()->Z();   //pi+ stop z
+          ParentMom  = simp2->StartMom()->P();   //pi+ start mom
+          ParentTau  = simp2->fEndProperTime;  // pi+ t/tau
           if   (WeightParam==1)
             {        
             WP2=ttau2;
             }
-          Hist->fTau->Fill(simp2->fEndProperTime);
+          Hist->fTau->Fill(ParentTau);
+          Hist->fPTime->Fill(ParentTime,WP2);
+          Hist->fParentMom->Fill(ParentMom,WP2);
+          Hist->fParentZEnd->Fill(ParentEndZ,WP2);
           //std::cout<<"setting WP2: "<<WP2<<std::endl;
 
          }
   //------weighting end---------------  
  
-  if (simp2->GeneratorID()==181 && simp2->PDGCode()==-11)
-  {
-    //std::cout<<"getting WP2: "<<WP2<<std::endl;
-    Hist->fPdgCode->Fill((simp2->PDGCode()),WP2);
-    Hist->fMomTargetEnd->Fill((simp2->fMomTargetEnd),WP2);
-    Hist->fMomTrackerFront->Fill((simp2->fMomTrackerFront),WP2);
-    Hist->fNStrawHits->Fill((simp2->NStrawHits()),WP2);
-
-   }
+      if (simp2->GeneratorID()==181 && simp2->PDGCode()==-11)
+        {
+          //std::cout<<"getting WP2: "<<WP2<<std::endl;
+          Hist->fPdgCode->Fill((simp2->PDGCode()),WP2);
+          Hist->fMomTargetEnd->Fill((simp2->fMomTargetEnd),WP2);
+          Hist->fMomTrackerFront->Fill((simp2->fMomTrackerFront),WP2);
+          Hist->fNStrawHits->Fill((simp2->NStrawHits()),WP2);
+          Hist->fTime->Fill(simp2->EndPos()->T(),WP2);
+          Hist->fTVsTau->Fill(simp2->EndPos()->T(),ParentTau);
+          Hist->fTimeVsPMom->Fill(ParentTime,ParentMom);
+          Hist->fTimeVsPEndz->Fill(ParentTime,ParentEndZ);
+          Hist->fTimeVsPTime->Fill(simp2->EndPos()->T(),ParentTime);
+        }
   } //i loop
  
 }
@@ -541,6 +563,22 @@ void TTrackAnaModule::BookHistograms() {
   Hist->fXc->Fill(tp->fXc,Weight);
   Hist->fYc->Fill(tp->fYc,Weight);
   Hist->fPhic->Fill(tp->fPhic,Weight);
+
+//-----------------------------------------------------------------------------
+// Print from get header block:
+/*
+  double ch2ndf = Track->fChi2/(Track->NActive()-5.);
+  if (Track->fT0 >700.)
+    {
+      GetHeaderBlock()->Print(Form("dt = %f PFront = %f, chi2ndf = %f, do = %f, hits = %i",Track->Dt(),Track->fPFront,ch2ndf,Track->fD0,Track->NActive()));
+      fSimpBlock->Print();
+      //fTrackBlock->Print();
+      //fGenpBlock->Print();
+      //fSimpBlock
+
+    }
+*/
+//-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
 // track-cluster matching part: 
@@ -779,6 +817,7 @@ void TTrackAnaModule::FillHistograms() {
       FillTrackHistograms(fHist.fTrack[3],trk,WP);
       if (trk->NActive() >= 30) FillTrackHistograms(fHist.fTrack[4],trk,WP);
     }
+    if (trk->fT0 >= 550.)   FillTrackHistograms(fHist.fTrack[5],trk,WP);
   }
 //-----------------------------------------------------------------------------
 // fill GENP histograms

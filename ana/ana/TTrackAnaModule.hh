@@ -192,6 +192,14 @@ public:
     TH1F*    fMomTrackerFront;
     TH1F*    fNStrawHits;
     TH1F*    fTau;
+    TH1F*    fTime;
+    TH1F*    fPTime;
+    TH1F*    fParentMom;
+    TH1F*    fParentZEnd;
+    TH2F*    fTVsTau;
+    TH2F*    fTimeVsPMom;
+    TH2F*    fTimeVsPEndz;
+    TH2F*    fTimeVsPTime;
   };
 
 //-----------------------------------------------------------------------------
@@ -273,6 +281,10 @@ public:
   double            fBField;
   double            WP= 1.;
   double            WP2=1.;
+  double            ParentTime=0.;
+  double            ParentMom=0.;
+  double            ParentEndZ=0.;
+  double            ParentTau=0.;
 //-----------------------------------------------------------------------------
 //  functions
 //-----------------------------------------------------------------------------
