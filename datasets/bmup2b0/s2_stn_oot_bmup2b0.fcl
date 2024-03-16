@@ -1,0 +1,53 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+#
+#------------------------------------------------------------------------------
+BEGIN_PROLOG
+  TRIGGER_PATHS       @protect_ignore: [ ] 
+  STN_VDHITS_COLL_TAG @protect_ignore: "ootStopFilter:virtualdetector"
+END_PROLOG
+
+#include "Stntuple/fcl/stntuple.fcl"
+
+process_name : S3G4MubeamStn
+source       : { module_type:RootInput fileNames:["undefined"] }
+
+physics : {
+    analyzers  : { @table::stntuple.analyzers 
+	StntupleMaker: { @table::stntuple.analyzers.StntupleMaker
+#------------------------------------------------------------------------------
+# disable everything, enable StepPointMC's, VDET block is just yet another StepPointMC block
+#------------------------------------------------------------------------------
+	    makeClusters     : 0
+	    makeCrvClusters  : 0  ## default: 1
+	    makePid          : 0
+	    makeSimp         : 1
+
+	    makeStepPointMC  : 1
+	    makeTracks       : 0
+	    makeTrigger      : 0
+	    
+	    ## genId            : "particleGun"  ## = 1
+            primaryParticleTag : "" ## no primaries
+	    
+	    genpCollTag      : "generate"
+	    simpCollTag      : "ootStopFilter"
+            minSimpMomentum  : -1   ## store all particles
+
+	    spmcBlockName    :[ "SpmcBlockVDet"             ]                      
+	    spmcCollTag      :[ @local::STN_VDHITS_COLL_TAG ]
+	    statusG4Tag      :[ "g4run"			    ]
+	}
+    }
+    
+    @table::stntuple.paths
+
+    trigger_paths : []
+
+    end_paths     : [ "p0" ]  ## defined in Stntuple/fcl/stntuple.fcl
+}
+#------------------------------------------------------------------------------
+# output files: 
+#-----------------------------------------------------------------------------
+services.TFileService.fileName              : "nts.mu2e.bmup2b0s21b0.pipenu.001210_00000001.root"
+physics.analyzers.InitStntuple.histFileName : "nts.mu2e.bmup2b0s21b0.pipenu.001210_00000001.stn"

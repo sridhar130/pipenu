@@ -1,0 +1,140 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# original: Production/JobConfig/pileup/MuonBeamResampler.fcl
+# Re-sample muons and associated particles entering the DS, 
+# propagate them to the detectors or stopping target, and write out 
+# the corresponding flash DetectorSteps and target mustops.
+# Note the main flash stream has a time cut to avoid energy 
+# far outside the digitization window.  A prescaled but otherwise uncut stream is used to
+# record the flash peak
+#
+# incorporate OOT
+#
+# original author: Yuri Oksuzian, 2019
+# Updated for MDC2020 (DetectorSteps): D. Brown
+#------------------------------------------------------------------------------
+#include "Offline/fcl/standardServices.fcl"
+#include "Production/JobConfig/common/prolog.fcl"
+#include "pipenu/fcl/pileup/prolog.fcl"
+
+process_name: S3Sim
+
+#------------------------------------------------------------------------------
+services                            : @local::Services.Sim
+services.SeedService.baseSeed       :  8
+services.GeometryService.inputFile  : "pipenu/datasets/bmup3b0/geom_pipenu_bmup3b0.txt"
+services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
+
+#------------------------------------------------------------------------------
+source : { module_type : RootInput }
+
+#------------------------------------------------------------------------------
+physics: {
+  producers : {
+    @table::Common.producers
+    @table::Pileup.producers
+  }
+  filters : {
+    @table::Common.filters
+    @table::Pileup.filters
+  }
+  analyzers : {
+    @table::Common.analyzers
+  }
+  # setup paths
+  targetStopPath : [ @sequence::Common.g4Sequence, TargetStopPrescaleFilter, TargetMuonFinder, TargetStopFilter, compressPVTargetStops]
+  ootStopPath    : [ @sequence::Common.g4Sequence, ootMuonFinder, ootStopFilter, compressPVOOTStops]
+  IPAStopPath    : [ @sequence::Common.g4Sequence, IPAMuonFinder, IPAStopFilter, compressPVIPAStops]
+  trigger_paths  : [ targetStopPath  , ootStopPath  , IPAStopPath   ]
+  outPath        : [ TargetStopOutput, ootStopOutput, IPAStopOutput ]#------------------------------------------------------------------------------
+
+  end_paths      : [ outPath ]
+}
+#------------------------------------------------------------------------------
+# configure output of interest: mu+/mu-, pi+/pi-, pbars
+# 
+# s31 : target stops all
+# s32 : out of target stops
+# s33 : IPA stops    mu-
+#
+# s41 : target stops mu-
+# s42 : target stops mu+
+# s43 : target stops pi-
+# s44 : target stops mu-
+# 
+# for NPOT=10^8, the rest should probably be small
+#------------------------------------------------------------------------------
+outputs: {
+    TargetStopOutput : {
+        module_type: RootOutput
+        outputCommands:   [ "drop *_*_*_*",
+                            @sequence::Pileup.SimKeptProducts,
+                            "keep *_TargetStopFilter_*_*",
+                            "keep *_compressPVTargetStops_*_*"
+                           ]
+        SelectEvents: [targetStopPath]
+    }
+
+    IPAStopOutput : { module_type: RootOutput
+        outputCommands:   [ "drop *_*_*_*",
+                            @sequence::Pileup.SimKeptProducts,
+                            "keep *_IPAStopFilter_*_*",
+                            "keep *_compressPVIPAStops_*_*"
+                           ]
+        SelectEvents: [IPAStopPath]
+    }
+
+    ootStopOutput : { module_type: RootOutput
+        outputCommands:   [ "drop *_*_*_*",
+                            @sequence::Pileup.SimKeptProducts,
+                            "keep *_ootStopFilter_*_*",
+                            "keep *_compressPVOOTStops_*_*"
+                           ]
+        SelectEvents: [ ootStopPath ]
+    }
+}
+
+# set prescale factors
+# physics.filters.TargetStopPrescaleFilter.nPrescale : @local::Pileup.MuminusTargetStopPrescale
+# physics.filters.EarlyPrescaleFilter.nPrescale      : @local::Pileup.EarlyMuBeamFlashPrescale
+
+# Point Mu2eG4 to the pre-simulated data
+physics.producers.g4run.inputs: {
+    primaryType                 : "StepPoints"
+    primaryTag                  : "BeamFilter:Beam"
+    inputMCTrajectories         : ""
+    # simStageOverride            : 0 # 2
+    inputPhysVolumeMultiInfo    : "compressPVBeam"
+#     updateEventLevelVolumeInfos : {
+# 	input                   : "compressPVBeam"
+#  	# input                   : ""
+# 	outInstance             : "eventlevel"
+#     }
+}
+# copy over VD hits
+physics.producers.g4run.SDConfig.preSimulatedHits:  ["BeamFilter:virtualdetector"]
+
+#include "Production/JobConfig/common/epilog.fcl"
+#include "Production/JobConfig/pileup/epilog.fcl"
+#------------------------------------------------------------------------------
+# reconfigure StepPoint producers to avoid double-counting particles from the mustop filter deep copy
+# important : 
+# - disable useEventLevelVolumeInfo by MuonFinders
+# - use "g4run" tag of physVolInfoInput       , different from "g4run:eventlevel"
+#------------------------------------------------------------------------------
+# wanted to use a simple physics list to speed up the initialization
+# smth is wrong with QGSP_BERT, don'y use it
+#------------------------------------------------------------------------------
+#physics.producers.g4run.physics.physicsListName           : "QGSP_BERT"
+physics.producers.IPAMuonFinder.physVolInfoInput          : "g4run"  ## "g4run:eventlevel"
+physics.producers.IPAMuonFinder.useEventLevelVolumeInfo   : false    ## true
+# physics.producers.IPAMuonFinder.verbosityLevel          : 100
+
+physics.producers.TargetMuonFinder.physVolInfoInput        : "g4run" ## "g4run:eventlevel"
+physics.producers.TargetMuonFinder.useEventLevelVolumeInfo : false   ## true
+# physics.producers.TargetMuonFinder.verbosityLevel          : 100
+#------------------------------------------------------------------------------
+outputs.TargetStopOutput.fileName   : "sim.mu2e.bmup3b0s21r0000.pipenu.001210_00000000.art"
+outputs.ootStopOutput.fileName      : "sim.mu2e.bmup3b0s22r0000.pipenu.001210_00000000.art"
+outputs.IPAStopOutput.fileName      : "sim.mu2e.bmup3b0s23r0000.pipenu.001210_00000000.art"
+# filenames should be s21, s22 ... or s31, s32...

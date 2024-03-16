@@ -1,0 +1,157 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# P.M. : mu+ decays in flight
+# - start from muons reaching the DS
+# - re-sample input particles, propagate them to the detectors and write out 
+#   the corresponding DetectorSteps 
+# - filter out events with stopped muons
+#------------------------------------------------------------------------------
+#include "Offline/fcl/standardServices.fcl"
+#include "Production/JobConfig/common/prolog.fcl"
+#include "Production/JobConfig/primary/prolog.fcl"
+#include "pipenu/fcl/pileup/prolog.fcl"
+#------------------------------------------------------------------------------
+process_name: S2Resample
+#------------------------------------------------------------------------------
+# 1. services redefinitions
+#------------------------------------------------------------------------------
+services                            : @local::Services.Sim
+services.SeedService.baseSeed       :  8
+
+services.GeometryService.inputFile  : "pipenu/datasets/bmup2b0/geom_pipenu_bmup2b0.txt"
+services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
+#------------------------------------------------------------------------------
+# 2. inputs and outputs
+#------------------------------------------------------------------------------
+source : { module_type : EmptyEvent }
+
+outputs : {
+    s24 : {
+        module_type: RootOutput
+        outputCommands:   [ "drop *_*_*_*", 
+                            @sequence::Pileup.DtsKeptProducts ,
+                            "keep mu2e::PrimaryParticle_*_*_*",
+                            "keep mu2e::StepPointMCs_compressDetStepMCs_*_*",
+                            "keep mu2e::SimParticleart::Ptrmu2e::MCTrajectorystd::map_compressDetStepMCs_*_*"
+                           ]
+#        outputCommands:   [ "keep *_*_*_*" ]
+        SelectEvents: [ p24 ]
+#        SelectEvents: [  ]
+        fileName : "dts.owner.xxxxxx.version.sequencer.art"
+    }
+}
+#------------------------------------------------------------------------------
+# 3. physics table
+#------------------------------------------------------------------------------
+physics: {
+    producers : {
+        @table::Common.producers
+        @table::Pileup.producers
+        @table::Primary.producers
+    }
+    filters : {
+        @table::Common.filters
+        @table::Pileup.filters
+    }
+    analyzers : {
+        @table::Common.analyzers
+    }
+#------------------------------------------------------------------------------
+# p24: select events with hits in detectors
+#------------------------------------------------------------------------------
+    p24 : [ @sequence::Pileup.beamResamplerSequence, 
+            @sequence::Common.g4Sequence, 
+            TargetMuonFinder, "!TargetStopFilter",       ## filter out muon stops in ST
+            ootMuonFinder   , "!ootStopFilter"   ,       ## filter out out-of-target stops
+            @sequence::Pileup.flashSequence, 
+            @sequence::Pileup.DetStepSequence,
+            FindMCPrimary
+           ]
+
+    trigger_paths  : [ p24 ]
+
+    e1             : [ s24 ]
+    end_paths      : [ e1  ]
+}
+#------------------------------------------------------------------------------
+# 5. redefinitions
+# Point Mu2eG4 to the pre-simulated data
+#------------------------------------------------------------------------------
+physics.producers.g4run.inputs: {
+    primaryType                 : "StepPoints"
+    primaryTag                  : "beamResampler:Beam"
+    inputMCTrajectories         : ""
+    simStageOverride            : 1
+    inputPhysVolumeMultiInfo    : "beamResampler"
+    updateEventLevelVolumeInfos : {
+        input                   : "beamResampler:eventlevel"
+        outInstance             : "eventlevel"
+    }
+}
+#------------------------------------------------------------------------------
+# copy over VD hits
+#------------------------------------------------------------------------------
+physics.producers.g4run.SDConfig.preSimulatedHits:  ["beamResampler:virtualdetector"]
+
+#include "Production/JobConfig/common/MT.fcl"
+#include "Production/JobConfig/common/epilog.fcl"
+
+## // include "Production/JobConfig/pileup/epilog.fcl"
+
+# don't create MCTrajectories
+physics.producers.g4run.TrajectoryControl.produce                   : true
+physics.producers.g4run.TrajectoryControl.saveTrajectoryMomentumCut : 30       ## in MeV/c
+
+# turn on detector SDs
+physics.producers.g4run.SDConfig.enableSD: [@sequence::physics.producers.g4run.SDConfig.enableSD, 
+                                            "protonabsorber", "stoppingtarget" ]
+
+# no special deltas treatment for pileup
+physics.producers.StrawGasStepMaker.KeepDeltasModule : ""
+
+# Kill stuck e+/e-
+physics.producers.g4run.Mu2eG4CommonCut:{
+    type: intersection
+    pars: [
+           {type: intersection pars: [ { type: kineticEnergy cut: 1.0 }, { type: pdgId pars: [ 11, -11] }]},
+           {type: inVolume pars    : [ TS2Vacuum, TS3Vacuum, TS4Vacuum, TS5Vacuum, DS2Vacuum, HallAir ]}
+          ]
+}
+#------------------------------------------------------------------------------
+# defined range of muon decays times to increase the simulation efficiency
+#------------------------------------------------------------------------------
+physics.producers.g4run.physics.muonMinPreAssignedDecayProperTime:   0. // ns
+physics.producers.g4run.physics.muonMaxPreAssignedDecayProperTime: 150. // ns
+
+# physics.producers.TargetMuonFinder.physVolInfoInput        : "g4run" ## "g4run:eventlevel"
+
+physics.producers.ootMuonFinder.vetoedMaterials              : [ "StoppingTarget_Al" ]
+#------------------------------------------------------------------------------
+# useEventLevelVolumeInfo=true and 'g4run:eventlevel' come together
+#------------------------------------------------------------------------------
+physics.producers.ootMuonFinder.useEventLevelVolumeInfo      : true
+physics.producers.ootMuonFinder.physVolInfoInput             : "g4run:eventlevel"   ## "g4run" or "g4run:eventlevel"
+#------------------------------------------------------------------------------
+# reconfigure StepPoint producers to avoid double-counting particles 
+# from the mustop filter deep copy
+#------------------------------------------------------------------------------
+physics.producers.StrawGasStepMaker.SkipTheseStepPoints       : "g4run"
+physics.producers.StrawGasStepMaker.KeepDeltasModule          : ""
+physics.producers.CaloShowerStepMaker.caloStepPointCollection : [ "FlashFilter:calorimeter" ]
+physics.producers.CrvSteps.stepPointsModuleLabels             : [ "FlashFilter" ]
+physics.producers.compressDetStepMCs.simParticleTags          : [ "FlashFilter" ]
+# physics.producers.compressDetStepMCs.mcTrajectoryTag          : ""  ## don't compress MC Trajectories - there is nothing to compress
+
+physics.producers.FindMCPrimary.PrimaryProcess                : "Decay"
+# physics.producers.FindMCPrimary.debugLevel                    : 100
+
+#------------------------------------------------------------------------------
+physics.filters.beamResampler.fileNames : [
+"/exp/mu2e/data/projects/pipenu/datasets/bmup0b0s11r0000/sim.murat.bmup0b0s11r0000.pipenu.001210_00000000.art"
+]
+physics.filters.beamResampler.mu2e.MaxEventsToSkip: 0
+
+physics.filters.DetStepFilter.TimeCutConfig.MinimumTime :   10.
+physics.filters.DetStepFilter.TimeCutConfig.MaximumTime : 2000.
+#------------------------------------------------------------------------------
+outputs.s24.fileName   : "dts.mu2e.bmup2b0s24r0000.pipenu.001210_00000000.art"
