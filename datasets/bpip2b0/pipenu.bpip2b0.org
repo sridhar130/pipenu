@@ -91,136 +91,16 @@ f# -*- mode:org -*-
 * ---------------------------------------------------------------------------------------------------------------
 * data formats                                                                                                
 * ---------------------------------------------------------------------------------------------------------------
-* sim.mu2e.pbar2m.bmum0b0s11r0000.art                                                                         
-** 16-Oct-2023                                                                                                
-murat@mu2ebuild01:/mu2e/app/users/murat/muse>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl results/2023-10-16-20-26.s1_sim_bmum0b0.mu2ebuild01.12844/sim.mu2e.bmum0b0s11r0000.pbar2m.001210_00000000.art
+* sim.mu2e.bpip2b0s24r0000.pipenu.art  <2024-03-14 Thu>                                                      
+murat@mu2ebuild01:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -S pipenu/datasets/bpip2b0/catalog/sim.mu2e.bpip2b0s24r0000.pipenu.art.files 
    ************************** Mu2e Offline **************************
-     art v3_13_02    root v6_28_04c    KinKal v02_04_02
-     build  /mu2e/app/users/murat/muse
-     build  sl7-prof-e20-p047    10/16/23 20:25:33
+     art v3_14_03    root v6_28_10a    KinKal v02_05_00b
+     build  /exp/mu2e/app/users/murat/muse_002
+     build  sl7-prof-e28-p055    03/12/24 22:44:06
    ******************************************************************
-16-Oct-2023 21:15:45 CDT  Initiating request to open input file "results/2023-10-16-20-26.s1_sim_bmum0b0.mu2ebuild01.12844/sim.mu2e.bmum0b0s11r0000.pbar2m.001210_00000000.art"
-16-Oct-2023 21:15:45 CDT  Opened input file "results/2023-10-16-20-26.s1_sim_bmum0b0.mu2ebuild01.12844/sim.mu2e.bmum0b0s11r0000.pbar2m.001210_00000000.art"
-Begin processing the 1st record. run: 1210 subRun: 0 event: 214 at 16-Oct-2023 21:15:47 CDT
-Found 5 data products in this Event
-Data products: 
-Friendly Class Name  Module Label    Instance Name  Process Name     Product ID
-mu2e::SimParticlemv    BeamFilter                            POT   198111821
- mu2e::GenParticles      generate                            POT   590160162
- mu2e::StepPointMCs    BeamFilter             Beam           POT  1754366283
- mu2e::StepPointMCs    BeamFilter  virtualdetector           POT  3373559849
-     mu2e::StatusG4         g4run                            POT  4179471200
-
-Found 2 data products in this SubRun
-Data products: 
-        Friendly Class Name    Module Label  Instance Name  Process Name     Product ID
-        mu2e::GenEventCount      genCounter                          POT  3358959612
-mu2e::PhysicalVolumeInfomvs  compressPVBeam                          POT  3480116073
-
-Found 0 data products in this Run
-16-Oct-2023 21:15:47 CDT  Closed input file "results/2023-10-16-20-26.s1_sim_bmum0b0.mu2ebuild01.12844/sim.mu2e.bmum0b0s11r0000.pbar2m.001210_00000000.art"
-Art has completed and will exit with status 0.
-** 17-Aug-2022                                                                                                
-murat@mu2ebuild01:/mu2e/app/users/murat/muse>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s /mu2e/app/users/nigrelli/r001/results/bmum0_s1_sim/sim.mu2e.pbar2m.bmum0s11b0.001000_00000000.art 
-   ************************** Mu2e Offline **************************
-     art v3_11_01    root v6_26_00    KinKal v02_01_00
-     build  /mu2e/app/users/murat/muse
-     build  sl7-debug-e20-p026    08/16/22 18:16:09
-   ******************************************************************
-17-Aug-2022 17:36:21 CDT  Initiating request to open input file "/mu2e/app/users/nigrelli/r001/results/bmum0_s1_sim/sim.mu2e.pbar2m.bmum0s11b0.001000_00000000.art"
-17-Aug-2022 17:36:21 CDT  Opened input file "/mu2e/app/users/nigrelli/r001/results/bmum0_s1_sim/sim.mu2e.pbar2m.bmum0s11b0.001000_00000000.art"
-Begin processing the 1st record. run: 1 subRun: 0 event: 2 at 17-Aug-2022 17:36:23 CDT
-Found 5 data products in this Event
-Data products: 
-Friendly Class Name  Module Label    Instance Name  Process Name     Product ID
-     mu2e::StatusG4         g4run                          S1Sim  1104244220
- mu2e::StepPointMCs    BeamFilter           mubeam         S1Sim  1188941664
- mu2e::StepPointMCs    BeamFilter  virtualdetector         S1Sim  1902879461
-mu2e::SimParticlemv    BeamFilter                          S1Sim  1934371984
- mu2e::GenParticles      generate                          S1Sim  2398351477
-
-Found 2 data products in this SubRun
-Data products: 
-        Friendly Class Name    Module Label  Instance Name  Process Name     Product ID
-mu2e::PhysicalVolumeInfomvs  compressPVBeam                        S1Sim   766382810
-        mu2e::GenEventCount      genCounter                        S1Sim  2509493737
-
-Found 0 data products in this Run
-17-Aug-2022 17:36:23 CDT  Closed input file "/mu2e/app/users/nigrelli/r001/results/bmum0_s1_sim/sim.mu2e.pbar2m.bmum0s11b0.001000_00000000.art"
-Art has completed and will exit with status 0.
-
-* sim.mu2e.pbar2m.bmum0b0s21r0000.art                                                                         
-** 16-Aug-2022                                                                                                
-murat@mu2ebuild01:/mu2e/app/users/murat/muse>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/pbar2m.bmum0.s2_sim/sim.owner.pbar2m.bmum0s21b0.001000_00000000.art 
-   ************************** Mu2e Offline **************************
-     art v3_11_01    root v6_26_00    KinKal v02_01_00
-     build  /mu2e/app/users/murat/muse
-     build  sl7-debug-e20-p026    08/14/22 10:44:43
-   ******************************************************************
-16-Aug-2022 17:10:55 CDT  Initiating request to open input file "results/pbar2m.bmum0.s2_sim/sim.owner.pbar2m.bmum0s21b0.001000_00000000.art"
-16-Aug-2022 17:10:55 CDT  Opened input file "results/pbar2m.bmum0.s2_sim/sim.owner.pbar2m.bmum0s21b0.001000_00000000.art"
-Begin processing the 1st record. run: 1 subRun: 0 event: 663 at 16-Aug-2022 17:10:58 CDT
-Found 6 data products in this Event
-Data products: 
-Friendly Class Name  Module Label    Instance Name  Process Name     Product ID
-     mu2e::StatusG4         g4run                          S2Sim   108074796
-mu2e::SimParticlemv    BeamFilter                          S2Sim   887903808
- mu2e::StepPointMCs    BeamFilter         DSVacuum         S2Sim   910930626
- mu2e::StepPointMCs    BeamFilter  virtualdetector         S2Sim   919328821
-     mu2e::StatusG4         g4run                          S1Sim  1104244220
- mu2e::GenParticles      generate                          S1Sim  2398351477
-
-Found 3 data products in this SubRun
-Data products: 
-        Friendly Class Name    Module Label  Instance Name  Process Name     Product ID
-mu2e::PhysicalVolumeInfomvs  compressPVBeam                        S1Sim   766382810
-mu2e::PhysicalVolumeInfomvs  compressPVBeam                        S2Sim  1779329034
-        mu2e::GenEventCount      genCounter                        S1Sim  2509493737
-
-Found 0 data products in this Run
-16-Aug-2022 17:10:58 CDT  Closed input file "results/pbar2m.bmum0.s2_sim/sim.owner.pbar2m.bmum0s21b0.001000_00000000.art"
-Art has completed and will exit with status 0.
-1* ---------------------------------------------------------------------------------------------------------------
-* sim.mu2e.pbar2m.bmum0b0s31r0000.art    <2023-10-17 Tue>                                                     
-murat@mu2ebuild01:/mu2e/app/users/murat/muse>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s sim.mu2e.bmum0b0s31r0000.pbar2m.001210_00000000.art
-   ************************** Mu2e Offline **************************
-     art v3_13_02    root v6_28_04c    KinKal v02_04_02
-     build  /mu2e/app/users/murat/muse
-     build  sl7-prof-e20-p047    10/16/23 20:25:33
-   ******************************************************************
-17-Oct-2023 06:48:50 CDT  Initiating request to open input file "sim.mu2e.bmum0b0s31r0000.pbar2m.001210_00000000.art"
-17-Oct-2023 06:48:51 CDT  Opened input file "sim.mu2e.bmum0b0s31r0000.pbar2m.001210_00000000.art"
-Begin processing the 1st record. run: 1210 subRun: 0 event: 1086 at 17-Oct-2023 06:48:52 CDT
-Found 5 data products in this Event
-Data products: 
-Friendly Class Name      Module Label    Instance Name  Process Name     Product ID
- mu2e::GenParticles          generate                            POT   590160162
-     mu2e::StatusG4             g4run                          S3Sim   990985884
-mu2e::SimParticlemv  TargetStopFilter                          S3Sim  1865770519
- mu2e::StepPointMCs  TargetStopFilter  virtualdetector         S3Sim  4027075826
-     mu2e::StatusG4             g4run                            POT  4179471200
-
-Found 2 data products in this SubRun
-Data products: 
-        Friendly Class Name           Module Label  Instance Name  Process Name     Product ID
-mu2e::PhysicalVolumeInfomvs  compressPVTargetStops                        S3Sim   603628714
-        mu2e::GenEventCount             genCounter                          POT  3358959612
-
-Found 0 data products in this Run
-17-Oct-2023 06:48:52 CDT  Closed input file "sim.mu2e.bmum0b0s31r0000.pbar2m.001210_00000000.art"
-Art has completed and will exit with status 0.
-
-* sim.mu2e.bpip2b0s24r0000.pipenu.art    <2023-12-08 Fri>                                                     
-
-[tripathy@mu2egpvm02 /exp/mu2e/app/users/tripathy/Development_pipenu]$ mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s sim.mu2e.bpip2b0s24r0000.pipenu.001210_00000000.art
-   ************************** Mu2e Offline **************************
-     art v3_13_02    root v6_28_04c    KinKal v02_04_02
-     build  /exp/mu2e/app/users/tripathy/Development_pipenu
-     build  sl7-prof-e20-p047    11/30/23 16:27:18
-   ******************************************************************
-08-Dec-2023 11:19:51 CST  Initiating request to open input file "sim.mu2e.bpip2b0s24r0000.pipenu.001210_00000000.art"
-08-Dec-2023 11:19:51 CST  Opened input file "sim.mu2e.bpip2b0s24r0000.pipenu.001210_00000000.art"
-Begin processing the 1st record. run: 1210 subRun: 0 event: 590 at 08-Dec-2023 11:19:53 CST
+14-Mar-2024 23:37:51 CDT  Initiating request to open input file "/exp/mu2e/data/projects/pipenu/datasets/bpip2b0s24r0000/sim.mu2e.bpip2b0s24r0000.pipenu.001210_00000000.art"
+14-Mar-2024 23:37:51 CDT  Opened input file "/exp/mu2e/data/projects/pipenu/datasets/bpip2b0s24r0000/sim.mu2e.bpip2b0s24r0000.pipenu.001210_00000000.art"
+Begin processing the 1st record. run: 1210 subRun: 0 event: 590 at 14-Mar-2024 23:37:55 CDT
 Found 5 data products in this Event
 Data products: 
 Friendly Class Name        Module Label    Instance Name  Process Name     Product ID
@@ -237,9 +117,87 @@ mu2e::PhysicalVolumeInfomvs  compressPVTargetStops                        S2Sim 
         mu2e::GenEventCount             genCounter                          POT  3358959612
 
 Found 0 data products in this Run
-08-Dec-2023 11:19:53 CST  Closed input file "sim.mu2e.bpip2b0s24r0000.pipenu.001210_00000000.art"
+14-Mar-2024 23:37:55 CDT  Closed input file "/exp/mu2e/data/projects/pipenu/datasets/bpip2b0s24r0000/sim.mu2e.bpip2b0s24r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
+* mcs.user.bpip2b0s34r0001.pipenu.art  <2024-03-15 Fri>             
+murat@mu2ebuild01:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl  -s results/2024-03-15-08-58.s5_reco_kk_bpip2b0.mu2ebuild01.12394/mcs.user.bpip2b0s51r0001.pipenu.001210_00000000.art 
+   ************************** Mu2e Offline **************************
+     art v3_14_03    root v6_28_10a    KinKal v02_05_00b
+     build  /exp/mu2e/app/users/murat/muse_002
+     build  sl7-prof-e28-p055    03/12/24 22:44:06
+   ******************************************************************
+15-Mar-2024 09:05:11 CDT  Initiating request to open input file "results/2024-03-15-08-58.s5_reco_kk_bpip2b0.mu2ebuild01.12394/mcs.user.bpip2b0s51r0001.pipenu.001210_00000000.art"
+15-Mar-2024 09:05:12 CDT  Opened input file "results/2024-03-15-08-58.s5_reco_kk_bpip2b0.mu2ebuild01.12394/mcs.user.bpip2b0s51r0001.pipenu.001210_00000000.art"
+Begin processing the 1st record. run: 1210 subRun: 0 event: 3 at 15-Mar-2024 09:05:14 CDT
+Found 56 data products in this Event
+Data products: 
+                                Friendly Class Name           Module Label    Instance Name  Process Name     Product ID
+                                art::TriggerResults         TriggerResults                        Primary   295524022
+                            mu2e::ProtonBunchTimeMC            EWMProducer                         S4Digi   308577467
+                                   mu2e::HelixSeeds          HelixFinderDe         Positive        S5Reco   354380613
+                                 mu2e::TimeClusters            FlagBkgHits                         S5Reco   372647698
+                                 mu2e::TimeClusters        TZClusterFinder                         S5Reco   426524433
+                                 mu2e::TimeClusters      CalTimePeakFinder                         S5Reco   433942212
+                              mu2e::CaloShowerSteps        compressDigiMCs                         S4Digi   609364269
+                           mu2e::ComboHitCollection            FlagBkgHits                         S5Reco   670200675
+                                   mu2e::HelixSeeds       CalHelixFinderDe         Negative        S5Reco   934987395
+mu2e::SimParticleart::Ptrmu2e::MCTrajectorystd::map        compressDigiMCs                         S4Digi  1053189294
+                                   mu2e::HelixSeeds                  MHDeM                         S5Reco  1092177889
+                                mu2e::SimParticlemv        compressDigiMCs                         S4Digi  1105776846
+                                mu2e::CaloRecoDigis      CaloRecoDigiMaker                         S5Reco  1153742571
+                                     mu2e::KalSeeds              KKDeMHPar                         S5Reco  1201493993
+                                 mu2e::TimeClusters                  MHDeM                         S5Reco  1288493691
+                                     mu2e::CaloHits           CaloHitMaker                         S5Reco  1338955140
+                                 mu2e::StepPointMCs        compressDigiMCs  virtualdetector        S4Digi  1340925977
+                                 mu2e::StepPointMCs        compressDigiMCs   protonabsorber        S4Digi  1515516505
+                           mu2e::ComboHitCollection                 makeSH                         S5Reco  1685887312
+                                mu2e::CaloShowerROs        compressDigiMCs                         S4Digi  1719572767
+                                     mu2e::StatusG4                  g4run                        Primary  1820700010
+                           mu2e::ComboHitCollection            FlagBkgHits        StrawHits        S5Reco  1932755004
+                     mu2e::IntensityInfoTimeCluster            FlagBkgHits                         S5Reco  1933173690
+                           mu2e::ComboHitCollection                makeSTH                         S5Reco  2020601002
+                            mu2e::EventWindowMarker            EWMProducer                         S4Digi  2030615861
+                                   mu2e::StrawDigis                 makeSD                         S4Digi  2166256422
+                              mu2e::ProtonBunchTime                 PBTFSD                         S5Reco  2328122442
+                              mu2e::ProtonBunchTime            EWMProducer                         S4Digi  2352589440
+                                   mu2e::CrvDigiMCs        compressDigiMCs                         S4Digi  2357687454
+                            mu2e::CaloProtoClusters  CaloProtoClusterMaker             main        S5Reco  2375731718
+                                   mu2e::HelixSeeds          HelixFinderDe         Negative        S5Reco  2443755132
+                                   mu2e::HelixSeeds                  MHDeP                         S5Reco  2471052729
+                                art::TriggerResults         TriggerResults                         S4Digi  2505664162
+                                 mu2e::TimeClusters             MHFinderDe                         S5Reco  2507134218
+                                 mu2e::CaloClusters       CaloClusterMaker                         S5Reco  2520950669
+                                 mu2e::GenParticles        compressDigiMCs                         S4Digi  2558710106
+                              mu2e::PrimaryParticle        compressDigiMCs                         S4Digi  2622908547
+                                 mu2e::TimeClusters                  MHDeP                         S5Reco  2661077027
+                                mu2e::StrawGasSteps        compressDigiMCs                         S4Digi  2678734716
+                     mu2e::IntensityInfoTrackerHits                 makeSH                         S5Reco  2719782748
+                                 mu2e::StepPointMCs        compressDigiMCs   stoppingtarget        S4Digi  2755426575
+                                art::TriggerResults         TriggerResults                         S5Reco  2854250439
+                                   mu2e::HelixSeeds       CalHelixFinderDe         Positive        S5Reco  3003978682
+                         mu2e::ProtonBunchIntensity                 PBISim                         S4Digi  3015531818
+                                   mu2e::HelixSeeds             MHFinderDe                         S5Reco  3131798203
+                                    mu2e::StrawHits                 makeSH                         S5Reco  3150302477
+                     mu2e::IntensityInfoTimeCluster        TZClusterFinder                         S5Reco  3176511871
+         mu2e::HelixSeedmu2e::KalSeedvoidart::Assns              KKDeMHPar                         S5Reco  3186089484
+                                    mu2e::CaloDigis          CaloDigiMaker                         S4Digi  3264368242
+                            mu2e::CaloProtoClusters  CaloProtoClusterMaker            split        S5Reco  3512963609
+                        mu2e::StrawDigiADCWaveforms                 makeSD                         S4Digi  3743567522
+                               mu2e::CaloShowerSims        compressDigiMCs                         S4Digi  3795473155
+                                     mu2e::CrvSteps        compressDigiMCs                         S4Digi  3827785517
+                                 mu2e::StrawDigiMCs        compressDigiMCs                         S4Digi  3833959220
+                                     mu2e::CrvDigis                CrvDigi                         S4Digi  4038702950
+                           mu2e::ComboHitCollection                 makePH                         S5Reco  4255055697
 
+Found 2 data products in this SubRun
+Data products: 
+       Friendly Class Name  Module Label  Instance Name  Process Name     Product ID
+mu2e::ProtonBunchIntensity        PBISim  MeanIntensity        S4Digi  2388004991
+       mu2e::GenEventCount    genCounter                      Primary  2659886210
+
+Found 0 data products in this Run
+15-Mar-2024 09:05:14 CDT  Closed input file "results/2024-03-15-08-58.s5_reco_kk_bpip2b0.mu2ebuild01.12394/mcs.user.bpip2b0s51r0001.pipenu.001210_00000000.art"
+Art has completed and will exit with status 0.
 * ---------------------------------------------------------------------------------------------------------------
 * performance testing (prof build)                                                                            
 ** stage 1 (up to DS)                                                                                         

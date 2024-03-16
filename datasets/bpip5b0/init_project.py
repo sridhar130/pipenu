@@ -23,32 +23,38 @@ class Project:
     def job_description(self,job):
         return self.fProjectName+'.'+job.input_dataset().id()+'.'+job.stage().name()+'_'+job.name()
 
-    def __init__(self):
+    def __init__(self,idsid=None):
 
         project                      = 'pipenu'
-        self.fFamilyID               = 'bpip5b0'          # in fact, this is a family name
+        self.fFamilyID               = 'bpip5b0'          # is the family name
         self.fProjectName            = project;
         self.fStage                  = {}
         self.fDataset                = {};
-        #------------------------------------------------------------------------------
-        # datasets of this family
-        # 1. stage 1 : generator input
-        #------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+# datasets of this family
+# 1. stage 1 : generator input
+#------------------------------------------------------------------------------
         self.fDataset['bpip5b0s00r0000'] = Dataset('generator'                   ,'bpip5b0s00r0000','local')
-        #------------------------------------------------------------------------------
-        # 2. input for stage2 : datasets produced by stage1
-        #------------------------------------------------------------------------------
-        self.fDataset['bpip5b0s11r0000'] = Dataset('sim.mu2e.bpip5b0s11r0000.art','bpip5b0s11r0000','local')
-        self.fDataset['bpip5b0s12r0000'] = Dataset('sim.mu2e.bpip5b0s12r0000.art','bpip5b0s12r0000','local')
-        #------------------------------------------------------------------------------
-        # 3. input for stage3: datasets produced at stage2
-        #------------------------------------------------------------------------------
-        self.fDataset['bpip5b0s21r0000'] = Dataset('sim.mu2e.bpip5b0s21r0000.art','bpip5b0s21r0000','local') 
-        self.fDataset['bpip5b0s22r0000'] = Dataset('sim.mu2e.bpip5b0s22r0000.art','bpip5b0s22r0000','local') 
-        #------------------------------------------------------------------------------
-        # 3. Input s4 strip and s3 stn -- TargetStopOutput from s3
-        #------------------------------------------------------------------------------
-        self.fDataset['bpip5b0s31r0000'] = Dataset('sim.mu2e.bpip5b0s31r0000.art','bpip5b0s31r0000','local')
+#------------------------------------------------------------------------------
+# 2. input for stage2 : datasets produced by stage1
+#------------------------------------------------------------------------------
+        self.fDataset['bpip5b0s11r0000'] = Dataset('sim.mu2e.bpip5b0s11r0000.pipenu.art','bpip5b0s11r0000','local')
+        self.fDataset['bpip5b0s12r0000'] = Dataset('sim.mu2e.bpip5b0s12r0000.pipenu.art','bpip5b0s12r0000','local')
+#------------------------------------------------------------------------------
+# 3. input for stage3: pions stopped in the ST and the degrader
+#------------------------------------------------------------------------------
+        self.fDataset['bpip5b0s21r0000'] = Dataset('sim.mu2e.bpip5b0s21r0000.pipenu.art','bpip5b0s21r0000','local') 
+        self.fDataset['bpip5b0s24r0000'] = Dataset('sim.mu2e.bpip5b0s24r0000.pipenu.art','bpip5b0s24r0000','local') 
+#------------------------------------------------------------------------------
+# 3. Input for s4:
+#------------------------------------------------------------------------------
+        self.fDataset['bpip5b0s31r0000'] = Dataset('dts.mu2e.bpip5b0s31r0000.pipenu.art','bpip5b0s31r0000','local')
+        self.fDataset['bpip5b0s31r0000'] = Dataset('dts.mu2e.bpip5b0s31r0000.pipenu.art','bpip5b0s31r0000','local')
+#------------------------------------------------------------------------------
+# a job always has an input dataset, but...
+#------------------------------------------------------------------------------
+        self.fInputDsID = None;
+        if (idsid) : self.fInputDataset = self.fDataset[idsid];
 #------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
@@ -156,57 +162,55 @@ class Project:
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# s3:strip_mum : strip mu-'s to create input for the detector simulation
-#------------------------------------------------------------------------------        
+# s3:gen_sim_tgt : pi+ --> e+ nu decays of pions stopped in the ST
+# need a different FCL because of different collection names
+#------------------------------------------------------------------------------  
         s                            = self.new_stage('s3');
 
-        job                          = s.new_job('strip_mum','bpip5b0s21r0000');
+        job                          = s.new_job('gen_sim_tgt',idsid);
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'strip_mum');
+        job.fBaseFcl                 = self.base_fcl(job,'gen_sim_tgt');
 
-        job.fNInputFiles             = -1                      # number of segments defined by the input dataset
-             
-        job.fMaxInputFilesPerSegment = 100 
-        job.fNEventsPerSegment       =  5000
-        job.fResample                = 'no'   # yes/no
-        job.fRequestedTime           = '2h'   
-        job.fIfdh                    = 'ifdh'                 # ifdh/xrootd
+        job.fNInputFiles             = 1                                # number of segments 
 
-        odsid31                      = self.fFamilyID+'s31'+'r0000';
+        job.fMaxInputFilesPerSegment = 1
+        job.fNEventsPerSegment       = 100000
+        job.fResample                = 'yes'                             # yes/no
+        job.fRequestedTime           = '3h'
+        job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
-        job.fOutputStream            = ['muonout'                     ]
-        job.fOutputDsID              = [odsid31                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0]]
-        job.fOutputFormat            = ['art'                         ]
+        odsid31                      = self.fFamilyID+s.name()+'1'+'r0000';
+        job.fOutputStream            = [ 'PrimaryOutput'                 ]
+        job.fOutputDsID              = [ odsid31                         ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
+        job.fOutputFormat            = [ 'art'                           ]
 
-        # grid output dir
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# s3:strip_mup : strip mu+'s from all stopped particles, just for testing purposes
-#------------------------------------------------------------------------------        
-        job                          = s.new_job('strip_mup','bpip5b0s21r0000');
+# s3:gen_sim_deg : pi+ --> e+ nu decays of pions stopped in the degrader
+#                  those are the input and the output streams number 4
+#------------------------------------------------------------------------------  
+        job                          = s.new_job('gen_sim_deg',idsid);
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'strip_mup');
+        job.fBaseFcl                 = self.base_fcl(job,'gen_sim_deg');
 
-        job.fNInputFiles             = -1                      # number of segments
-             
-        job.fMaxInputFilesPerSegment = 100   
-        job.fNEventsPerSegment       = 5000
-        job.fResample                = 'no'   # yes/no
-        job.fRequestedTime           = '2h'   
-        job.fIfdh                    = 'ifdh'                 # ifdh/xrootd
+        job.fNInputFiles             = -1                                # number of segments defined by  the input dataset    
 
-        odsid32                      = self.fFamilyID+'s32'+'r0000';
+        job.fMaxInputFilesPerSegment = 1
+        job.fNEventsPerSegment       = 100000
+        job.fResample                = 'yes'                             # yes/no
+        job.fRequestedTime           = '3h'
+        job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
-        job.fOutputStream            = ['muonout'                     ]
-        job.fOutputDsID              = [odsid32                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0]]
-        job.fOutputFormat            = ['art'                         ]
+        odsid34                      = self.fFamilyID+s.name()+'4'+'r0000';
+        job.fOutputStream            = [ 'PrimaryOutput'                 ]
+        job.fOutputDsID              = [ odsid34                         ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
+        job.fOutputFormat            = [ 'art'                           ]
 
-        # grid output dir
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
