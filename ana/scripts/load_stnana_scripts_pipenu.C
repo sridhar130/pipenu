@@ -9,7 +9,7 @@ int load_stnana_scripts_pipenu() {
     //    "init_geometry.C",
     "spmc.C", "PWD",
     "trkpipenu.C","PWD",
-    "helix.C","PWD",
+    // "helix.C","PWD",
     0 };
 
   TString work_dir = gEnv->GetValue("Stnana.TestReleaseDir",gSystem->Getenv("PWD"));

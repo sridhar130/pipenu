@@ -3,39 +3,35 @@
 * PIPENU datasets (summary)       last update : <2023-10-26 Thu>
 * -----------------------------------------------------------------------------
 * *beam    datasets*                                                             
-|---------+--------+---------------------+-------------+----------------------------------------------------------------------|
-| dataset | N(POT) | dataset ID          | date/status | description                                                          |
-| family  |        |                     |             |                                                                      |
-|---------+--------+---------------------+-------------+----------------------------------------------------------------------|
-| [[file:../datasets/bmup0b0/pbar2m.bmup0b0.org][bmup0b0]] |    1e8 |                     |             | mu+ beam - default for the MDC2020-style Mu2e Production, ShieldingM |
-|         |        |                     |             | 70% B-field for pi+ --> e+nu , no degrader                           |
-|         |        | sim.bmup0b0s11r0000 |             | output of the stage 1 muon tracing                                   |
-|         |        | sim.bmup0b0s24r0000 |             | mu+ decays in flight                                                 |
-|---------+--------+---------------------+-------------+----------------------------------------------------------------------|
-| [[file:../datasets/bmup1b0/pbar2m.bmup1b0.org][bmup2b0]] |    1e8 |                     |             | mu+ beam - default for the MDC2020-style Mu2e Production, ShieldingM |
-|         |        |                     |             | 70% B-field for pi+ --> e+ nu, 2 mm Ti degrader                      |
-|         |        | sim.bmup2b0s24r0000 |             | mu+ decays in flight, start from bmup0b0s11r0000                     |
-|---------+--------+---------------------+-------------+----------------------------------------------------------------------|
-| [[file:../datasets/bmup1b0/pbar2m.bmup1b0.org][bmup3b0]] |    1e8 |                     |             | mu+ beam - default for the MDC2020-style Mu2e Production, ShieldingM |
-|         |        |                     |             | 70% B-field for pi+ --> e+ nu, 3 mm Ti degrader                      |
-|         |        | sim.bmup3b0s24r0000 |             | mu+ decays in flight, start from bmup0b0s11r0000                     |
-|---------+--------+---------------------+-------------+----------------------------------------------------------------------|
-| [[file:../datasets/bmup1b0/pbar2m.bmup1b0.org][bmup4b0]] |    1e8 |                     |             | mu+ beam - default for the MDC2020-style Mu2e Production, ShieldingM |
-|         |        |                     |             | 70% B-field for pi+ --> e+ nu, 4 mm Ti degrader                      |
-|         |        | sim.bmup4b0s24r0000 |             | mu+ decays in flight, start from bmup0b0s11r0000                     |
-|---------+--------+---------------------+-------------+----------------------------------------------------------------------|
-| [[file:../datasets/bmup1b0/pbar2m.bmup1b0.org][bmup5b0]] |    1e8 |                     |             | mu+ beam - default for the MDC2020-style Mu2e Production, ShieldingM |
-|         |        |                     |             | 70% B-field for pi+ --> e+ nu, 4 mm Ti degrader                      |
-|         |        | sim.bmup5b0s24r0000 |             | mu+ decays in flight, start from bmup0b0s11r0000                     |
-|---------+--------+---------------------+-------------+----------------------------------------------------------------------|
-| [[file:../datasets/bpip1b0/pipenu.bpip1b0.org][bpip1b0]] |    5e6 |                     |             | pi+ beam - default for the MDC2020-style Mu2e Production, ShieldingM |
-|         |        |                     |             | 70% B-field for pi+ --> e+ nu                                        |
-|         |        | bpip1b0s11r0000     |             | output of the stage 1 muon tracing                                   |
-|         |        | bpip1b0s12r0000     |             | output of the stage 2 muon tracing                                   |
-|         |        |                     |             | output of the stage 3 muon tracing - 2 following datasets            |
-|         |        | bpip1b0s21r0000     |             | particles stopped in the stopping target (mu+/-, pi+/-, pbar)        |
-|         |        | bpip1b0s22r0000     |             | particles stopped outside the stopping target (mu+/-, pi+/-, pbar)   |
-|---------+--------+---------------------+-------------+----------------------------------------------------------------------|
+- all datasets generated with the 70% BField and the TS3 collimator rotated by 180 deg:
+  file:../datasets/bmup0b0/geom_pipenu_bmup0b0.txt
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| ds family | N(POT) | date/status | description | Physics                                 | degrader |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bmup0b0/pbar2m.bmup0b0.org][bmup0b0]]   |    1e8 |             | mu+ beam    | ShieldingM, force muon decays in the DS | none     |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bmup1b0/pbar2m.bmup1b0.org][bmup2b0]]   |    1e8 |             | mu+ beam    | ShieldingM                              | 2mm Ti   |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bmup1b0/pbar2m.bmup1b0.org][bmup3b0]]   |    1e8 |             | mu+ beam    | ShieldingM                              | 3mm Ti   |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bmup1b0/pbar2m.bmup1b0.org][bmup4b0]]   |    1e8 |             | mu+ beam    | ShieldingM                              | 4mm Ti   |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bmup1b0/pbar2m.bmup1b0.org][bmup5b0]]   |    1e8 |             | mu+ beam    | ShieldingM                              | 5mm Ti   |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bmup1b0/pbar2m.bmup1b0.org][bmup9b0]]   |    1e8 |             | mu+ beam    | ShieldingM, no forcing of mu decays     | none     |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bpip1b0/pipenu.bpip1b0.org][bpip0b0]]   |  2.5e8 |             | pi+ beam    | ShieldingM, pi decays ON                | none     |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bpip1b0/pipenu.bpip1b0.org][bpip1b0]]   |  2.5e8 |             | pi+ beam    | ShieldingM, pi+ decays OFF              | none     |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bpip1b0/pipenu.bpip1b0.org][bpip2b0]]   |  2.5e8 |             | pi+ beam    | ShieldingM, pi+ decays ON               | 2 mm Ti  |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bpip1b0/pipenu.bpip1b0.org][bpip3b0]]   |  2.5e8 |             | pi+ beam    | ShieldingM, pi+ decays ON               | 3 mm Ti  |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bpip1b0/pipenu.bpip1b0.org][bpip4b0]]   |  2.5e8 |             | pi+ beam    | ShieldingM, pi+ decays ON               | 4 mm Ti  |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
+| [[file:../datasets/bpip1b0/pipenu.bpip1b0.org][bpip5b0]]   |  2.5e8 |             | pi+ beam    | ShieldingM, pi+ decays ON               | 5 mm Ti  |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------|
 
 * *physics datasets*                                                             
   the dataset families below also include datasets with the generated pileup
