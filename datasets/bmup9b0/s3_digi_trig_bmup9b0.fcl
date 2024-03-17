@@ -5,8 +5,8 @@
 BEGIN_PROLOG
   PROCESS_NAME    @protect_ignore: S4Digi
   TRIGGER_PATHS   @protect_ignore: [ p1 ]
-  END_PATHS       @protect_ignore: [ e1 ]      # defined below
-  DIGI_START_TIME @protect_ignore: 100.      ## ns
+  END_PATHS       @protect_ignore: [ e1 ]   # defined below
+  DIGI_START_TIME @protect_ignore: 100      # defined below
 END_PROLOG 
 
 #include "Production/JobConfig/digitize/OnSpill.fcl"
@@ -33,9 +33,8 @@ services.SeedService.maxUniqueEngines : 100
 #------------------------------------------------------------------------------
 # geometry and magnetic field
 #------------------------------------------------------------------------------
-services.GeometryService.inputFile  : "pipenu/datasets/bpip2b0/geom_pipenu_bpip2b0.txt"
+services.GeometryService.inputFile  : "pipenu/common/geom_baseline.txt"
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
-services.TFileService.fileName      : "/dev/null"
 #------------------------------------------------------------------------------
 #  DB constants
 #------------------------------------------------------------------------------
@@ -69,11 +68,11 @@ outputs: {
     }
 }
 #------------------------------------------------------------------------------
-# output files
+# output files : decays in flight, dont need histograms 
 #------------------------------------------------------------------------------
-outputs.defaultOutput.fileName                   : "dig.mu2e.bpip2b0s34r0000.pipenu.001210_00000000.art"
+# services.TFileService.fileName                   : "nts.mu2e.bmup9b0s44r0000.pipenu.001210_00000000.root"
+outputs.defaultOutput.fileName                   : "dig.mu2e.bmup9b0s34r0000.pipenu.001210_00000000.art"
 #------------------------------------------------------------------------------
 # everything below is appended by generate_fcl
 #------------------------------------------------------------------------------
 # physics.producers.makeSD.printLevel                  : 100
-

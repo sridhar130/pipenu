@@ -18,8 +18,9 @@ process_name: S2Sim
 #------------------------------------------------------------------------------
 # services: local re-deinitions
 #------------------------------------------------------------------------------
-services : @local::Services.Sim
+services                            : @local::Services.Sim
 services.SeedService.baseSeed       :  8
+#------------------------------------------------------------------------------
 
 source : { module_type : RootInput }
 
@@ -120,8 +121,8 @@ physics.producers.g4run.SDConfig.preSimulatedHits:  ["BeamFilter:virtualdetector
 #------------------------------------------------------------------------------
 # !!!! overrides have to be placed after all includes .... 
 #------------------------------------------------------------------------------
+services.GeometryService.inputFile  : "pipenu/datasets/bpip4b0/geom_pipenu_bpip4b0.txt"
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
-services.GeometryService.inputFile  : "pipenu/datasets/bpip4b0/geom_pbar2m_bpip4b0.txt"
 #------------------------------------------------------------------------------
 # disable pion decays 
 #------------------------------------------------------------------------------

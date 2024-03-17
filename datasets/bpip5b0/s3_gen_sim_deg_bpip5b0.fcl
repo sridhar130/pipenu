@@ -8,7 +8,7 @@ services.SeedService.baseSeed: 8
 #------------------------------------------------------------------------------
 # geometry and the magnetic field
 #------------------------------------------------------------------------------
-services.GeometryService.inputFile  : "pipenu/common/geom_baseline.txt"
+services.GeometryService.inputFile  : "pipenu/datasets/bpip5b0/geom_pipenu_bpip5b0.txt"
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
 
 physics.producers.generate : { module_type: "EventGeneratorMu"

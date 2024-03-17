@@ -9,8 +9,8 @@
 #------------------------------------------------------------------------------
 #include "Production/JobConfig/beam/POT.fcl"
 services.SeedService.baseSeed       : 8
+services.GeometryService.inputFile  : "pipenu/datasets/bpip5b0/geom_pipenu_bpip5b0.txt"
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
-services.GeometryService.inputFile  : "pipenu/datasets/bpip5b0/geom_pbar2m_bpip5b0.txt"
 #------------------------------------------------------------------------------
 # redefinitions, TS3RegionCuts : stop tracing in the middle of the TS
 #------------------------------------------------------------------------------

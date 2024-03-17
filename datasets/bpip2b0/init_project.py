@@ -13,6 +13,9 @@ class Project:
 
     def dataset(self,dsid):
         return self.fDataset[dsid];
+
+    def add_dataset(self,ds):
+        self.fDataset[ds.id()] = ds;
 #------------------------------------------------------------------------------
 # returns the name of the FCL file corresponding to the job - to be used by gen_fcl
 #------------------------------------------------------------------------------
@@ -47,10 +50,20 @@ class Project:
         self.fDataset['bpip2b0s22r0000'] = Dataset('sim.mu2e.bpip2b0s22r0000.pipenu.art','bpip2b0s22r0000','local') 
         self.fDataset['bpip2b0s24r0000'] = Dataset('sim.mu2e.bpip2b0s24r0000.pipenu.art','bpip2b0s24r0000','local') 
 #------------------------------------------------------------------------------
-# 3. Input s4 strip and s3 stn -- TargetStopOutput from s3
+# 4. Input for s4
 #------------------------------------------------------------------------------
         self.fDataset['bpip2b0s31r0000'] = Dataset('dts.mu2e.bpip2b0s31r0000.pipenu.art','bpip2b0s31r0000','local')
         self.fDataset['bpip2b0s34r0000'] = Dataset('dts.mu2e.bpip2b0s34r0000.pipenu.art','bpip2b0s34r0000','local')
+#------------------------------------------------------------------------------
+# 5. Input for s5 reco
+#------------------------------------------------------------------------------
+        self.fDataset['bpip2b0s41r0000'] = Dataset('dig.mu2e.bpip2b0s41r0000.pipenu.art','bpip2b0s41r0000','local')
+        self.fDataset['bpip2b0s44r0000'] = Dataset('dig.mu2e.bpip2b0s44r0000.pipenu.art','bpip2b0s44r0000','local')
+#------------------------------------------------------------------------------
+# 5. Input for s5 stntupling
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('mcs.mu2e.bpip2b0s51r0100.pipenu.art','bpip2b0s51r0100','local'))
+        self.add_dataset(Dataset('mcs.mu2e.bpip2b0s54r0100.pipenu.art','bpip2b0s54r0100','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
@@ -265,8 +278,7 @@ class Project:
         job.fMaxMemory               = '3000MB'
 
         output_stream                = self.fInputDataset.output_stream()
-
-        odsid                        = self.fFamilyID+'s5'+output_stream+'r0100';
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
 
         job.fOutputStream            = ['defaultOutput'   ]
         job.fOutputDsID              = [odsid             ]

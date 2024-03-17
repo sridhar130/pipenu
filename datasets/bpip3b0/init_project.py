@@ -3,58 +3,55 @@
 from local_classes import *
 # from mixing_inputs import *
 
-class Project:
-#------------------------------------------------------------------------------
-# no need to have config files, can do initialization in python directly
-#------------------------------------------------------------------------------
-    def new_stage(self,name):
-        self.fStage[name]            = Stage(name,self);
-        return self.fStage[name]
+class Project (ProjectBase):
 
-    def dataset(self,dsid):
-        return self.fDataset[dsid];
+    def init_datasets(self):
 #------------------------------------------------------------------------------
-# returns the name of the FCL file corresponding to the job - to be used by gen_fcl
+# datasets of this family
+# 1. stage 1 : generator input
 #------------------------------------------------------------------------------
-    def base_fcl(self,job,fcl_name):
-        fmid = self.fFamilyID;              # familyID
-        return self.fProjectName+'/datasets/'+fmid+'/'+job.stage().name()+'_'+fcl_name+'_'+fmid+'.fcl'
+        self.add_dataset(Dataset('generator'                   ,'bpip3b0s00r0000','local'))
+#------------------------------------------------------------------------------
+# 2. input for stage2 : datasets produced by stage1
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('sim.mu2e.bpip3b0s11r0000.pipenu.art','bpip3b0s11r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bpip3b0s12r0000.pipenu.art','bpip3b0s12r0000','local'))
+#------------------------------------------------------------------------------
+# 3. input for stage3: datasets produced at stage2
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('sim.mu2e.bpip3b0s21r0000.pipenu.art','bpip3b0s21r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bpip3b0s24r0000.pipenu.art','bpip3b0s24r0000','local'))
+#------------------------------------------------------------------------------
+# 4. Input s4: digi_trig
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('dts.mu2e.bpip3b0s31r0000.pipenu.art','bpip3b0s31r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bpip3b0s34r0000.pipenu.art','bpip3b0s34r0000','local'))
+#------------------------------------------------------------------------------
+# 5. Input s5: reco_kk
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('dig.mu2e.bpip3b0s41r0000.pipenu.art','bpip3b0s41r0000','local'))
+        self.add_dataset(Dataset('dig.mu2e.bpip3b0s44r0000.pipenu.art','bpip3b0s44r0000','local'))
+#------------------------------------------------------------------------------
+# 6. Input s5: stk_kk
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('mcs.mu2e.bpip3b0s51r0100.pipenu.art','bpip3b0s51r0100','local'))
+        self.add_dataset(Dataset('mcs.mu2e.bpip3b0s54r0100.pipenu.art','bpip3b0s54r0100','local'))
+#------------------------------------------------------------------------------
+# a job always has an input dataset, but...
+#-------v----------------------------------------------------------------------
+        if (idsid) : self.fInputDataset = self.dataset(idsid);
+        return
 
-    def job_description(self,job):
-        return self.fProjectName+'.'+job.input_dataset().id()+'.'+job.stage().name()+'_'+job.name()
-
+#------------------------------------------------------------------------------
+# constructor
+#---v--------------------------------------------------------------------------
     def __init__(self,idsid=None):
 
         project                      = 'pipenu'
-        self.fFamilyID               = 'bpip3b0'          # in fact, this is a family name
-        self.fProjectName            = project;
-        self.fStage                  = {}
-        self.fDataset                = {};
-        #------------------------------------------------------------------------------
-        # datasets of this family
-        # 1. stage 1 : generator input
-        #------------------------------------------------------------------------------
-        self.fDataset['bpip3b0s00r0000'] = Dataset('generator'                   ,'bpip3b0s00r0000','local')
-        #------------------------------------------------------------------------------
-        # 2. input for stage2 : datasets produced by stage1
-        #------------------------------------------------------------------------------
-        self.fDataset['bpip3b0s11r0000'] = Dataset('sim.mu2e.bpip3b0s11r0000.pipenu.art','bpip3b0s11r0000','local')
-        self.fDataset['bpip3b0s12r0000'] = Dataset('sim.mu2e.bpip3b0s12r0000.pipenu.art','bpip3b0s12r0000','local')
-        #------------------------------------------------------------------------------
-        # 3. input for stage3: datasets produced at stage2
-        #------------------------------------------------------------------------------
-        self.fDataset['bpip3b0s21r0000'] = Dataset('sim.mu2e.bpip3b0s21r0000.pipenu.art','bpip3b0s21r0000','local') 
-        self.fDataset['bpip3b0s24r0000'] = Dataset('sim.mu2e.bpip3b0s24r0000.pipenu.art','bpip3b0s24r0000','local') 
-        #------------------------------------------------------------------------------
-        # 3. Input s4 strip and s3 stn -- TargetStopOutput from s3
-        #------------------------------------------------------------------------------
-        self.fDataset['bpip3b0s31r0000'] = Dataset('dts.mu2e.bpip3b0s31r0000.pipenu.art','bpip3b0s31r0000','local')
-        self.fDataset['bpip3b0s34r0000'] = Dataset('dts.mu2e.bpip3b0s34r0000.pipenu.art','bpip3b0s34r0000','local')
-#------------------------------------------------------------------------------
-# a job always has an input dataset, but...
-#------------------------------------------------------------------------------
-        self.fInputDsID = None;
-        if (idsid) : self.fInputDataset = self.fDataset[idsid];
+        self.fFamilyID               = 'bpip3b0'
+
+        ProjectBase.__init__(self,project=project,family_id='bpip3b0',idsid=idsid);
+        self.init_datasets();
 #------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
@@ -73,8 +70,8 @@ class Project:
         job.fIfdh                    = 'xrootd'                 # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        odsid1                       = self.fFamilyID+'s11'+'r0000';
-        odsid2                       = self.fFamilyID+'s12'+'r0000';
+        odsid1                       = self.fFamilyID+s.name()+'1'+'r0000';
+        odsid2                       = self.fFamilyID+s.name()+'2'+'r0000';
 
         job.fOutputStream            = ['BeamOutput'                  , 'NeutralsOutput'              ]
         job.fOutputDsID              = [odsid1                        ,  odsid2                       ] 
@@ -101,6 +98,7 @@ class Project:
         job.fRequestedTime           = '2h'
         job.fIfdh                    = 'xrootd'                           # ifdh/xrootd
 
+        odsid1                       = self.fFamilyID+s.name()+'1'+'r0000';
         job.fOutputStream            = [ 'InitStntuple'                  ]
         job.fOutputDsID              = [ odsid1                          ]
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
@@ -126,14 +124,14 @@ class Project:
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        odsid21                      = self.fFamilyID+'s21'+'r0000';
-        odsid22                      = self.fFamilyID+'s22'+'r0000';
-        odsid23                      = self.fFamilyID+'s23'+'r0000';
+        odsid21                      = self.fFamilyID+s.name()+'1'+'r0000';
+        odsid22                      = self.fFamilyID+s.name()+'2'+'r0000';
+        odsid23                      = self.fFamilyID+s.name()+'3'+'r0000';
 
-        job.fOutputStream            = ['TargetStopOutput'            , 'ootStopOutput'               , 'IPAStopOutput'               ]
-        job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
-        job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
+        job.fOutputStream            = ['TargetStopOutput' , 'ootStopOutput'    , 'IPAStopOutput'      ]
+        job.fOutputDsID              = [ odsid21           ,  odsid22           ,  odsid23             ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid21, 'sim.mu2e.'+odsid22, 'sim.mu2e.'+jodsid23 ]
+        job.fOutputFormat            = ['art'              , 'art'              , 'art'                ]
 
         # job description defined the grid output directory
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
@@ -227,6 +225,94 @@ class Project:
         job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'art'                           ]
 
+        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = desc;
+#------------------------------------------------------------------------------
+# stage 4
+# s4:digi_trig : InputDsID is 'bpip2b0s31r0000' or 'bpip2b0s34r0000'
+#                digitization job has only one output stream
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s4');
+
+        job                          = s.new_job('digi_trig',idsid);
+
+        job.fBaseFcl                 = self.base_fcl(job,'digi_trig');
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  100000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
+
+        job.fOutputStream            = ['defaultOutput'                ]
+        job.fOutputDsID              = [odsid                          ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0] ]
+        job.fOutputFormat            = ['art'                          ]
+
+        # job description defined the grid output directory
+        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = desc;
+#------------------------------------------------------------------------------
+# s5:reco_kk : reconstruction job has only one output stream
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s5');
+
+        job                          = s.new_job('reco_kk',idsid);
+
+        job.fBaseFcl                 = self.base_fcl(job,'reco_kk');
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  100000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+
+        job.fOutputStream            = ['defaultOutput'   ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
+        job.fOutputFormat            = ['art'             ]
+
+        # job description defined the grid output directory
+        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = desc;
+#------------------------------------------------------------------------------
+# s5:stn_kk : stntupling job has only one output stream
+#             no ned to redefine the stage
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('stn_kk',idsid);
+
+        job.fBaseFcl                 = self.base_fcl(job,'stn_kk');
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  100000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+
+        job.fOutputStream            = ['InitStntuple'    ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
+        job.fOutputFormat            = ['stn'             ]
+
+        # job description defined the grid output directory
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
