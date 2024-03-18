@@ -17,30 +17,11 @@ f# -*- mode:org -*-
 |------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
 | stage            | step             | status          | N(events) | N(files) | org file                                                                     |
 |------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
-| [[file:catalog/s1/su2020.736_6013.s1.org][s1_sim]]           | input_dataset    | bmup0b0s00r0000 | 100000000 |          | none                                                                         |
-|                  | fcl_tarball      | completed       | 100000000 |      400 | file:../../../tmp/pipenu/fcl/cnf.murat.bmup0b0s00r0000.s1_sim.pipenu.fcl.tbz |
-| [2020-06-20 Sat] | grid_job         | 9387862         |           |          | file:/pnfs/mu2e/scratch/users/murat/workflow/                                |
-|                  | job_output_check | completed       |  10000000 |      400 | file:catalog/                                                                |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s1][output_location]]  | output_dataset   | bmum0s11b0.art  |   2917160 |      400 | file:catalog/                                                                |
+| [[file:catalog/s1/su2020.736_6013.s1.org][s1_sim]]           | input_dataset    | bmup0b0s00r0000 | 500000000 |          |                                                                              |
 |------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
 | [[file:catalog/s2/su2020.bmum.s2.org][s2_sim]]           | input_dataset    | bmum0s11b0.art  |   2917160 |      400 | file:catalog/s1/su2020.bmum.s1_sim.art.files                                 |
-|                  | fcl_tarball      | completed       |   2917160 |       20 | file:../tmp_fcl/su2020.bmum.s1_sim.s2_sim.fcl.tbz                            |
-| [2020-06-07 Sun] | grid_job         | 34359763        |           |          |                                                                              |
-|                  | job_output_check | completed       |   2917160 |       20 | file:catalog/s2/su2020.bmum.s1_sim.s2_sim.check_grid_output.log              |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s2][output_location]]  | output_dataset   | bmum0s21b0.art  |    537239 |       20 | file:catalog/s2/su2020.bmum.s2_sim.art.files                                 |
 |------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
 | [[file:catalog/s3/su2020.bmum.s3.org][s3_sim]]           | input_dataset    | bmum0s21b0      |    537239 |       20 | file:catalog/s2/su2020.bmum.s2_sim.art.files                                 |
-|                  | fcl_tarball      | completed       |    537239 |       10 | file:../tmp_fcl/su2020.bmum.s2_sim.s3_sim.fcl.tbz                            |
-|                  | grid_job         |                 |           |          |                                                                              |
-|                  | job_output_check | completed       |           |       10 | file:catalog/s3/su2020.bmum0.s2_s1.s3_sim.check_grid_output.log              |
-|                  | output_dataset   | bmum0s31b0.art  |    360417 |       10 | file:catalog/s3/su2020.bmum0.s3_ootstops.art.files                           |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s3][output_location]]  | output_dataset   | bmum0s32b0.art  |    159886 |       10 | file:catalog/s3/su2020.bmum0.s3_tgtstops.art.files                           |
-|------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
-| [[file:catalog/s3/su2020.bmum.s3.org][s3_stn_tgtstops]]  | input_dataset    | bmum0s31b0.art  |    159886 |       10 | file:catalog/s3/su2020.bmum.s3_tgtstops.art.files                            |
-|                  | fcl_tarball      | completed       |           |        1 | file:../tmp_fcl/su2020.bmum.s3_tgtstops.s3_stn.fcl.tbz                       |
-|                  | grid_job         | intractv        |           |          |                                                                              |
-| [[file:/mu2e/data/users/murat/datasets/su2020/bmum/s3_stn_tgtstops][output_location]]  | output_dataset   | bmum0s31b0.stn  |           |        1 | file:catalog/s3/su2020.bmum.s3_tgtstops.stn.files                            |
-|                  | stntuple_catalog | completed       |           |        1 | file:/publicweb/m/murat/cafdfc/su2020/bmum.s3_tgtstops                       |
 |------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
 
 
@@ -48,49 +29,20 @@ f# -*- mode:org -*-
 | job                           | input dsid                      |  Nevents | Resampling | Nfiles | Nfiles | Njobs | output_dsid                     | Nfiles |  Nevents |    Nev | upload  | comments                          |
 |                               |                                 |          |     factor |        |  / job |       |                                 |        |          |  /file |         |                                   |
 |-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| [[file:s1_sim_bmup0b0.fcl][s1_sim]]                        | bmup0b0s00r0000                 |      1e8 |          1 |        |      1 |   400 | bmum0b0s11r0000                 |   3996 | 29502600 |   7400 |         | S1, everything relevant           |
+| [[file:s1_sim_bmup0b0.fcl][s1_sim]]                        | bmup0b0s00r0000                 |      5e8 |          1 |        |      1 |   400 | bmum0b0s11r0000                 |   3996 | 29502600 |   7400 |         | S1, everything relevant           |
 | [[file:s1_concat_bmum0.fcl][s1_concat]]                     | bmup0b0s11r0000                 | 29502600 |          1 |   3996 |     20 |   200 | sim.murat.bmum0s11b0.su2020.art |    200 | 29502600 | 147500 | on tape |                                   |
 |-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| s1_spmc_ele_filter            | sim.murat.bmum0s11b0.su2020.art | 29502600 |          1 |    200 |     20 |    10 | sim.murat.bmum0s16b0.su2020.art |     10 |   247071 |  24700 |         | S1, events with P>100 MeV/c e-    |
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| s2_sim                        | sim.murat.bmum0s11b0.su2020.art | 29502600 |          1 |    200 |      1 |   200 | sim.murat.bmum0s21b0.su2020.art |    200 |  5352646 |  27000 |         | S2, everything                    |
-| s2_concat                     | sim.murat.bmum0s21b0.su2020.art |  5352646 |          1 |    200 |      5 |    40 | sim.murat.bmum0s21b0.su2020.art |     40 |  5352646 | 135000 | on tape |                                   |
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| s2_sim_ele                    | sim.murat.bmum0s16b0.su2020.art |   247071 |          1 |     10 |     10 |     1 | sim.murat.bmum0s26b0.su2020.art |      1 |      572 |    572 |         | S2, events with S1 P>100 MeV/c e- |
-| s2_sim_muo                    | sim.murat.bmum0s11b0.su2020.art | 29502600 |          1 |    200 |     20 |    10 | sim.murat.bmum0s27b0.su2020.art |     20 |  5349397 | 270000 |         | S2,                               |
-| s2_spmc_ele_filter            | sim.murat.bmum0s27b0.su2020.art |  5349360 |          1 |     20 |     20 |     1 | sim.murat.bmum0s28b0.su2020.art |      1 |       48 |     48 |         | mu- --> e- decays at Stage2       |
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| s3_sim                        | sim.murat.bmum0s21b0.su2020.art |  5352646 |          1 |    200 |      1 |   200 | sim.murat.bmum0s31b0.su2020.art |        |          |        | on tape | mu, pi stopped in the ST          |
-|                               |                                 |          |            |        |        |       | sim.murat.bmum0s32b0.su2020.art |        |          |        | on tape | mu, pi stopped outside the ST     |
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| s3_sim_ele                    | sim.murat.bmum0s26b0.su2020.art |      571 |          1 |      1 |      1 |     1 | sim.murat.bmum0s36b0.su2020.art |      1 |       21 |     21 |         | S1 100 MeV/c e- traced to VD9     |
-| s3_sim_muo                    | sim.murat.bmum0s27b0.su2020.art |  5349360 |          1 |     20 |      1 |    20 | sim.murat.bmum0s37b0.su2020.art |     20 |  4394759 | 220000 |         | mu- traced to VD9                 |
-| s3_sim_ele_28                 | sim.murat.bmum0s28b0.su2020.art |       48 |          1 |      1 |      1 |     1 | sim.murat.bmum0s38b0.su2020.art |      1 |        9 |      9 |         | S2  100 MeV/c e- traced to VD9    |
-| s3_spmc_ele_filter            | sim.murat.bmum0s37b0.su2020.art |  4394759 |          1 |     20 |     20 |     1 | sim.murat.bmum0s39b0.su2020.art |      1 |       11 |     11 |         | mu- --> e- decays at Stage3       |
-| [[file:s3_spmc_muo_filter_bmum0.fcl][s3_spmc_muo_filter]]            | sim.murat.bmum0s37b0.su2020.art |  4394759 |          1 |     20 |     20 |     1 | sim.murat.bmum0s3ab0.su2020.art |      1 |     4065 |   4065 |         | P>100 MeV/c mu- at VD9            |
-| s3_sim_vd9                    | sim.murat.bmum0s21b0.su2020.art |  5352646 |            |        |        |       | sim.murat.bmum0s3cb0.su2020.art |        |          |        |         | everything traced to VD9,         |
-| s3_add_proton_time_map_s3c    | sim.murat.bmum0s3cb0.su2020.art |          |            |        |        |       | sim.murat.bmum0s3cb0.su2020.art |        |          |        |         |                                   |
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| s4_sim_muo_vd10               | sim.murat.bmum0s37b0.su2020.art |  4394759 |          1 |     20 |      1 |    20 | sim.murat.bmum0s47b0.su2020.art |     20 |  3332703 | 170000 |         | mu- traced to VD10                |
-| s4_spmc_muo_filter            | sim.murat.bmum0s47b0.su2020.art |  3332583 |          1 |     20 |     20 |     1 | sim.murat.bmum0s4bb0.su2020.art |      1 |   263950 |        |         | mu- P>70 MeV/c at VD10            |
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| s5_resample_vd9_to_mother_s36 | sim.murat.bmum0s36b0.su2020.art |       21 |      10000 |    100 |      1 |   100 | sim.murat.bmum0s56b0.su2020.art |      1 |   410134 | 410134 |         | S1 e- scattering in the ST (p>0)  |
-| s5_resample_vd9_to_mother_s3a | sim.murat.bmum0s3ab0.su2020.art |  4394759 |            |     20 |        |       | sim.murat.bmum0s57b0.su2020.art |        |          |        |         | mu- scattering in the ST          |
-| s5_resample_vd9_to_mother_s38 | sim.murat.bmum0s38b0.su2020.art |        9 |      10000 |    100 |      1 |   100 | sim.murat.bmum0s58b0.su2020.art |      1 |          |        |         | S2 e- scattering in the ST        |
-| s5_resample_vd9_to_mother_s39 | sim.murat.bmum0s39b0.su2020.art |       11 |      10000 |    100 |      1 |   100 | sim.murat.bmum0s59b0.su2020.art |      1 |          |        |         | S3 e- scattering in the ST        |
-| s5_resample_vd10_to_mother    | sim.murat.bmum0s4bb0.su2020.art |   263950 |       1000 |    264 |      1 |   264 | sim.murat.bmum0s5bb0.su2020.art |        |          |        |         | mu- decays in flight              |
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| s5_stn_s56                    | sim.murat.bmum0s56b0.su2020.art |   410134 |          1 |      1 |      1 |     1 | nts.murat.bmum0s56b0.su2020.stn |      1 |   410134 | 410134 |         | S1 e- scattering in the ST  (p>0) |
-| s5_stn_s58                    | sim.murat.bmum0s58b0.su2020.art |          |          1 |      1 |      1 |     1 | nts.murat.bmum0s58b0.su2020.stn |      1 |          |        |         | S1 e- scattering in the ST  (p>0) |
-| s5_stn_s59                    | sim.murat.bmum0s59b0.su2020.art |          |          1 |      1 |      1 |     1 | nts.murat.bmum0s59b0.su2020.stn |      1 |          |        |         | S1 e- scattering in the ST  (p>0) |
-| s5_stn_s5a                    | sim.murat.bmum0s5ab0.su2020.art |          |          1 |      1 |      1 |     1 | nts.murat.bmum0s5ab0.su2020.stn |      1 |          |        |         | mu- scattering in the ST          |
-| s5_stn_s5b                    | sim.murat.bmum0s5bb0.su2020.art |          |          1 |      1 |      1 |     1 | nts.murat.bmum0s5bb0.su2020.stn |      1 |          |        |         | mu- decays in flight              |
 |-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
 
 * ------------------------------------------------------------------------------
-* stage output
+* stage output and per-stage comments
 * ------------------------------------------------------------------------------
-* s1_sim                                                                     
+* s1_sim                          
+- the rate of surviving events: 
+  DS field at 50% : ~2.5 e-3 - initially, made a mistake
+  DS field at 70% : ~3.2 e-3 
+
+#+begin_src                                            
   /pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup0b0s00r0000.s1_sim/outstage/53594253/00/00000:
   total used in directory 3949 available 885576482235072
   drwxr-xr-x   8 murat mu2e     512 Mar  9 20:18 .
@@ -101,6 +53,7 @@ f# -*- mode:org -*-
   -rw-r--r--   1 murat mu2e     986 Mar  9 20:17 sim.murat.bmup0b0s11r0000.pipenu.001210_00000000.art.json
   -rw-r--r--   1 murat mu2e 1789609 Mar  9 20:18 sim.murat.bmup0b0s12r0000.pipenu.001210_00000000.art
   -rw-r--r--   1 murat mu2e     985 Mar  9 20:19 sim.murat.bmup0b0s12r0000.pipenu.001210_00000000.art.json
+#+end_src
 * ---------------------------------------------------------------------------------------------------------------
 * data formats                                                                                                
 * ---------------------------------------------------------------------------------------------------------------

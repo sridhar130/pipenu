@@ -39,7 +39,7 @@ class Project (ProjectBase):
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #-------v----------------------------------------------------------------------
-        if (idsid) : self.fInputDataset = self.dataset(idsid);
+        if (self.fIDsID) : self.fInputDataset = self.dataset(self.fIDsID);
         return
 
 #------------------------------------------------------------------------------

@@ -10,27 +10,26 @@ class Project(ProjectBase):
 # datasets of this family
 # 1. stage 1 : generator input
 #------------------------------------------------------------------------------
-        self.fDataset['bmup9b0s00r0000'] = Dataset('generator'                               ,'bmup9b0s00r0000','local')
+        self.add_dataset(Dataset('generator'                               ,'bmup9b0s00r0000','local'))
 #------------------------------------------------------------------------------
 # 2. input for stage2 : s2:resample or s2:sim 
+#    in both cases trace everything 
 #------------------------------------------------------------------------------
-        self.fDataset['bmup9b0s11r0000'] = Dataset('sim.mu2e.bmup9b0s11r0000.art','bmup9b0s11r0000','local')
-        self.fDataset['bmup9b0s12r0000'] = Dataset('sim.mu2e.bmup9b0s12r0000.art','bmup9b0s12r0000','local')
+        self.add_dataset(Dataset('sim.mu2e.bmup9b0s11r0000.pipenu.art','bmup9b0s11r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bmup9b0s12r0000.pipenu.art','bmup9b0s12r0000','local'))
 #------------------------------------------------------------------------------
-# Input for stage3: datasets produced at stage2
+# Input for stage3: s3:digi_trig
 #------------------------------------------------------------------------------
-        self.fDataset['bmup9b0s21r0000'] = Dataset('sim.mu2e.bmup9b0s21r0000.art','bmup9b0s21r0000','local') 
-        self.fDataset['bmup9b0s22r0000'] = Dataset('sim.mu2e.bmup9b0s22r0000.art','bmup9b0s22r0000','local') 
+        self.add_dataset(Dataset('sim.mu2e.bmup9b0s21r0000.pipenu.art','bmup9b0s21r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bmup9b0s22r0000.pipenu.art','bmup9b0s22r0000','local'))
 #------------------------------------------------------------------------------
 # Input s4 strip and s3 stn -- TargetStopOutput from s3
 #------------------------------------------------------------------------------
-        self.fDataset['bmup9b0s31r0000'] = Dataset('sim.mu2e.bmup9b0s31r0000.art','bmup9b0s31r0000','local')
+        self.add_dataset(Dataset('sim.mu2e.bmup9b0s31r0000.pipenu.art','bmup9b0s31r0000','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
-        self.fInputDsID = None;
-        if (idsid) : self.fInputDataset = self.fDataset[idsid];
-
+        if (self.fIDsID) : self.fInputDataset = self.dataset(self.fIDsID);
         return
 
 #------------------------------------------------------------------------------
@@ -94,31 +93,31 @@ class Project(ProjectBase):
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;       
 #------------------------------------------------------------------------------
-# init stage 2. a Stage can have one or several jobs associated with it
+# init stage 2: resampling and tracing
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
 
-        job                          = s.new_job('sim','bmup9b0s11r0000');
+        job                          = s.new_job('resample','bmup9b0s11r0000');
 
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
+        job.fBaseFcl                 = self.base_fcl(job,'resample');
 
-        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
+        job.fNInputFiles             = 10                     # number of segments defined by s1:sim
              
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
-        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  1000000
+        job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
+        job.fResamplingModuleLabel   = 'beamResampler'
+        job.fRunNumber               = 1210
         job.fRequestedTime           = '3h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        odsid21                      = self.fFamilyID+'s21'+'r0000';
-        odsid22                      = self.fFamilyID+'s22'+'r0000';
-        odsid23                      = self.fFamilyID+'s23'+'r0000';
+        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
 
-        job.fOutputStream            = ['TargetStopOutput'            , 'ootStopOutput'               , 'IPAStopOutput'               ]
-        job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
-        job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
+        job.fOutputStream            = [ 's24'             ]
+        job.fOutputDsID              = [  odsid            ]
+        job.fOutputFnPattern         = [ 'sim.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'art'             ]
 
         # job description defined the grid output directory
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
@@ -139,10 +138,12 @@ class Project(ProjectBase):
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
 
-        job.fOutputStream            = [ 'InitStntuple'                  ]
-        job.fOutputDsID              = [ odsid21                         ]
-        job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'stn'                           ]
+        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
+
+        job.fOutputStream            = [ 'InitStntuple'     ]
+        job.fOutputDsID              = [ odsid              ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid  ]
+        job.fOutputFormat            = [ 'stn'              ]
 
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;

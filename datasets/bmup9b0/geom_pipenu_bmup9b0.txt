@@ -1,0 +1,10 @@
+// -*- mode: c++ -*-
+//-----------------------------------------------------------------------------
+// pipenu geometry for mu+/pi+ beam
+//-----------------------------------------------------------------------------
+#include "pipenu/common/geom_baseline.txt"
+//
+double ts.coll3.rotationAngle    = 180.0; // DEFAULT: 0.0
+
+// bool   degrader.build            = true;  // DEFAULT: false
+// double degrader.rotation         = 0.0;   // DEFAULT: -900  (0:in the beam, -90: out of beam (degrees))

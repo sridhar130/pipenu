@@ -3,52 +3,38 @@
 from local_classes import *
 # from mixing_inputs import *
 
-class Project:
+class Project(ProjectBase):
 #------------------------------------------------------------------------------
 # no need to have config files, can do initialization in python directly
 #------------------------------------------------------------------------------
-    def new_stage(self,name):
-        self.fStage[name]            = Stage(name,self);
-        return self.fStage[name]
-
-    def dataset(self,dsid):
-        return self.fDataset[dsid];
+    def init_datasets():
 #------------------------------------------------------------------------------
-# returns the name of the FCL file corresponding to the job - to be used by gen_fcl
+# datasets of this family
+# 1. stage 1 : generator input
 #------------------------------------------------------------------------------
-    def base_fcl(self,job,fcl_name):
-        fmid = self.fFamilyID;              # familyID
-        return self.fProjectName+'/datasets/'+fmid+'/'+job.stage().name()+'_'+fcl_name+'_'+fmid+'.fcl'
+        self.add_dataset(Dataset('generator'                   ,'bmum0b0s00r0000','local'))
+#------------------------------------------------------------------------------
+# 2. input for stage2 : datasets produced by stage1
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('sim.mu2e.bmum0b0s11r0000.art','bmum0b0s11r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bmum0b0s12r0000.art','bmum0b0s12r0000','local'))
+#------------------------------------------------------------------------------
+# 3. input for stage3: datasets produced at stage2
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('sim.mu2e.bmum0b0s21r0000.art','bmum0b0s21r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bmum0b0s22r0000.art','bmum0b0s22r0000','local'))
+#------------------------------------------------------------------------------
+# 3. Input s4 strip and s3 stn -- TargetStopOutput from s3
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('sim.mu2e.bmum0b0s31r0000.art','bmum0b0s31r0000','local'))
 
-    def job_description(self,job):
-        return self.fProjectName+'.'+job.input_dataset().id()+'.'+job.stage().name()+'_'+job.name()
-
+#------------------------------------------------------------------------------
     def __init__(self,idsid=None):
 
-        project                      = 'pipenu'
-        self.fFamilyID               = 'bmum0b0'          # in fact, this is a family name
-        self.fProjectName            = project;
-        self.fStage                  = {}
-        self.fDataset                = {};
-        #------------------------------------------------------------------------------
-        # datasets of this family
-        # 1. stage 1 : generator input
-        #------------------------------------------------------------------------------
-        self.fDataset['bmum0b0s00r0000'] = Dataset('generator'                   ,'bmum0b0s00r0000','local')
-        #------------------------------------------------------------------------------
-        # 2. input for stage2 : datasets produced by stage1
-        #------------------------------------------------------------------------------
-        self.fDataset['bmum0b0s11r0000'] = Dataset('sim.mu2e.bmum0b0s11r0000.art','bmum0b0s11r0000','local')
-        self.fDataset['bmum0b0s12r0000'] = Dataset('sim.mu2e.bmum0b0s12r0000.art','bmum0b0s12r0000','local')
-        #------------------------------------------------------------------------------
-        # 3. input for stage3: datasets produced at stage2
-        #------------------------------------------------------------------------------
-        self.fDataset['bmum0b0s21r0000'] = Dataset('sim.mu2e.bmum0b0s21r0000.art','bmum0b0s21r0000','local') 
-        self.fDataset['bmum0b0s22r0000'] = Dataset('sim.mu2e.bmum0b0s22r0000.art','bmum0b0s22r0000','local') 
-        #------------------------------------------------------------------------------
-        # 3. Input s4 strip and s3 stn -- TargetStopOutput from s3
-        #------------------------------------------------------------------------------
-        self.fDataset['bmum0b0s31r0000'] = Dataset('sim.mu2e.bmum0b0s31r0000.art','bmum0b0s31r0000','local')
+        ProjectBase.__init__(self,project='pipenu',family_id='bmup0b0',idsid=idsid);
+        self.init_datasets();
+
+        project = self.name();
 #------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
@@ -58,10 +44,10 @@ class Project:
         job.fRunNumber               = 1210;
         job.fBaseFcl                 = self.base_fcl(job,'sim');
 
-        job.fNInputFiles             = 250                      # number of segments
+        job.fNInputFiles             = 1000                      # number of segments
                                      
         job.fMaxInputFilesPerSegment =  1
-        job.fNEventsPerSegment       = 400000
+        job.fNEventsPerSegment       = 500000
         job.fResample                = 'no'   # yes/no
         job.fRequestedTime           = '20h'
         job.fIfdh                    = 'xrootd'                 # ifdh/xrootd

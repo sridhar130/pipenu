@@ -194,6 +194,43 @@ Found 0 data products in this Run
 09-Mar-2024 17:37:09 CST  Closed input file "results/2024-03-09-15-26.s2_sim_bmup9b0.mu2egpvm06.470/sim.mu2e.bmup9b0s22r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
 #+end_src
+* dts.mu2e.bmup9b0s24r0000.pipenu.art                                                                         
+#+begin_src 
+murat@mu2ebuild01:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-03-17-13-30.s2_resample_save_all_bmup9b0.mu2ebuild01.30118/dts.mu2e.bmup9b0s24r0000.pipenu.001210_00000000.art                                                                                                                                                                                                  
+   ************************** Mu2e Offline **************************                                                                                                                                             
+     art v3_14_03    root v6_28_10a    KinKal v02_05_00b
+     build  /exp/mu2e/app/users/murat/muse_002
+     build  sl7-prof-e28-p055    03/15/24 11:16:41
+   ******************************************************************
+17-Mar-2024 13:33:25 CDT  Initiating request to open input file "results/2024-03-17-13-30.s2_resample_save_all_bmup9b0.mu2ebuild01.30118/dts.mu2e.bmup9b0s24r0000.pipenu.001210_00000000.art"
+17-Mar-2024 13:33:25 CDT  Opened input file "results/2024-03-17-13-30.s2_resample_save_all_bmup9b0.mu2ebuild01.30118/dts.mu2e.bmup9b0s24r0000.pipenu.001210_00000000.art"
+Begin processing the 1st record. run: 1 subRun: 0 event: 41 at 17-Mar-2024 13:33:25 CDT
+Found 13 data products in this Event
+Data products: 
+                                Friendly Class Name        Module Label    Instance Name  Process Name     Product ID
+                                 mu2e::StepPointMCs  compressDetStepMCs   stoppingtarget    S2Resample    60709723
+                                 mu2e::GenParticles  compressDetStepMCs                     S2Resample   115376056
+                              mu2e::CaloShowerSteps  compressDetStepMCs                     S2Resample   146768914
+                                     mu2e::StatusG4               g4run                     S2Resample   176362224
+mu2e::SimParticleart::Ptrmu2e::MCTrajectorystd::map  compressDetStepMCs                     S2Resample   430267364
+                                mu2e::SimParticlemv  compressDetStepMCs                     S2Resample  1592092621
+                                art::TriggerResults      TriggerResults                     S2Resample  1781825273
+                                 mu2e::StepPointMCs  compressDetStepMCs  virtualdetector    S2Resample  2221251241
+                                     mu2e::CrvSteps  compressDetStepMCs                     S2Resample  2461789047
+                                      art::EventIDs       beamResampler                     S2Resample  3367798897
+                                mu2e::StrawGasSteps  compressDetStepMCs                     S2Resample  3936703888
+                                 mu2e::StepPointMCs  compressDetStepMCs   protonabsorber    S2Resample  4156146160
+                              mu2e::PrimaryParticle       FindMCPrimary                     S2Resample  4169652619
+
+Found 1 data products in this SubRun
+Data products: 
+Friendly Class Name  Module Label  Instance Name  Process Name     Product ID
+mu2e::GenEventCount    genCounter                   S2Resample  3960419778
+
+Found 0 data products in this Run
+17-Mar-2024 13:33:26 CDT  Closed input file "results/2024-03-17-13-30.s2_resample_save_all_bmup9b0.mu2ebuild01.30118/dts.mu2e.bmup9b0s24r0000.pipenu.001210_00000000.art"
+Art has completed and will exit with status 0.
+#+end_src 
 * ---------------------------------------------------------------------------------------------------------------
 * performance testing (prof build)                                                                            
 ** stage 1 (up to DS)                                                                                         
