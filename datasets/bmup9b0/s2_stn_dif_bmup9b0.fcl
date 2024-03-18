@@ -33,7 +33,7 @@ physics : {
             primaryParticleTag : "" ## "FindMCPrimary"   ## empty string: save all particles
 	    
 	    genpCollTag      : "compressDetStepMCs"
-	    simpCollTag      : "g4run"   ## "compressDetStepMCs"
+	    simpCollTag      : "compressDetStepMCs"      ## could be "g4run"
             minSimpMomentum  : 1   ## store all particles
 
 	    spmcBlockName    :[ "SpmcBlockVDet"                   ]                      
