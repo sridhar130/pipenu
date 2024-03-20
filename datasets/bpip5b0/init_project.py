@@ -160,14 +160,14 @@ class Project(ProjectBase):
 
         job                          = s.new_job('gen_sim_tgt',idsid);
 
-        job.fRunNumber               = 1210;
-
         job.fNInputFiles             = 1                                # number of segments 
 
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 100000
         job.fResample                = 'yes'                             # yes/no
         job.fResamplingModuleLabel   = 'TargetStopResampler'
+        job.fRunNumber               = 1210;
+
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
@@ -185,13 +185,14 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------  
         job                          = s.new_job('gen_sim_deg',idsid);
 
-        job.fRunNumber               = 1210;
         job.fNInputFiles             = -1                                # number of segments defined by  the input dataset    
 
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 100000
         job.fResample                = 'yes'                             # yes/no
         job.fResamplingModuleLabel   = 'TargetStopResampler'
+        job.fRunNumber               = 1210;
+
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
