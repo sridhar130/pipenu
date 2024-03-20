@@ -17,14 +17,25 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('sim.mu2e.bmup9b0s11r0000.pipenu.art','bmup9b0s11r0000','local'))
 #------------------------------------------------------------------------------
-# Input for stage3: s3:digi_trig
+# Input for s2:stn_dif, s3:digi_trig
 #------------------------------------------------------------------------------
-        self.add_dataset(Dataset('sim.mu2e.bmup9b0s21r0000.pipenu.art','bmup9b0s21r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.bmup9b0s22r0000.pipenu.art','bmup9b0s22r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup9b0s21r0000.pipenu.art','bmup9b0s21r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup9b0s24r0000.pipenu.art','bmup9b0s24r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup9b0s25r0000.pipenu.art','bmup9b0s25r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup9b0s26r0000.pipenu.art','bmup9b0s26r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup9b0s27r0000.pipenu.art','bmup9b0s27r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup9b0s28r0000.pipenu.art','bmup9b0s28r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup9b0s29r0000.pipenu.art','bmup9b0s29r0000','local'))
 #------------------------------------------------------------------------------
-# Input s4 strip and s3 stn -- TargetStopOutput from s3
+# Input for s3:stn, s4:reco_kk
 #------------------------------------------------------------------------------
-        self.add_dataset(Dataset('sim.mu2e.bmup9b0s31r0000.pipenu.art','bmup9b0s31r0000','local'))
+        self.add_dataset(Dataset('dig.mu2e.bmup9b0s34r0000.pipenu.art','bmup9b0s34r0000','local'))
+        self.add_dataset(Dataset('dig.mu2e.bmup9b0s36r0000.pipenu.art','bmup9b0s36r0000','local'))
+#------------------------------------------------------------------------------
+# output of the reconstruction
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('mcs.mu2e.bmup9b0s44r0100.pipenu.art','bmup9b0s44r0100','local'))
+        self.add_dataset(Dataset('mcs.mu2e.bmup9b0s46r0100.pipenu.art','bmup9b0s46r0100','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
@@ -38,6 +49,9 @@ class Project(ProjectBase):
     def __init__(self,idsid=None):
 
         ProjectBase.__init__(self,project='pipenu',family_id='bmup9b0',idsid=idsid);
+
+        # print("Project init: idsid:",idsid);
+
         self.init_datasets();
         project                      = self.name()
 #------------------------------------------------------------------------------
@@ -61,10 +75,10 @@ class Project(ProjectBase):
         odsid1                       = self.fFamilyID+'s11'+'r0000';
         odsid2                       = self.fFamilyID+'s12'+'r0000';
 
-        job.fOutputStream            = ['BeamOutput'                  , 'NeutralsOutput'              ]
-        job.fOutputDsID              = [odsid1                        ,  odsid2                       ] 
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1]]
-        job.fOutputFormat            = ['art'                         , 'art'                         ]
+        job.fOutputStream            = ['BeamOutput'                   ] #, 'NeutralsOutput'              ]
+        job.fOutputDsID              = [odsid1                         ] #,  odsid2                       ] 
+        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0] ] #, 'sim.mu2e.'+job.fOutputDsID[1]]
+        job.fOutputFormat            = ['art'                          ] #, 'art'                         ]
         
         # grid output dir
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
@@ -97,19 +111,16 @@ class Project(ProjectBase):
 # stage, s2:resample
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
-
         job                          = s.new_job('resample','bmup9b0s11r0000');
-
-        job.fBaseFcl                 = self.base_fcl(job,'resample');
 
         job.fNInputFiles             = 10                     # number of segments defined by s1:sim
              
         job.fMaxInputFilesPerSegment =  1
-        job.fNEventsPerSegment       =  1000000
+        job.fNEventsPerSegment       =  100000
         job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
         job.fResamplingModuleLabel   = 'beamResampler'
         job.fRunNumber               = 1210
-        job.fRequestedTime           = '3h'   
+        job.fRequestedTime           = '5h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
@@ -133,11 +144,11 @@ class Project(ProjectBase):
         job.fNInputFiles             = 10                     # number of segments defined by s1:sim
              
         job.fMaxInputFilesPerSegment =  1
-        job.fNEventsPerSegment       =  1000000
+        job.fNEventsPerSegment       =  100000
         job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
         job.fResamplingModuleLabel   = 'beamResampler'
         job.fRunNumber               = 1210
-        job.fRequestedTime           = '3h'   
+        job.fRequestedTime           = '5h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
@@ -161,11 +172,11 @@ class Project(ProjectBase):
         job.fNInputFiles             = 10                     # number of segments defined by s1:sim
              
         job.fMaxInputFilesPerSegment =  1
-        job.fNEventsPerSegment       =  1000000
+        job.fNEventsPerSegment       =  100000
         job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
         job.fResamplingModuleLabel   = 'beamResampler'
         job.fRunNumber               = 1210
-        job.fRequestedTime           = '3h'   
+        job.fRequestedTime           = '5h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
@@ -189,11 +200,11 @@ class Project(ProjectBase):
         job.fNInputFiles             = 10                     # number of segments defined by s1:sim
              
         job.fMaxInputFilesPerSegment =  1
-        job.fNEventsPerSegment       =  1000000
+        job.fNEventsPerSegment       =  100000
         job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
         job.fResamplingModuleLabel   = 'beamResampler'
         job.fRunNumber               = 1210
-        job.fRequestedTime           = '3h'   
+        job.fRequestedTime           = '5h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
@@ -217,11 +228,11 @@ class Project(ProjectBase):
         job.fNInputFiles             = 10                     # number of segments defined by s1:sim
              
         job.fMaxInputFilesPerSegment =  1
-        job.fNEventsPerSegment       =  1000000
+        job.fNEventsPerSegment       =  100000
         job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
         job.fResamplingModuleLabel   = 'beamResampler'
         job.fRunNumber               = 1210
-        job.fRequestedTime           = '3h'   
+        job.fRequestedTime           = '5h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
@@ -245,11 +256,11 @@ class Project(ProjectBase):
         job.fNInputFiles             = 10                     # number of segments defined by s1:sim
              
         job.fMaxInputFilesPerSegment =  1
-        job.fNEventsPerSegment       =  1000000
+        job.fNEventsPerSegment       =  100000
         job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
         job.fResamplingModuleLabel   = 'beamResampler'
         job.fRunNumber               = 1210
-        job.fRequestedTime           = '3h'   
+        job.fRequestedTime           = '5h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
@@ -264,12 +275,13 @@ class Project(ProjectBase):
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# s2:stn_tgt : ntuple target stops
+# s2:stn_dif : ntuple decays in flight
 #------------------------------------------------------------------------------  
-        job                          = s.new_job('stn_tgt','bmup9b0s21r0000');
+        # print(" s2:stn_dif: idsid=",idsid)
+        job                          = s.new_job('stn_dif',idsid);
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
+        job.fBaseFcl                 = self.base_fcl(job,'stn_dif');
 
         job.fNInputFiles             = 1                                # number of segments    
 
@@ -279,7 +291,7 @@ class Project(ProjectBase):
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
 
-        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
+        odsid                        = self.fFamilyID+s.name()+job.input_dataset().output_stream()+'r0000';
 
         job.fOutputStream            = [ 'InitStntuple'     ]
         job.fOutputDsID              = [ odsid              ]
@@ -289,32 +301,115 @@ class Project(ProjectBase):
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# s3:strip_mup
+# stage 3
+# s3:digi_trig : InputDsID is 'bmup9b0s2xr0000', digitization job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s3');
 
-        job                          = s.new_job('strip_mup','bmup9b0s21r0000');
+        job                          = s.new_job('digi_trig',idsid);
 
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'strip_mup');
+        # job.fBaseFcl                 = self.base_fcl(job,'digi_trig');
 
-        job.fNInputFiles             = -1                     # number of segments defined by the input datasets
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment = 100 
-        job.fNEventsPerSegment       =  5000
-        job.fResample                = 'no'   # yes/no
-        job.fRequestedTime           = '2h'   
-        job.fIfdh                    = 'ifdh'                 # ifdh/xrootd
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  100000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
 
-        odsid31                       = self.fFamilyID+'s31'+'r0000';
+        output_stream                = self.fInputDataset.output_stream()
 
-        job.fOutputStream            = ['muonout'                     ]
-        job.fOutputDsID              = [odsid31                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0]]
-        job.fOutputFormat            = ['art'                         ]
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
 
-        # grid output dir
+        job.fOutputStream            = ['defaultOutput'                ]
+        job.fOutputDsID              = [odsid                          ]
+        job.fOutputFnPattern         = ['dig.mu2e.'+job.fOutputDsID[0] ]
+        job.fOutputFormat            = ['art'                          ]
+#------------------------------------------------------------------------------
+# job description defined the grid output directory
+#------------------------------------------------------------------------------
+        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = desc;
+#------------------------------------------------------------------------------
+# s3:stn : ntuple decays in flight after digitization
+#------------------------------------------------------------------------------  
+        job                          = s.new_job('stn',idsid);
+
+        # job.fRunNumber               = 1210;
+        # job.fBaseFcl                 = self.base_fcl(job,'stn_dif');
+
+        job.fNInputFiles             = 1                                # number of segments    
+
+        job.fMaxInputFilesPerSegment = 100
+        job.fNEventsPerSegment       = 50000                       
+        job.fResample                = 'no'                               # yes/no
+        job.fRequestedTime           = '3h'
+        job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
+
+        odsid                        = self.fFamilyID+s.name()+job.input_dataset().output_stream()+'r0000';
+
+        job.fOutputStream            = [ 'InitStntuple'     ]
+        job.fOutputDsID              = [ odsid              ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid  ]
+        job.fOutputFormat            = [ 'stn'              ]
+
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = desc;
+#------------------------------------------------------------------------------
+# s4:reco_kk : reconstruction job has only one output stream
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s4');
+
+        job                          = s.new_job('reco_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  100000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+
+        job.fOutputStream            = ['defaultOutput'   ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
+        job.fOutputFormat            = ['art'             ]
+
+        # job description defined the grid output directory
+        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = desc;
+#------------------------------------------------------------------------------
+# s4:stn_kk : stntupling job has only one output stream
+#             no ned to redefine the stage
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('stn_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  100000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+
+        odsid                        = self.fFamilyID+'s5'+output_stream+'r0100';
+
+        job.fOutputStream            = ['InitStntuple'    ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
+        job.fOutputFormat            = ['stn'             ]
+
+        # job description defined the grid output directory
+        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # end

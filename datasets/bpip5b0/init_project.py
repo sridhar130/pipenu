@@ -3,46 +3,19 @@
 from local_classes import *
 # from mixing_inputs import *
 
-class Project:
-#------------------------------------------------------------------------------
-# no need to have config files, can do initialization in python directly
-#------------------------------------------------------------------------------
-    def new_stage(self,name):
-        self.fStage[name]            = Stage(name,self);
-        return self.fStage[name]
+class Project(ProjectBase):
 
-    def dataset(self,dsid):
-        return self.fDataset[dsid];
-
-    def add_dataset(self,ds):
-        self.fDataset[ds.id()] = ds;
-#------------------------------------------------------------------------------
-# returns the name of the FCL file corresponding to the job - to be used by gen_fcl
-#------------------------------------------------------------------------------
-    def base_fcl(self,job,fcl_name):
-        fmid = self.fFamilyID;              # familyID
-        return self.fProjectName+'/datasets/'+fmid+'/'+job.stage().name()+'_'+fcl_name+'_'+fmid+'.fcl'
-
-    def job_description(self,job):
-        return self.fProjectName+'.'+job.input_dataset().id()+'.'+job.stage().name()+'_'+job.name()
-
-    def __init__(self,idsid=None):
-
-        project                      = 'pipenu'
-        self.fFamilyID               = 'bpip5b0'          # is the family name
-        self.fProjectName            = project;
-        self.fStage                  = {}
-        self.fDataset                = {};
+    def init_datasets(self):
 #------------------------------------------------------------------------------
 # datasets of this family
 # 1. stage 1 : generator input
 #------------------------------------------------------------------------------
-        self.fDataset['bpip5b0s00r0000'] = Dataset('generator'                   ,'bpip5b0s00r0000','local')
+        self.add_dataset(Dataset('generator'                   ,'bpip5b0s00r0000','local'))
 #------------------------------------------------------------------------------
 # 2. input for stage2 : datasets produced by stage1
 #------------------------------------------------------------------------------
-        self.fDataset['bpip5b0s11r0000'] = Dataset('sim.mu2e.bpip5b0s11r0000.pipenu.art','bpip5b0s11r0000','local')
-        self.fDataset['bpip5b0s12r0000'] = Dataset('sim.mu2e.bpip5b0s12r0000.pipenu.art','bpip5b0s12r0000','local')
+        self.add_dataset(Dataset('sim.mu2e.bpip5b0s11r0000.pipenu.art','bpip5b0s11r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bpip5b0s12r0000.pipenu.art','bpip5b0s12r0000','local'))
 #------------------------------------------------------------------------------
 # 3. input for stage3: pions stopped in the ST and the degrader
 #------------------------------------------------------------------------------
@@ -66,8 +39,13 @@ class Project:
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
-        self.fInputDsID = None;
-        if (idsid) : self.fInputDataset = self.fDataset[idsid];
+        if (self.fIDsID) : self.fInputDataset = self.dataset(self.fIDsID);
+        return
+
+    def __init__(self,idsid=None):
+
+        ProjectBase.__init__(self,project='pipenu',family_id='bpip5b0',idsid=idsid);
+        self.init_datasets();
 #------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        

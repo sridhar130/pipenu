@@ -35,6 +35,7 @@ services.SeedService.maxUniqueEngines : 100
 #------------------------------------------------------------------------------
 services.GeometryService.inputFile  : "pipenu/common/geom_baseline.txt"
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
+services.TFileService.fileName      : "/dev/null"
 #------------------------------------------------------------------------------
 #  DB constants
 #------------------------------------------------------------------------------
@@ -70,8 +71,7 @@ outputs: {
 #------------------------------------------------------------------------------
 # output files : decays in flight, dont need histograms 
 #------------------------------------------------------------------------------
-# services.TFileService.fileName                   : "nts.mu2e.bmup9b0s44r0000.pipenu.001210_00000000.root"
-outputs.defaultOutput.fileName                   : "dig.mu2e.bmup9b0s34r0000.pipenu.001210_00000000.art"
+outputs.defaultOutput.fileName  : "dig.mu2e.bmup9b0s34r0000.pipenu.001210_00000000.art"
 #------------------------------------------------------------------------------
 # everything below is appended by generate_fcl
 #------------------------------------------------------------------------------

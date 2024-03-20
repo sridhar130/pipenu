@@ -17,7 +17,6 @@ class Project(ProjectBase):
 # 2. input for stage2 : datasets produced by stage1
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('sim.mu2e.bmup0b0s11r0000.pipenu.art','bmup0b0s11r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.bmup0b0s12r0000.pipenu.art','bmup0b0s12r0000','local'))
 #------------------------------------------------------------------------------
 # Input for stage3: datasets produced at stage2
 #------------------------------------------------------------------------------
@@ -62,10 +61,10 @@ class Project(ProjectBase):
         odsid1                       = self.fFamilyID+'s11'+'r0000';
         odsid2                       = self.fFamilyID+'s12'+'r0000';
 
-        job.fOutputStream            = ['BeamOutput'      , 'NeutralsOutput'   ]
-        job.fOutputDsID              = [ odsid1           ,  odsid2            ] 
-        job.fOutputFnPattern         = ['sim.mu2e.'+odsid1, 'sim.mu2e.'+odsid2 ]
-        job.fOutputFormat            = ['art'             , 'art'              ]
+        job.fOutputStream            = ['BeamOutput'       ] ## , 'NeutralsOutput'   ]
+        job.fOutputDsID              = [ odsid1            ] ## ,  odsid2            ] 
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid1 ] ## , 'sim.mu2e.'+odsid2 ]
+        job.fOutputFormat            = ['art'              ] ## , 'art'              ]
         
         # grid output dir
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
@@ -98,10 +97,7 @@ class Project(ProjectBase):
 # init stage 2. a Stage can have one or several jobs associated with it
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
-
-        job                          = s.new_job('sim','bmup0b0s11r0000');
-
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
+        job                          = s.new_job('sim',idsid);
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
@@ -123,6 +119,32 @@ class Project(ProjectBase):
 
         # job description defined the grid output directory
         desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = desc;
+#------------------------------------------------------------------------------
+# stage, s2:resample
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('resample',idsid);
+
+        job.fNInputFiles             = 10                     # number of segments defined by s1:sim
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  1600000
+        job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
+        job.fResamplingModuleLabel   = 'beamResampler'
+        job.fRunNumber               = 1210
+        job.fRequestedTime           = '20h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
+
+        job.fOutputStream            = [ 's24'             ]
+        job.fOutputDsID              = [  odsid            ]
+        job.fOutputFnPattern         = [ 'sim.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'art'             ]
+
+        # job description defined the grid output directory
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s2:stn_tgt : ntuple target stops

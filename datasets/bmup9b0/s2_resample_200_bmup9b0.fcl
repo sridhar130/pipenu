@@ -18,7 +18,7 @@ process_name: S2Resample
 services                            : @local::Services.Sim
 services.SeedService.baseSeed       :  8
 
-services.GeometryService.inputFile  : "pipenu/datasets/bmup0b0/geom_pipenu_bmup0b0.txt"
+services.GeometryService.inputFile  : "pipenu/datasets/bmup9b0/geom_pipenu_bmup9b0.txt"
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
 #------------------------------------------------------------------------------
 # 2. inputs and outputs
@@ -118,10 +118,10 @@ physics.producers.g4run.Mu2eG4CommonCut:{
           ]
 }
 #------------------------------------------------------------------------------
-# defined range of muon decays times to increase the simulation efficiency
+# turn OFF defined range of muon decays times to increase the simulation efficiency
 #------------------------------------------------------------------------------
 physics.producers.g4run.physics.muonMinPreAssignedDecayProperTime:   0. // ns
-physics.producers.g4run.physics.muonMaxPreAssignedDecayProperTime: 150. // ns
+physics.producers.g4run.physics.muonMaxPreAssignedDecayProperTime: 200. // ns
 #------------------------------------------------------------------------------
 # useEventLevelVolumeInfo=true and 'g4run:eventlevel' come together
 #------------------------------------------------------------------------------
@@ -153,4 +153,4 @@ physics.filters.beamResampler.mu2e.MaxEventsToSkip: 0
 physics.filters.DetStepFilter.TimeCutConfig.MinimumTime :   10.
 physics.filters.DetStepFilter.TimeCutConfig.MaximumTime : 2000.
 #------------------------------------------------------------------------------
-outputs.s24.fileName   : "dts.mu2e.bmup0b0s24r0000.pipenu.001210_00000000.art"
+outputs.s24.fileName   : "dts.mu2e.bmup9b0s28r0000.pipenu.001210_00000000.art"

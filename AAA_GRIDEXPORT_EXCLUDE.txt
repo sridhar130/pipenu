@@ -46,9 +46,11 @@ libmu2e_Filters_FilterStepPointPzVsTarget_module.so
 libmu2e_Filters_FilterStepPointReflection_module.so
 libmu2e_Filters_GenParticleMomFilter_module.so
 libmu2e_Filters_ParticleCodeFilter_module.so
+libmu2e_Filters_RecoMomFilter_module.so
 libmu2e_Filters_SelectStepPointsByTime_module.so
 libmu2e_Filters_StepPointsInDigis_module.so
 libmu2e_Filters_TrackSummaryTruthUpdater_module.so
+libmu2e_Filters_TrkPatRecFilter_module.so
 libmu2e_Filters_VetoIncorrectHits_module.so
 libmu2e_Mu2eG4_ConstructEnv*.so
 libmu2e_HelloWorld_*.so
@@ -62,6 +64,7 @@ libmu2e_Sandbox.so
 libmu2e_SeedService_SeedTest01_module.so
 libmu2e_Sources_*.*
 libmu2e_Sources.so
+libmu2e_STMReco_*
 libmu2e_TestTools.so
 libmu2e_TEveEventDisplay_*.*
 libmu2e_TEveEventDisplay.so
@@ -74,6 +77,7 @@ libmu2e_TrkExt_*.*
 libmu2e_TrkExt.so
 libmu2e_TrkHitReco_MakeStereoHits_module.so   
 libmu2e_TrkHitReco_ReadStrawDigi_module.so
+libmu2e_TrkPatRec_*_tool.so
 libmu2e_UtilityModules_*.*
 libmu2e_Validation_*.*
 libmu2e_Validation.so

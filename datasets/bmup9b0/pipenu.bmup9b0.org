@@ -16,19 +16,20 @@ f# -*- mode:org -*-
  - fcl             : 
 # ----------------------------------------------------------------------------------------------------
   
-|-------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+----------+-------+--------+--------------------------|
-| job         | input dsid      |  Nevents | Resampling | Nfiles | Nfiles | Njobs | output_dsid     | Nfiles |  Nevents | Nev   | upload | comments                 |
-|             |                 |          |     factor |        |  / job |       |                 |        |          | /file |        |                          |
-|-------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+----------+-------+--------+--------------------------|
-| [[file:s1_sim_bmup9b0.fcl][s1_sim]]      | bmup9b0s00r0000 |      5e8 |          1 |        |      1 |   400 | bmum9b0s11r0000 |   3996 | 29502600 | 7400  |        | S1, everything relevant  |
-|-------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+----------+-------+--------+--------------------------|
-| s2_resample | bmum9b0s11r0000 | 29502600 |          1 |    200 |      1 |   200 | bmup9b0s24r0000 |        |          |       |        | no decay time constraint |
-|             |                 |          |            |        |        |       | bmup9b0s25r0000 |        |          |       |        | decay [0, 50]            |
-|             |                 |          |            |        |        |       | bmup9b0s26r0000 |        |          |       |        | decay [0,100]            |
-|             |                 |          |            |        |        |       | bmup9b0s27r0000 |        |          |       |        | decay [0,150]            |
-|             |                 |          |            |        |        |       | bmup9b0s28r0000 |        |          |       |        | decay [0,200]            |
-|             |                 |          |            |        |        |       | bmup9b0s29r0000 |        |          |       |        | decay [0,300]            |
-|-------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+----------+-------+--------+--------------------------|
+|-----------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+----------+-------+--------------------------|
+| job             | input dsid      | Nevents | Resampling | Nfiles | Nfiles | Njobs | output_dsid     | Nfiles |  Nevents |   Nev | comments                 |
+|                 |                 |         | factor     |        |  / job |       |                 |        |          | /file |                          |
+|-----------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+----------+-------+--------------------------|
+| [[file:s1_sim_bmup9b0.fcl][s1_sim]]          | bmup9b0s00r0000 |     5e8 | 1          |   1000 |      1 |  1000 | bmup9b0s11r0000 |   3996 | 29502600 |       | S1, everything relevant  |
+|-----------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+----------+-------+--------------------------|
+| s2_resample     | bmup9b0s11r0000 |  100000 | ~ 66       |      1 |      1 |     1 | bmup9b0s24r0000 |      1 |      796 |   796 | no decay time constraint |
+| s2_resample_050 | bmup9b0s11r0000 |  100000 |            |      1 |      1 |     1 | bmup9b0s25r0000 |      1 |    19414 | 19414 | decay [0, 50]            |
+| s2_resample_100 | bmup9b0s11r0000 |  100000 |            |      1 |      1 |     1 | bmup9b0s26r0000 |      1 |    15602 | 15602 | decay [0,100]            |
+| s2_resample_150 | bmup9b0s11r0000 |  100000 |            |      1 |      1 |     1 | bmup9b0s27r0000 |      1 |    11485 | 11485 | decay [0,150]            |
+| s2_resample_200 | bmup9b0s11r0000 |  100000 |            |      1 |      1 |     1 | bmup9b0s28r0000 |      1 |     9048 |  9048 | decay [0,200]            |
+| s2_resample_300 | bmup9b0s11r0000 |  100000 |            |      1 |      1 |     1 | bmup9b0s29r0000 |      1 |     6306 |  6306 | decay [0,300]            |
+|-----------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+----------+-------+--------------------------|
+|                 |                 |         |            |        |        |       |                 |        |          |       |                          |
 
 - bmup9b0s00r0000 is the same as bmup0b0s00r0000, common for all mu+ DIF datasets
 - 
@@ -176,6 +177,59 @@ Found 0 data products in this Run
 17-Mar-2024 13:33:26 CDT  Closed input file "results/2024-03-17-13-30.s2_resample_save_all_bmup9b0.mu2ebuild01.30118/dts.mu2e.bmup9b0s24r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
 #+end_src 
+* 
+#+begin_src 
+murat@mu2ebuild01:/exp/mu2e/app/users/murat/muse_002>murat/scripts/submit_mu2e_job -c tmp/pipenu/fcl/bmup9b0s24r0000.s3_digi_trig/cnf.murat.bmup9b0s24r0000_s3_digi_trig.pipenu.00000_001210_00000000.fcl &
+[1] 20828
+murat@mu2ebuild01:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-03-19-21-07.cnf.murat.bmup9b0s24r0000_s3_digi_trig.pipenu.00000_001210_00000000.mu2ebuild01.20828/dig.murat.bmup9b0s34r0000.pipenu.001210_00000000.art 
+   ************************** Mu2e Offline **************************
+     art v3_14_03    root v6_28_10a    KinKal v02_05_00b
+     build  /exp/mu2e/app/users/murat/muse_002
+     build  sl7-prof-e28-p055    03/18/24 13:07:59
+   ******************************************************************
+19-Mar-2024 21:08:59 CDT  Initiating request to open input file "results/2024-03-19-21-07.cnf.murat.bmup9b0s24r0000_s3_digi_trig.pipenu.00000_001210_00000000.mu2ebuild01.20828/dig.murat.bmup9b0s34r0000.pipenu.001210_00000000.art"
+19-Mar-2024 21:09:00 CDT  Opened input file "results/2024-03-19-21-07.cnf.murat.bmup9b0s24r0000_s3_digi_trig.pipenu.00000_001210_00000000.mu2ebuild01.20828/dig.murat.bmup9b0s34r0000.pipenu.001210_00000000.art"
+Begin processing the 1st record. run: 1210 subRun: 0 event: 103 at 19-Mar-2024 21:09:02 CDT
+Found 25 data products in this Event
+Data products: 
+                                Friendly Class Name     Module Label    Instance Name  Process Name     Product ID
+                                     mu2e::StatusG4            g4run                     S2Resample   176362224
+                            mu2e::ProtonBunchTimeMC      EWMProducer                         S4Digi   308577467
+                              mu2e::CaloShowerSteps  compressDigiMCs                         S4Digi   609364269
+mu2e::SimParticleart::Ptrmu2e::MCTrajectorystd::map  compressDigiMCs                         S4Digi  1053189294
+                                mu2e::SimParticlemv  compressDigiMCs                         S4Digi  1105776846
+                                 mu2e::StepPointMCs  compressDigiMCs  virtualdetector        S4Digi  1340925977
+                                 mu2e::StepPointMCs  compressDigiMCs   protonabsorber        S4Digi  1515516505
+                                mu2e::CaloShowerROs  compressDigiMCs                         S4Digi  1719572767
+                                art::TriggerResults   TriggerResults                     S2Resample  1781825273
+                            mu2e::EventWindowMarker      EWMProducer                         S4Digi  2030615861
+                                   mu2e::StrawDigis           makeSD                         S4Digi  2166256422
+                              mu2e::ProtonBunchTime      EWMProducer                         S4Digi  2352589440
+                                   mu2e::CrvDigiMCs  compressDigiMCs                         S4Digi  2357687454
+                                art::TriggerResults   TriggerResults                         S4Digi  2505664162
+                                 mu2e::GenParticles  compressDigiMCs                         S4Digi  2558710106
+                              mu2e::PrimaryParticle  compressDigiMCs                         S4Digi  2622908547
+                                mu2e::StrawGasSteps  compressDigiMCs                         S4Digi  2678734716
+                                 mu2e::StepPointMCs  compressDigiMCs   stoppingtarget        S4Digi  2755426575
+                         mu2e::ProtonBunchIntensity           PBISim                         S4Digi  3015531818
+                                    mu2e::CaloDigis    CaloDigiMaker                         S4Digi  3264368242
+                        mu2e::StrawDigiADCWaveforms           makeSD                         S4Digi  3743567522
+                               mu2e::CaloShowerSims  compressDigiMCs                         S4Digi  3795473155
+                                     mu2e::CrvSteps  compressDigiMCs                         S4Digi  3827785517
+                                 mu2e::StrawDigiMCs  compressDigiMCs                         S4Digi  3833959220
+                                     mu2e::CrvDigis          CrvDigi                         S4Digi  4038702950
+
+Found 2 data products in this SubRun
+Data products: 
+       Friendly Class Name  Module Label  Instance Name  Process Name     Product ID
+mu2e::ProtonBunchIntensity        PBISim  MeanIntensity        S4Digi  2388004991
+       mu2e::GenEventCount    genCounter                   S2Resample  3960419778
+
+Found 0 data products in this Run
+19-Mar-2024 21:09:02 CDT  Closed input file "results/2024-03-19-21-07.cnf.murat.bmup9b0s24r0000_s3_digi_trig.pipenu.00000_001210_00000000.mu2ebuild01.20828/dig.murat.bmup9b0s34r0000.pipenu.001210_00000000.art"
+Art has completed and will exit with status 0.
+[1]+  Done                    murat/scripts/submit_mu2e_job -c tmp/pipenu/fcl/bmup9b0s24r0000.s3_digi_trig/cnf.murat.bmup9b0s24r0000_s3_digi_trig.pipenu.00000_001210_00000000.fcl
+#+end_src
 * ---------------------------------------------------------------------------------------------------------------
 * performance testing (prof build)                                                                            
 ** stage 1 (up to DS)                                                                                         
