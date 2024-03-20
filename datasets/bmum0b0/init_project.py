@@ -33,8 +33,6 @@ class Project(ProjectBase):
 
         ProjectBase.__init__(self,project='pipenu',family_id='bmup0b0',idsid=idsid);
         self.init_datasets();
-
-        project = self.name();
 #------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
@@ -62,7 +60,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                         , 'art'                         ]
         
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s1:stn_beam: stntuple the beam stream
@@ -86,7 +84,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;       
 #------------------------------------------------------------------------------
 # s2:sim : 
@@ -116,7 +114,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
 
         # job description defined the grid output directory
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s2:tgt_stn
@@ -139,7 +137,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:strip_mum : strip mu-'s to create input for the detector simulation
@@ -167,7 +165,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                         ]
 
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:strip_mup : strip mu+'s from all stopped particles, just for testing purposes
@@ -193,7 +191,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                         ]
 
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # end

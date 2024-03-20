@@ -3,33 +3,11 @@
 from local_classes import *
 # from mixing_inputs import *
 
-class Project:
-#------------------------------------------------------------------------------
-# no need to have config files, can do initialization in python directly
-#------------------------------------------------------------------------------
-    def new_stage(self,name):
-        self.fStage[name]            = Stage(name,self);
-        return self.fStage[name]
-
-    def dataset(self,dsid):
-        return self.fDataset[dsid];
-#------------------------------------------------------------------------------
-# returns the name of the FCL file corresponding to the job - to be used by gen_fcl
-#------------------------------------------------------------------------------
-    def base_fcl(self,job,fcl_name):
-        fmid = self.fFamilyID;              # familyID
-        return self.fProjectName+'/datasets/'+fmid+'/'+job.stage().name()+'_'+fcl_name+'_'+fmid+'.fcl'
-
-    def job_description(self,job):
-        return self.fProjectName+'.'+job.input_dataset().id()+'.'+job.stage().name()+'_'+job.name()
+class Project(ProjectBase):
 
     def __init__(self,idsid=None):
 
-        project                      = 'pipenu'
-        self.fFamilyID               = 'bmup4b0'          # in fact, this is a family name
-        self.fProjectName            = project;
-        self.fStage                  = {}
-        self.fDataset                = {};
+        ProjectBase.__init__(self,project='pipenu',family_id='bmup4b0',idsid=idsid);
         #------------------------------------------------------------------------------
         # datasets of this family
         # 1. stage 1 : generator input
@@ -79,7 +57,7 @@ class Project:
         job.fOutputFormat            = ['art'                         , 'art'                         ]
         
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # init s1 stntuple
@@ -103,7 +81,7 @@ class Project:
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;       
 #------------------------------------------------------------------------------
 # init stage 2. a Stage can have one or several jobs associated with it
@@ -133,7 +111,7 @@ class Project:
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
 
         # job description defined the grid output directory
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s2:stn_tgt : ntuple target stops
@@ -156,7 +134,7 @@ class Project:
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:strip_mup
@@ -184,7 +162,7 @@ class Project:
         job.fOutputFormat            = ['art'                         ]
 
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # end

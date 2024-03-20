@@ -17,7 +17,7 @@ class Project(ProjectBase):
         self.add_dataset(Dataset('sim.mu2e.bpip5b0s11r0000.pipenu.art','bpip5b0s11r0000','local'))
         self.add_dataset(Dataset('sim.mu2e.bpip5b0s12r0000.pipenu.art','bpip5b0s12r0000','local'))
 #------------------------------------------------------------------------------
-# 3. input for stage3: pions stopped in the ST and the degrader
+# 3. input for stage3 (detector steps): pions stopped in the ST and the degrader
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('sim.mu2e.bpip5b0s21r0000.pipenu.art','bpip5b0s21r0000','local'))
         self.add_dataset(Dataset('sim.mu2e.bpip5b0s24r0000.pipenu.art','bpip5b0s24r0000','local'))
@@ -42,7 +42,12 @@ class Project(ProjectBase):
         if (self.fIDsID) : self.fInputDataset = self.dataset(self.fIDsID);
         return
 
-    def __init__(self,idsid=None):
+#------------------------------------------------------------------------------
+# constructor
+#------------------------------------------------------------------------------
+    def __init__(self,idsid="bpip5b0s00r0000"):
+
+        # print('Project::__init__ : input dsid:%s'%idsid)
 
         ProjectBase.__init__(self,project='pipenu',family_id='bpip5b0',idsid=idsid);
         self.init_datasets();
@@ -53,7 +58,6 @@ class Project(ProjectBase):
         job                          = s.new_job('sim','bpip5b0s00r0000');
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
 
         job.fNInputFiles             = 500                      # number of segments
                                      
@@ -73,7 +77,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                         , 'art'                         ]
         
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s1:stn_beam: stntuple the beam stream
@@ -97,7 +101,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;       
 #------------------------------------------------------------------------------
 # s2:sim : 
@@ -118,24 +122,20 @@ class Project(ProjectBase):
         job.fMaxMemory               = '3000MB'
 
         odsid21                      = self.fFamilyID+'s21'+'r0000';
-        odsid22                      = self.fFamilyID+'s22'+'r0000';
-        odsid23                      = self.fFamilyID+'s23'+'r0000';
+        odsid24                      = self.fFamilyID+'s24'+'r0000';
 
-        job.fOutputStream            = ['TargetStopOutput'            , 'ootStopOutput'               , 'IPAStopOutput'               ]
-        job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
-        job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
+        job.fOutputStream            = ['TargetStopOutput' , 'DegraderStopOutput' ]
+        job.fOutputDsID              = [odsid21            , odsid24              ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid21, 'sim.mu2e.'+odsid24  ]
+        job.fOutputFormat            = ['art'              , 'art'                ]
 
         # job description defined the grid output directory
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s2:tgt_stn
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_tgt','bpip5b0s21r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
 
         job.fNInputFiles             = 10                                # number of segments    
 
@@ -150,7 +150,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:gen_sim_tgt : pi+ --> e+ nu decays of pions stopped in the ST
@@ -161,13 +161,13 @@ class Project(ProjectBase):
         job                          = s.new_job('gen_sim_tgt',idsid);
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'gen_sim_tgt');
 
         job.fNInputFiles             = 1                                # number of segments 
 
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 100000
         job.fResample                = 'yes'                             # yes/no
+        job.fResamplingModuleLabel   = 'TargetStopResampler'
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
@@ -177,7 +177,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'art'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:gen_sim_deg : pi+ --> e+ nu decays of pions stopped in the degrader
@@ -186,13 +186,12 @@ class Project(ProjectBase):
         job                          = s.new_job('gen_sim_deg',idsid);
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'gen_sim_deg');
-
         job.fNInputFiles             = -1                                # number of segments defined by  the input dataset    
 
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 100000
         job.fResample                = 'yes'                             # yes/no
+        job.fResamplingModuleLabel   = 'TargetStopResampler'
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
@@ -202,7 +201,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'art'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # stage 4
@@ -234,7 +233,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                          ]
 
         # job description defined the grid output directory
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s5:reco_kk : reconstruction job has only one output stream
@@ -263,7 +262,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'             ]
 
         # job description defined the grid output directory
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s5:stn_kk : stntupling job has only one output stream
@@ -292,8 +291,8 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['stn'             ]
 
         # job description defined the grid output directory
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
+        # desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = self.job_description(job);
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

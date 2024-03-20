@@ -3,33 +3,11 @@
 from local_classes import *
 # from mixing_inputs import *
 
-class Project:
-#------------------------------------------------------------------------------
-# no need to have config files, can do initialization in python directly
-#------------------------------------------------------------------------------
-    def new_stage(self,name):
-        self.fStage[name]            = Stage(name,self);
-        return self.fStage[name]
-
-    def dataset(self,dsid):
-        return self.fDataset[dsid];
-#------------------------------------------------------------------------------
-# returns the name of the FCL file corresponding to the job - to be used by gen_fcl
-#------------------------------------------------------------------------------
-    def base_fcl(self,job,fcl_name):
-        fmid = self.fFamilyID;              # familyID
-        return self.fProjectName+'/datasets/'+fmid+'/'+job.stage().name()+'_'+fcl_name+'_'+fmid+'.fcl'
-
-    def job_description(self,job):
-        return self.fProjectName+'.'+job.input_dataset().id()+'.'+job.stage().name()+'_'+job.name()
+class Project(ProjectBase):
 
     def __init__(self):
 
-        project                      = 'pipenu'
-        self.fFamilyID               = 'bpip1b0'          # in fact, this is a family name
-        self.fProjectName            = project;
-        self.fStage                  = {}
-        self.fDataset                = {};
+        ProjectBase.__init__(self,project='pipenu',family_id='bpip1b0',idsid=idsid);
         #------------------------------------------------------------------------------
         # datasets of this family
         # 1. stage 1 : generator input
@@ -76,7 +54,7 @@ class Project:
         job.fOutputFormat            = ['art'                         , 'art'                         ]
         
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s1:stn_beam: stntuple the beam stream
@@ -100,7 +78,7 @@ class Project:
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;       
 #------------------------------------------------------------------------------
 # s2:sim : 
@@ -130,7 +108,7 @@ class Project:
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
 
         # job description defined the grid output directory
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s2:tgt_stn
@@ -153,7 +131,7 @@ class Project:
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:strip_mum : strip mu-'s to create input for the detector simulation
@@ -181,7 +159,7 @@ class Project:
         job.fOutputFormat            = ['art'                         ]
 
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:strip_mup : strip mu+'s from all stopped particles, just for testing purposes
@@ -207,7 +185,7 @@ class Project:
         job.fOutputFormat            = ['art'                         ]
 
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # end

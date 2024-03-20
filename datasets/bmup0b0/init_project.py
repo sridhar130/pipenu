@@ -38,7 +38,6 @@ class Project(ProjectBase):
 
         ProjectBase.__init__(self,project='pipenu',family_id='bmup0b0',idsid=idsid);
         self.init_datasets();
-        project                      = self.name();       # convenience, get rid of later
 #------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 # the input dataset ID is fixed, not changed via the command prompt
@@ -67,7 +66,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'              ] ## , 'art'              ]
         
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # init s1 stntuple
@@ -91,7 +90,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;       
 #------------------------------------------------------------------------------
 # init stage 2. a Stage can have one or several jobs associated with it
@@ -118,7 +117,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
 
         # job description defined the grid output directory
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # stage, s2:resample
@@ -167,7 +166,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:strip_mup
@@ -195,7 +194,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                         ]
 
         # grid output dir
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # end

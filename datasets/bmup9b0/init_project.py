@@ -51,9 +51,7 @@ class Project(ProjectBase):
         ProjectBase.__init__(self,project='pipenu',family_id='bmup9b0',idsid=idsid);
 
         # print("Project init: idsid:",idsid);
-
         self.init_datasets();
-        project                      = self.name()
 #------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
@@ -330,7 +328,7 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
 # job description defined the grid output directory
 #------------------------------------------------------------------------------
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:stn : ntuple decays in flight after digitization
@@ -382,7 +380,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'             ]
 
         # job description defined the grid output directory
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s4:stn_kk : stntupling job has only one output stream
@@ -409,7 +407,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['stn'             ]
 
         # job description defined the grid output directory
-        desc                         = project+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # end
