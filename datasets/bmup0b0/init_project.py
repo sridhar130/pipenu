@@ -124,7 +124,7 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------        
         job                          = s.new_job('resample',idsid);
 
-        job.fNInputFiles             = 10                     # number of segments defined by s1:sim
+        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
         job.fMaxInputFilesPerSegment =  1
         job.fNEventsPerSegment       =  1600000
@@ -142,9 +142,9 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'sim.mu2e.'+odsid ]
         job.fOutputFormat            = [ 'art'             ]
 
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
+        # job description defines the grid output directory
+        # desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = self.job_description(job);
 #------------------------------------------------------------------------------
 # s2:stn_tgt : ntuple target stops
 #------------------------------------------------------------------------------  

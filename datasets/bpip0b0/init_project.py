@@ -27,14 +27,15 @@ class Project(ProjectBase):
 #-------v----------------------------------------------------------------------
         self.add_dataset(Dataset('dts.mu2e.bpip0b0s31r0000.pipenu.art','bpip0b0s31r0000','local'))
 #------------------------------------------------------------------------------
-# s5: reco_kk 
+# s5: reco_kk, reco_kff 
 #-------v----------------------------------------------------------------------
         self.add_dataset(Dataset('dig.mu2e.bpip0b0s41r0000.pipenu.art','bpip0b0s41r0000','local'))
         self.add_dataset(Dataset('dig.mu2e.bpip0b0s42r0000.pipenu.art','bpip0b0s42r0000','local'))
 #------------------------------------------------------------------------------
-# s5 : stn_kk
+# s5 : stn_kk, stn_kff
 #-------v----------------------------------------------------------------------
         self.add_dataset(Dataset('mcs.mu2e.bpip0b0s51r0000.pipenu.art','bpip0b0s51r0000','local'))
+        self.add_dataset(Dataset('mcs.mu2e.bpip0b0s51r0100.pipenu.art','bpip0b0s51r0100','local'))
         self.add_dataset(Dataset('mcs.mu2e.bpip0b0s52r0000.pipenu.art','bpip0b0s52r0000','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
@@ -238,10 +239,7 @@ class Project(ProjectBase):
 #               reconstruction job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s5');
-
         job                          = s.new_job('reco_kff',idsid);
-
-        job.fBaseFcl                 = self.base_fcl(job,'reco_kff');
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
@@ -265,6 +263,33 @@ class Project(ProjectBase):
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
+# stage 5
+# s5:reco_kk : InputDsID is 'bpip0b0s41r0000' 
+#              reconstruction job has only one output stream
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('reco_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  20000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
+
+        job.fOutputStream            = ['defaultOutput'                ]
+        job.fOutputDsID              = [odsid                          ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0] ]
+        job.fOutputFormat            = ['art'                          ]
+
+        # job description defined the grid output directory
+        job.fDescription             = self.job_description(job);
+#------------------------------------------------------------------------------
 # s5:stn_kff : InputDsID is 'bpip0b0s51r0000' 
 #              stntupling job has only one output stream
 #------------------------------------------------------------------------------        
@@ -283,7 +308,7 @@ class Project(ProjectBase):
 
         output_stream                = self.fInputDataset.output_stream()
 
-        odsid                        = self.fFamilyID+'s5'+output_stream+'r0000';
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
 
         job.fOutputStream            = ['defaultOutput'                ]
         job.fOutputDsID              = [odsid                          ]
@@ -291,8 +316,33 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                          ]
 
         # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
+        job.fDescription             = self.job_description(job);
+#------------------------------------------------------------------------------
+# s5:stn_kk : stntupling job has only one output stream
+#             no ned to redefine the stage
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('stn_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  100000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+
+        job.fOutputStream            = ['InitStntuple'    ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
+        job.fOutputFormat            = ['stn'             ]
+
+        # job description defined the grid output directory
+        job.fDescription             = self.job_description(job);
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

@@ -5,36 +5,43 @@ from local_classes import *
 
 class Project(ProjectBase):
 
-    def __init__(self,idsid=None):
-
-        ProjectBase.__init__(self,project='pipenu',family_id='bmup2b0',idsid=idsid);
-
-        #------------------------------------------------------------------------------
-        # datasets of this family
-        # 1. stage 1 : generator input
-        #------------------------------------------------------------------------------
+    def init_datasets(self):
+#------------------------------------------------------------------------------
+# datasets of this family
+# 1. stage 1 : generator input
+#------------------------------------------------------------------------------
         self.fDataset['bmup2b0s00r0000'] = Dataset('generator'                               ,'bmup2b0s00r0000','local')
-        #------------------------------------------------------------------------------
-        # 2. input for stage2 : datasets produced by stage1
-        #------------------------------------------------------------------------------
-        self.fDataset['bmup2b0s11r0000'] = Dataset('sim.mu2e.bmup2b0s11r0000.art','bmup2b0s11r0000','local')
-        self.fDataset['bmup2b0s12r0000'] = Dataset('sim.mu2e.bmup2b0s12r0000.art','bmup2b0s12r0000','local')
-        #------------------------------------------------------------------------------
-        # Input for stage3: datasets produced at stage2
-        #------------------------------------------------------------------------------
-        self.fDataset['bmup2b0s21r0000'] = Dataset('sim.mu2e.bmup2b0s21r0000.art','bmup2b0s21r0000','local') 
-        self.fDataset['bmup2b0s22r0000'] = Dataset('sim.mu2e.bmup2b0s22r0000.art','bmup2b0s22r0000','local') 
-        # Input s4 strip and s3 stn -- TargetStopOutput from s3
-        self.fDataset['bmup2b0s31r0000'] = Dataset('sim.mu2e.bmup2b0s31r0000.art','bmup2b0s31r0000','local')
+#------------------------------------------------------------------------------
+# 2. input for stage2 : datasets produced by stage1
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('sim.mu2e.bmup2b0s11r0000.pipenu.art','bmup2b0s11r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bmup2b0s12r0000.pipenu.art','bmup2b0s12r0000','local'))
+#------------------------------------------------------------------------------
+# Input for stage3: datasets produced at stage2
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('sim.mu2e.bmup2b0s21r0000.pipenu.art','bmup2b0s21r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bmup2b0s22r0000.pipenu.art','bmup2b0s22r0000','local'))
+#------------------------------------------------------------------------------
+# Input s4 strip and s3 stn -- TargetStopOutput from s3
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('sim.mu2e.bmup2b0s31r0000.pipenu.art','bmup2b0s31r0000','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
-        self.fInputDsID = None;
-        if (idsid) : self.fInputDataset = self.fDataset[idsid];
+        self.fInputDataset = self.dataset(self.fIDsID);
+
+#------------------------------------------------------------------------------
+#
+#------------------------------------------------------------------------------
+    def __init__(self,idsid=None):
+        # print('Project.__init__: idsid=',idsid)
+        ProjectBase.__init__(self,project='pipenu',family_id='bmup2b0',idsid=idsid);
+        self.init_datasets()
 #------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s1');
+
         job                          = s.new_job('sim','bmup2b0s00r0000');
 
         job.fRunNumber               = 1210;
@@ -115,6 +122,32 @@ class Project(ProjectBase):
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
+# stage, s2:resample
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('resample','bmup2b0s11r0000');
+
+        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  1600000
+        job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
+        job.fResamplingModuleLabel   = 'beamResampler'
+        job.fRunNumber               = 1210
+        job.fRequestedTime           = '20h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
+
+        job.fOutputStream            = [ 's24'             ]
+        job.fOutputDsID              = [  odsid            ]
+        job.fOutputFnPattern         = [ 'sim.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'art'             ]
+
+        # job description defines the grid output directory
+        # desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = self.job_description(job);
+#------------------------------------------------------------------------------
 # s2:stn_tgt : ntuple target stops
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_tgt','bmup2b0s21r0000');
@@ -135,34 +168,6 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
-#------------------------------------------------------------------------------
-# s3:strip_mup
-#------------------------------------------------------------------------------        
-        s                            = self.new_stage('s3');
-
-        job                          = s.new_job('strip_mup','bmup2b0s21r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'strip_mup');
-
-        job.fNInputFiles             = -1                     # number of segments defined by the input datasets
-             
-        job.fMaxInputFilesPerSegment = 100 
-        job.fNEventsPerSegment       =  5000
-        job.fResample                = 'no'   # yes/no
-        job.fRequestedTime           = '2h'   
-        job.fIfdh                    = 'ifdh'                 # ifdh/xrootd
-
-        odsid31                       = self.fFamilyID+'s31'+'r0000';
-
-        job.fOutputStream            = ['muonout'                     ]
-        job.fOutputDsID              = [odsid31                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0]]
-        job.fOutputFormat            = ['art'                         ]
-
-        # grid output dir
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
