@@ -133,7 +133,7 @@ class Project(ProjectBase):
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# s2:tgt_stn
+# s2:stn_tgt
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_tgt','bpip5b0s21r0000');
 
@@ -145,13 +145,31 @@ class Project(ProjectBase):
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
 
-        job.fOutputStream            = [ 'InitStntuple'                  ]
-        job.fOutputDsID              = [ odsid21                         ]
-        job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'stn'                           ]
+        odsid                        = self.fFamilyID+s.name()+'1'+'r0000';
 
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
+        job.fOutputStream            = [ 'InitStntuple'    ]
+        job.fOutputDsID              = [ odsid             ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'stn'             ]
+#------------------------------------------------------------------------------
+# s2:stn_deg
+#------------------------------------------------------------------------------  
+        job                          = s.new_job('stn_deg','bpip5b0s24r0000');
+
+        job.fNInputFiles             = -1                                # number of segments    
+
+        job.fMaxInputFilesPerSegment = 10
+        job.fNEventsPerSegment       = 50000                       
+        job.fResample                = 'no'                               # yes/no
+        job.fRequestedTime           = '3h'
+        job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
+
+        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
+
+        job.fOutputStream            = [ 'InitStntuple'    ]
+        job.fOutputDsID              = [ odsid             ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'stn'             ]
 #------------------------------------------------------------------------------
 # s3:gen_sim_tgt : pi+ --> e+ nu decays of pions stopped in the ST
 # need a different FCL because of different collection names

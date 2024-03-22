@@ -22,7 +22,6 @@ class Project(ProjectBase):
 # 3. input for stage3: stopped pion datasets produced at stage2 : 21:tgt, 22:oot 24:deg
 #------------------------------------------------------------------------------
         self.fDataset['bpip2b0s21r0000'] = Dataset('sim.mu2e.bpip2b0s21r0000.pipenu.art','bpip2b0s21r0000','local') 
-        self.fDataset['bpip2b0s22r0000'] = Dataset('sim.mu2e.bpip2b0s22r0000.pipenu.art','bpip2b0s22r0000','local') 
         self.fDataset['bpip2b0s24r0000'] = Dataset('sim.mu2e.bpip2b0s24r0000.pipenu.art','bpip2b0s24r0000','local') 
 #------------------------------------------------------------------------------
 # 4. Input for s4
@@ -115,10 +114,10 @@ class Project(ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        odsid21                      = self.fFamilyID+'s21'+'r0000';
-        odsid22                      = self.fFamilyID+'s22'+'r0000';
-        odsid23                      = self.fFamilyID+'s23'+'r0000';
-        odsid24                      = self.fFamilyID+'s24'+'r0000';
+        odsid21                      = self.fFamilyID+s.name()+'1'+'r0000';
+        odsid22                      = self.fFamilyID+s.name()+'2'+'r0000';
+        odsid23                      = self.fFamilyID+s.name()+'3'+'r0000';
+        odsid24                      = self.fFamilyID+s.name()+'4'+'r0000';
 
         job.fOutputStream            = ['TargetStopOutput' , 'ootStopOutput'    , 'IPAStopOutput'    ,'DegraderStopOutput' ]
         job.fOutputDsID              = [odsid21            , odsid22            , odsid23            , odsid24             ]
@@ -126,17 +125,33 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'              , 'art'              , 'art'              , 'art'               ]
 
         # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
+        # desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        # job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# s2:tgt_stn
+# s2:stn_tgt
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_tgt','bpip2b0s21r0000');
 
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
+        job.fNInputFiles             = -1                                # number of segments, defined by the input dataset
 
-        job.fNInputFiles             = 10                                # number of segments    
+        job.fMaxInputFilesPerSegment = 10
+        job.fNEventsPerSegment       = 5000000                       
+        job.fResample                = 'no'                              # yes/no
+        job.fRequestedTime           = '3h'
+        job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
+
+        odsid                        = self.fFamilyID+s.name()+'1'+'r0000';
+
+        job.fOutputStream            = [ 'InitStntuple'    ]
+        job.fOutputDsID              = [ odsid             ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'stn'             ]
+#------------------------------------------------------------------------------
+# s2:stn_deg
+#------------------------------------------------------------------------------  
+        job                          = s.new_job('stn_deg','bpip2b0s24r0000');
+
+        job.fNInputFiles             = -1                                # number of segments    
 
         job.fMaxInputFilesPerSegment = 10
         job.fNEventsPerSegment       = 50000                       
@@ -144,13 +159,12 @@ class Project(ProjectBase):
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
 
-        job.fOutputStream            = [ 'InitStntuple'                  ]
-        job.fOutputDsID              = [ odsid21                         ]
-        job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'stn'                           ]
+        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
 
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
+        job.fOutputStream            = [ 'InitStntuple'    ]
+        job.fOutputDsID              = [ odsid             ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'stn'             ]
 #------------------------------------------------------------------------------
 # s3:gen_sim_tgt : pi+ --> e+ nu decays of pions stopped in the ST
 # need a different FCL because of different collection names

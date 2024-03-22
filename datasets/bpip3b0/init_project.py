@@ -74,17 +74,10 @@ class Project (ProjectBase):
         job.fOutputDsID              = [odsid1                        ,  odsid2                       ] 
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1]]
         job.fOutputFormat            = ['art'                         , 'art'                         ]
-        
-        # grid output dir
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s1:stn_beam: stntuple the beam stream
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_beam','bpip3b0s11r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_beam');
 
         job.fNInputFiles             = 1                                # number of segments    
 
@@ -100,17 +93,12 @@ class Project (ProjectBase):
         job.fOutputDsID              = [ odsid1                          ]
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;       
 #------------------------------------------------------------------------------
 # s2:sim : 
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
-
         job                          = s.new_job('sim','bpip3b0s11r0000');
-
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
+        print("emoe 00031")
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
@@ -125,21 +113,14 @@ class Project (ProjectBase):
         odsid22                      = self.fFamilyID+s.name()+'2'+'r0000';
         odsid23                      = self.fFamilyID+s.name()+'3'+'r0000';
 
-        job.fOutputStream            = ['TargetStopOutput' , 'ootStopOutput'    , 'IPAStopOutput'      ]
-        job.fOutputDsID              = [ odsid21           ,  odsid22           ,  odsid23             ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+odsid21, 'sim.mu2e.'+odsid22, 'sim.mu2e.'+jodsid23 ]
-        job.fOutputFormat            = ['art'              , 'art'              , 'art'                ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
+        job.fOutputStream            = ['TargetStopOutput' , 'ootStopOutput'    , 'IPAStopOutput'     ]
+        job.fOutputDsID              = [ odsid21           ,  odsid22           ,  odsid23            ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid21, 'sim.mu2e.'+odsid22, 'sim.mu2e.'+odsid23 ]
+        job.fOutputFormat            = ['art'              , 'art'              , 'art'               ]
 #------------------------------------------------------------------------------
-# s2:tgt_stn
+# s2:stn_tgt
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_tgt','bpip3b0s21r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
 
         job.fNInputFiles             = 10                                # number of segments    
 
@@ -149,40 +130,38 @@ class Project (ProjectBase):
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
 
-        job.fOutputStream            = [ 'InitStntuple'                  ]
-        job.fOutputDsID              = [ odsid21                         ]
-        job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'stn'                           ]
+        odsid                        = self.fFamilyID+s.name()+'1'+'r0000';
 
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
+        job.fOutputStream            = [ 'InitStntuple'    ]
+        job.fOutputDsID              = [ odsid             ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'stn'             ]
+        print("emoe 0005")
+#------------------------------------------------------------------------------
+# s2:stn_deg
+#------------------------------------------------------------------------------  
+        job                          = s.new_job('stn_deg','bpip3b0s24r0000');
 
-        job.fNInputFiles             = 1                                # number of segments 
+        job.fNInputFiles             = -1                                # number of segments    
 
-        job.fMaxInputFilesPerSegment = 1
-        job.fNEventsPerSegment       = 100000
-        job.fResample                = 'yes'                             # yes/no
+        job.fMaxInputFilesPerSegment = 10
+        job.fNEventsPerSegment       = 50000                       
+        job.fResample                = 'no'                               # yes/no
         job.fRequestedTime           = '3h'
-        job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
+        job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
 
-        odsid31                      = self.fFamilyID+'s31'+'r0000';
-        job.fOutputStream            = [ 'PrimaryOutput'                 ]
-        job.fOutputDsID              = [ odsid31                         ]
-        job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'art'                           ]
+        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
 
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
+        job.fOutputStream            = [ 'InitStntuple'    ]
+        job.fOutputDsID              = [ odsid             ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'stn'             ]
 #------------------------------------------------------------------------------
 # s3:gen_sim_tgt : pi+ --> e+ nu decays of pions stopped in the ST
 # need a different FCL because of different collection names
 #------------------------------------------------------------------------------  
         s                            = self.new_stage('s3');
-
         job                          = s.new_job('gen_sim_tgt',idsid);
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'gen_sim_tgt');
 
         job.fNInputFiles             = 1                                # number of segments 
 

@@ -133,7 +133,7 @@ class Project(ProjectBase):
         job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
         job.fResamplingModuleLabel   = 'beamResampler'
         job.fRunNumber               = 1210
-        job.fRequestedTime           = '20h'   
+        job.fRequestedTime           = '30h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 

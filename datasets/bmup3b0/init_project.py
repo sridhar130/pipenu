@@ -122,6 +122,32 @@ class Project(ProjectBase):
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
+# stage, s2:resample
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('resample','bmup3b0s11r0000');
+
+        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  1600000
+        job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
+        job.fResamplingModuleLabel   = 'beamResampler'
+        job.fRunNumber               = 1210
+        job.fRequestedTime           = '30h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
+
+        job.fOutputStream            = [ 's24'             ]
+        job.fOutputDsID              = [  odsid            ]
+        job.fOutputFnPattern         = [ 'sim.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'art'             ]
+
+        # job description defines the grid output directory
+        # desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
+        job.fDescription             = self.job_description(job);
+#------------------------------------------------------------------------------
 # s2:stn_tgt : ntuple target stops
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_tgt','bmup3b0s21r0000');
@@ -142,8 +168,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
+        job.fDescription             = self.job_description();
 #------------------------------------------------------------------------------
 # init stage 2. a Stage can have one or several jobs associated with it
 #------------------------------------------------------------------------------        

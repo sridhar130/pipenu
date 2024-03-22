@@ -49,7 +49,6 @@ class Project(ProjectBase):
         job                          = s.new_job('sim',idsid);
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
 
         job.fNInputFiles             = 250                      # number of segments, for stopped pions don't need more
                                      
@@ -67,18 +66,10 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid1                        ,  odsid2                       ] 
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1]]
         job.fOutputFormat            = ['art'                         , 'art'                         ]
-        
-        # grid output dir
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s1:stn_beam: stntuple the beam stream
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_beam','bpip0b0s11r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_beam');
-
         job.fNInputFiles             = 1                                # number of segments    
 
         job.fMaxInputFilesPerSegment = 500
@@ -92,17 +83,11 @@ class Project(ProjectBase):
         job.fOutputDsID              = [ odsid1                          ]
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;       
 #------------------------------------------------------------------------------
 # s2:sim : 
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
-
         job                          = s.new_job('sim','bpip0b0s11r0000');
-
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
@@ -121,16 +106,10 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s2:concat: concatenation of the input dataset, has to be defined ! 
 #------------------------------------------------------------------------------        
         job                          = s.new_job('concat',idsid);
-
-        job.fBaseFcl                 = self.base_fcl(job,'concat');
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
@@ -147,17 +126,10 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid                          ]
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0] ]
         job.fOutputFormat            = ['art'                          ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# s2:tgt_stn
+# s2:stn_tgt
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_tgt','bpip0b0s21r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
 
         job.fNInputFiles             = 10                                # number of segments    
 
@@ -171,19 +143,12 @@ class Project(ProjectBase):
         job.fOutputDsID              = [ odsid21                         ]
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:gen_sim_tgt : pi+ --> e+ nu decays of pions stopped in the ST
 # need a different FCL because of different collection names
 #------------------------------------------------------------------------------  
         s                            = self.new_stage('s3');
-
         job                          = s.new_job('gen_sim_tgt',idsid);
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'gen_sim_tgt');
 
         job.fNInputFiles             = 1                                # number of segments 
 
@@ -198,9 +163,6 @@ class Project(ProjectBase):
         job.fOutputDsID              = [ odsid31                         ]
         job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'art'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # stage 4
 # s4:digi_trig : InputDsID is 'bpip0b0s31r0000' 
@@ -209,8 +171,6 @@ class Project(ProjectBase):
         s                            = self.new_stage('s4');
 
         job                          = s.new_job('digi_trig',idsid);
-
-        job.fBaseFcl                 = self.base_fcl(job,'digi_trig');
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
@@ -294,8 +254,6 @@ class Project(ProjectBase):
 #              stntupling job has only one output stream
 #------------------------------------------------------------------------------        
         job                          = s.new_job('stn_kff',idsid);
-
-        job.fBaseFcl                 = self.base_fcl(job,'stn_kff');
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              

@@ -25,14 +25,16 @@ f# -*- mode:org -*-
 |------------------+------------------+-----------------+-----------+----------+------------------------------------------------------------------------------|
 
 
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| job                           | input dsid                      |  Nevents | Resampling | Nfiles | Nfiles | Njobs | output_dsid                     | Nfiles |  Nevents |    Nev | upload  | comments                          |
-|                               |                                 |          |     factor |        |  / job |       |                                 |        |          |  /file |         |                                   |
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-| [[file:s1_sim_bmup0b0.fcl][s1_sim]]                        | bmup0b0s00r0000                 |      5e8 |          1 |        |      1 |   400 | bmum0b0s11r0000                 |   3996 | 29502600 |   7400 |         | S1, everything relevant           |
-| [[file:s1_concat_bmum0.fcl][s1_concat]]                     | bmup0b0s11r0000                 | 29502600 |          1 |   3996 |     20 |   200 | sim.murat.bmum0s11b0.su2020.art |    200 | 29502600 | 147500 | on tape |                                   |
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
-|-------------------------------+---------------------------------+----------+------------+--------+--------+-------+---------------------------------+--------+----------+--------+---------+-----------------------------------|
+|-----------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+---------+--------------|
+| job       | input dsid      | Nevents | Resampling | Nfiles | Nfiles | Njobs | output_dsid     | Nfiles | Nevents | Nev   | upload  | comments     |
+|           |                 |         |     factor |        |  / job |       |                 |        |         | /file |         |              |
+|-----------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+---------+--------------|
+| [[file:s1_sim_bmup0b0.fcl][s1_sim]]    | bmup0b0s00r0000 |     5e8 |          1 |        |      1 |   400 |                 |        |         |       |         | 1000x500,000 |
+|           |                 |         |            |        |        |       | bmup0b0s11r0000 |        |         |       |         |              |
+|           |                 |         |            |        |        |       |                 |        |         |       |         |              |
+| [[file:s1_concat_bmum0.fcl][s1_concat]] | bmup0b0s11r0000 |         |          1 |        |     20 |   200 | bmup0b0s11r0000 |        |         |       | on tape |              |
+|-----------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+---------+--------------|
+|-----------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+---------+--------------|
 
 * ------------------------------------------------------------------------------
 * stage output and per-stage comments
@@ -55,9 +57,9 @@ f# -*- mode:org -*-
   -rw-r--r--   1 murat mu2e     985 Mar  9 20:19 sim.murat.bmup0b0s12r0000.pipenu.001210_00000000.art.json
 #+end_src
 * ---------------------------------------------------------------------------------------------------------------
-* data formats                                                                                                
+* data formats and sizes
 * ---------------------------------------------------------------------------------------------------------------
-* sim.mu2e.pipenu.bmup0b0s11r0000.art                                                                         
+* sim.mu2e.bmup0b0s11r0000.pipenu.art                                                                         
 #+begin_src 
 murat@mu2egpvm06:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-03-09-09-46.cnf.murat.bmup0b0s00r0000_s1_sim.pipenu.00000_001210_00000000.mu2egpvm06.18888/sim.murat.bmup0b0s11r0000.pipenu.001210_00000000.art 
    ************************** Mu2e Offline **************************
@@ -87,7 +89,7 @@ Found 0 data products in this Run
 09-Mar-2024 17:33:03 CST  Closed input file "results/2024-03-09-09-46.cnf.murat.bmup0b0s00r0000_s1_sim.pipenu.00000_001210_00000000.mu2egpvm06.18888/sim.murat.bmup0b0s11r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
 #+end_src 
-* sim.mu2e.pipenu.bmup0b0s21r0000.art                                                                         
+* sim.mu2e.bmup0b0s21r0000.pipenu.art                                                                         
 #+begin_src 
 murat@mu2egpvm06:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s21r0000.pipenu.001210_00000000.art
    ************************** Mu2e Offline **************************
@@ -117,7 +119,7 @@ Found 0 data products in this Run
 09-Mar-2024 17:35:25 CST  Closed input file "results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s21r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
 #+end_src
-* sim.mu2e.pipenu.bmup0b0s22r0000.art                                                                         
+* sim.mu2e.bmup0b0s22r0000.pipenu.art                                                                         
 #+begin_src
 murat@mu2egpvm06:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s22r0000.pipenu.001210_00000000.art 
    ************************** Mu2e Offline **************************
@@ -147,6 +149,18 @@ Found 0 data products in this Run
 09-Mar-2024 17:37:09 CST  Closed input file "results/2024-03-09-15-26.s2_sim_bmup0b0.mu2egpvm06.470/sim.mu2e.bmup0b0s22r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
 #+end_src
+* mcs.mu2e.bmup0b0s44r0010.pipenu.art                                                                         
+** job output file size : 1.8 GBytes                                                                          
+#+begin_src 
+  /pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup0b0s34r0000.s4_reco_kk/outstage/10032084/00/00000:
+  total used in directory 1787957 available 884117838638144
+  drwxr-xr-x   6 murat mu2e        512 Mar 22 07:35 .
+  drwxr-xr-x 355 murat mu2e        512 Mar 22 07:39 ..
+  -rw-r--r--   1 murat mu2e       4670 Mar 22 07:34 cnf.murat.bmup0b0s34r0000_s4_reco_kk.pipenu.00000_001210_00000016.fcl
+  -rw-r--r--   1 murat mu2e    1260718 Mar 22 07:35 log.murat.bmup0b0s34r0000_s4_reco_kk.pipenu.00000_001210_00000016.log
+  -rw-r--r--   1 murat mu2e 1829599127 Mar 22 07:35 mcs.murat.bmup0b0s44r0100.pipenu.001210_00000016.art
+  -rw-r--r--   1 murat mu2e       1063 Mar 22 07:36 mcs.murat.bmup0b0s44r0100.pipenu.001210_00000016.art.json
+#+end_src 
 * ---------------------------------------------------------------------------------------------------------------
 * performance testing (prof build)                                                                            
 ** stage 1 (up to DS)                                                                                         
