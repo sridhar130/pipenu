@@ -21,6 +21,7 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('sim.mu2e.bmup2b0s21r0000.pipenu.art','bmup2b0s21r0000','local'))
         self.add_dataset(Dataset('sim.mu2e.bmup2b0s22r0000.pipenu.art','bmup2b0s22r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bmup2b0s24r0000.pipenu.art','bmup2b0s24r0000','local'))
 #------------------------------------------------------------------------------
 # Input s4 strip and s3 stn -- TargetStopOutput from s3
 #------------------------------------------------------------------------------
@@ -170,6 +171,30 @@ class Project(ProjectBase):
 
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
+#------------------------------------------------------------------------------
+# stage 3 : s3:digi_trig : InputDsID is 'bpip0b0s31r0000' 
+#           digitization job has only one output stream
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s3');
+        job                          = s.new_job('digi_trig',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  2000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '10h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
+
+        job.fOutputStream            = ['defaultOutput'                ]
+        job.fOutputDsID              = [odsid                          ]
+        job.fOutputFnPattern         = ['dig.mu2e.'+job.fOutputDsID[0] ]
+        job.fOutputFormat            = ['art'                          ]
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

@@ -75,7 +75,7 @@ libmu2e_TrkDiag_*.*
 libmu2e_TrkDiag.so
 libmu2e_TrkExt_*.*
 libmu2e_TrkExt.so
-libmu2e_TrkHitReco_MakeStereoHits_module.so   
+# libmu2e_TrkHitReco_MakeStereoHits_module.so   # now in production
 libmu2e_TrkHitReco_ReadStrawDigi_module.so
 libmu2e_TrkPatRec_*_tool.so
 libmu2e_UtilityModules_*.*

@@ -165,7 +165,7 @@ class Project(ProjectBase):
         job.fMaxInputFilesPerSegment =  1
         job.fNEventsPerSegment       =  2000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '8h'   
+        job.fRequestedTime           = '10h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
