@@ -10,21 +10,20 @@ class Project(ProjectBase):
 # datasets of this family
 # 1. stage 1 : generator input
 #------------------------------------------------------------------------------
-        self.add_dataset(Dataset('generator'                               ,'bmup3b0s00r0000','local'))
+        self.add_dataset(Dataset('generator'                          ,'bmup3b0s00r0000','local'))
 #------------------------------------------------------------------------------
 # 2. input for stage2 : datasets produced by stage1
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('sim.mu2e.bmup3b0s11r0000.pipenu.art','bmup3b0s11r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.bmup3b0s12r0000.pipenu.art','bmup3b0s12r0000','local'))
 #------------------------------------------------------------------------------
-# Input for stage3: datasets produced at stage2
+# 3. input for s3(digitization): dts. for decays in flight
 #------------------------------------------------------------------------------
-        self.add_dataset(Dataset('sim.mu2e.bmup3b0s21r0000.pipenu.art','bmup3b0s21r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.bmup3b0s22r0000.pipenu.art','bmup3b0s22r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup3b0s24r0000.pipenu.art','bmup3b0s24r0000','local'))
 #------------------------------------------------------------------------------
-# Input s4 strip and s3 stn -- TargetStopOutput from s3
+# s4: reconstruction and ntupling
 #------------------------------------------------------------------------------
-        self.add_dataset(Dataset('sim.mu2e.bmup3b0s31r0000.pipenu.art','bmup3b0s31r0000','local'))
+        self.add_dataset(Dataset('dig.mu2e.bmup3b0s34r0000.pipenu.art','bmup3b0s34r0000','local'))
+        self.add_dataset(Dataset('mcs.mu2e.bmup3b0s44r0100.pipenu.art','bmup3b0s44r0100','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
@@ -117,10 +116,6 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # stage, s2:resample
 #------------------------------------------------------------------------------        
@@ -141,90 +136,8 @@ class Project(ProjectBase):
 
         job.fOutputStream            = [ 's24'             ]
         job.fOutputDsID              = [  odsid            ]
-        job.fOutputFnPattern         = [ 'sim.mu2e.'+odsid ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid ]
         job.fOutputFormat            = [ 'art'             ]
-
-        # job description defines the grid output directory
-        # desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = self.job_description(job);
-#------------------------------------------------------------------------------
-# s2:stn_tgt : ntuple target stops
-#------------------------------------------------------------------------------  
-        job                          = s.new_job('stn_tgt','bmup3b0s21r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
-
-        job.fNInputFiles             = 1                                # number of segments    
-
-        job.fMaxInputFilesPerSegment = 100
-        job.fNEventsPerSegment       = 50000                       
-        job.fResample                = 'no'                               # yes/no
-        job.fRequestedTime           = '3h'
-        job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
-
-        job.fOutputStream            = [ 'InitStntuple'                  ]
-        job.fOutputDsID              = [ odsid21                         ]
-        job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'stn'                           ]
-
-        job.fDescription             = self.job_description();
-#------------------------------------------------------------------------------
-# init stage 2. a Stage can have one or several jobs associated with it
-#------------------------------------------------------------------------------        
-        s                            = self.new_stage('s2');
-
-        job                          = s.new_job('sim','bmup3b0s11r0000');
-
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
-
-        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
-             
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
-        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '3h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
-        job.fMaxMemory               = '3000MB'
-
-        odsid21                      = self.fFamilyID+'s21'+'r0000';
-        odsid22                      = self.fFamilyID+'s22'+'r0000';
-        odsid23                      = self.fFamilyID+'s23'+'r0000';
-
-        job.fOutputStream            = ['TargetStopOutput'            , 'ootStopOutput'               , 'IPAStopOutput'               ]
-        job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
-        job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
-#------------------------------------------------------------------------------
-# stage, s2:resample
-#------------------------------------------------------------------------------        
-        job                          = s.new_job('resample','bmup3b0s11r0000');
-
-        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
-             
-        job.fMaxInputFilesPerSegment =  1
-        job.fNEventsPerSegment       =  1600000
-        job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
-        job.fResamplingModuleLabel   = 'beamResampler'
-        job.fRunNumber               = 1210
-        job.fRequestedTime           = '20h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
-        job.fMaxMemory               = '3000MB'
-
-        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
-
-        job.fOutputStream            = [ 's24'             ]
-        job.fOutputDsID              = [  odsid            ]
-        job.fOutputFnPattern         = [ 'sim.mu2e.'+odsid ]
-        job.fOutputFormat            = [ 'art'             ]
-
-        # job description defines the grid output directory
-        # desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = self.job_description(job);
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

@@ -18,16 +18,13 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('sim.mu2e.bmup0b0s11r0000.pipenu.art','bmup0b0s11r0000','local'))
 #------------------------------------------------------------------------------
-# Input for stage3: datasets produced at stage2
+# stage3 (digitization): dts. for decays in flight
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('dts.mu2e.bmup0b0s24r0000.pipenu.art','bmup0b0s24r0000','local'))
 #------------------------------------------------------------------------------
-# Input s4 strip and s3 stn -- TargetStopOutput from s3
+# s4: reconstruction and ntupling
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('dig.mu2e.bmup0b0s34r0000.pipenu.art','bmup0b0s34r0000','local'))
-#------------------------------------------------------------------------------
-# reconstruction output
-#------------------------------------------------------------------------------
         self.add_dataset(Dataset('mcs.mu2e.bmup0b0s44r0100.pipenu.art','bmup0b0s44r0100','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...

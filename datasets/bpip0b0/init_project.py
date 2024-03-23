@@ -240,7 +240,7 @@ class Project(ProjectBase):
 
         output_stream                = self.fInputDataset.output_stream()
 
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
 
         job.fOutputStream            = ['defaultOutput'                ]
         job.fOutputDsID              = [odsid                          ]

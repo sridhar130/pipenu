@@ -5,31 +5,37 @@ from local_classes import *
 
 class Project(ProjectBase):
 
-    def __init__(self,idsid=None):
-
-        ProjectBase.__init__(self,project='pipenu',family_id='bmup5b0',idsid=idsid);
-        #------------------------------------------------------------------------------
-        # datasets of this family
-        # 1. stage 1 : generator input
-        #------------------------------------------------------------------------------
-        self.fDataset['bmup5b0s00r0000'] = Dataset('generator'                               ,'bmup5b0s00r0000','local')
-        #------------------------------------------------------------------------------
-        # 2. input for stage2 : datasets produced by stage1
-        #------------------------------------------------------------------------------
-        self.fDataset['bmup5b0s11r0000'] = Dataset('sim.mu2e.bmup5b0s11r0000.art','bmup5b0s11r0000','local')
-        self.fDataset['bmup5b0s12r0000'] = Dataset('sim.mu2e.bmup5b0s12r0000.art','bmup5b0s12r0000','local')
-        #------------------------------------------------------------------------------
-        # Input for stage3: datasets produced at stage2
-        #------------------------------------------------------------------------------
-        self.fDataset['bmup5b0s21r0000'] = Dataset('sim.mu2e.bmup5b0s21r0000.art','bmup5b0s21r0000','local') 
-        self.fDataset['bmup5b0s22r0000'] = Dataset('sim.mu2e.bmup5b0s22r0000.art','bmup5b0s22r0000','local') 
-        # Input s4 strip and s3 stn -- TargetStopOutput from s3
-        self.fDataset['bmup5b0s31r0000'] = Dataset('sim.mu2e.bmup5b0s31r0000.art','bmup5b0s31r0000','local')
+    def init_datasets(self):
+#------------------------------------------------------------------------------
+# datasets of this family
+# 1. stage 1 : generator input
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('generator'                          ,'bmup5b0s00r0000','local'))
+#------------------------------------------------------------------------------
+# 2. input for stage2 : datasets produced by stage1
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('sim.mu2e.bmup5b0s11r0000.pipenu.art','bmup5b0s11r0000','local'))
+#------------------------------------------------------------------------------
+# 3. input for s3(digitization): dts. for decays in flight
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('dts.mu2e.bmup5b0s24r0000.pipenu.art','bmup5b0s24r0000','local'))
+#------------------------------------------------------------------------------
+# s4: reconstruction and ntupling
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('dig.mu2e.bmup5b0s34r0000.pipenu.art','bmup5b0s34r0000','local'))
+        self.add_dataset(Dataset('mcs.mu2e.bmup5b0s44r0100.pipenu.art','bmup5b0s44r0100','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
-        self.fInputDsID = None;
-        if (idsid) : self.fInputDataset = self.fDataset[idsid];
+        self.fInputDataset = self.dataset(self.fIDsID);
+
+#------------------------------------------------------------------------------
+#
+#------------------------------------------------------------------------------
+    def __init__(self,idsid=None):
+
+        ProjectBase.__init__(self,project='pipenu',family_id='bmup5b0',idsid=idsid);
+        self.init_datasets();
 #------------------------------------------------------------------------------
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
@@ -55,17 +61,10 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid1                        ,  odsid2                       ] 
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1]]
         job.fOutputFormat            = ['art'                         , 'art'                         ]
-        
-        # grid output dir
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# init s1 stntuple
+# s1:beam_stn
 #------------------------------------------------------------------------------  
         job                          = s.new_job('beam_stn','bmup5b0s11r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'beam_stn');
 
         job.fNInputFiles             = 1                                # number of segments    
 
@@ -80,17 +79,12 @@ class Project(ProjectBase):
         job.fOutputDsID              = [ odsid1                          ]
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;       
 #------------------------------------------------------------------------------
-# init stage 2. a Stage can have one or several jobs associated with it
+# s2:sim
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
 
         job                          = s.new_job('sim','bmup5b0s11r0000');
-
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
@@ -109,12 +103,8 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# stage, s2:resample
+# s2:resample - for muon decays in flight, this produces dts files
 #------------------------------------------------------------------------------        
         job                          = s.new_job('resample','bmup5b0s11r0000');
 
@@ -133,63 +123,8 @@ class Project(ProjectBase):
 
         job.fOutputStream            = [ 's24'             ]
         job.fOutputDsID              = [  odsid            ]
-        job.fOutputFnPattern         = [ 'sim.mu2e.'+odsid ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid ]
         job.fOutputFormat            = [ 'art'             ]
-
-        # job description defines the grid output directory
-        # desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = self.job_description(job);
-#------------------------------------------------------------------------------
-# s2:stn_tgt : ntuple target stops
-#------------------------------------------------------------------------------  
-        job                          = s.new_job('stn_tgt','bmup5b0s21r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
-
-        job.fNInputFiles             = 1                                # number of segments    
-
-        job.fMaxInputFilesPerSegment = 100
-        job.fNEventsPerSegment       = 50000                       
-        job.fResample                = 'no'                               # yes/no
-        job.fRequestedTime           = '3h'
-        job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
-
-        job.fOutputStream            = [ 'InitStntuple'                  ]
-        job.fOutputDsID              = [ odsid21                         ]
-        job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'stn'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
-#------------------------------------------------------------------------------
-# s3:strip_mup
-#------------------------------------------------------------------------------        
-        s                            = self.new_stage('s3');
-
-        job                          = s.new_job('strip_mup','bmup5b0s21r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'strip_mup');
-
-        job.fNInputFiles             = -1                     # number of segments defined by the input datasets
-             
-        job.fMaxInputFilesPerSegment = 100 
-        job.fNEventsPerSegment       =  5000
-        job.fResample                = 'no'   # yes/no
-        job.fRequestedTime           = '2h'   
-        job.fIfdh                    = 'ifdh'                 # ifdh/xrootd
-
-        odsid31                       = self.fFamilyID+'s31'+'r0000';
-
-        job.fOutputStream            = ['muonout'                     ]
-        job.fOutputDsID              = [odsid31                       ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0]]
-        job.fOutputFormat            = ['art'                         ]
-
-        # grid output dir
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

@@ -10,22 +10,20 @@ class Project(ProjectBase):
 # datasets of this family
 # 1. stage 1 : generator input
 #------------------------------------------------------------------------------
-        self.fDataset['bmup2b0s00r0000'] = Dataset('generator'                               ,'bmup2b0s00r0000','local')
+        self.add_dataset(Dataset('generator'                          ,'bmup2b0s00r0000','local'))
 #------------------------------------------------------------------------------
 # 2. input for stage2 : datasets produced by stage1
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('sim.mu2e.bmup2b0s11r0000.pipenu.art','bmup2b0s11r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.bmup2b0s12r0000.pipenu.art','bmup2b0s12r0000','local'))
 #------------------------------------------------------------------------------
-# Input for stage3: datasets produced at stage2
+# 3. input for s3(digitization): dts. for decays in flight
 #------------------------------------------------------------------------------
-        self.add_dataset(Dataset('sim.mu2e.bmup2b0s21r0000.pipenu.art','bmup2b0s21r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.bmup2b0s22r0000.pipenu.art','bmup2b0s22r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.bmup2b0s24r0000.pipenu.art','bmup2b0s24r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup2b0s24r0000.pipenu.art','bmup2b0s24r0000','local'))
 #------------------------------------------------------------------------------
-# Input s4 strip and s3 stn -- TargetStopOutput from s3
+# s4: reconstruction and ntupling
 #------------------------------------------------------------------------------
-        self.add_dataset(Dataset('sim.mu2e.bmup2b0s31r0000.pipenu.art','bmup2b0s31r0000','local'))
+        self.add_dataset(Dataset('dig.mu2e.bmup2b0s34r0000.pipenu.art','bmup2b0s34r0000','local'))
+        self.add_dataset(Dataset('mcs.mu2e.bmup2b0s44r0100.pipenu.art','bmup2b0s44r0100','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
@@ -42,7 +40,6 @@ class Project(ProjectBase):
 # S1 10^8 proton interactions in the PT, half field in the DS
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s1');
-
         job                          = s.new_job('sim','bmup2b0s00r0000');
 
         job.fRunNumber               = 1210;
@@ -64,10 +61,6 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid1                        ,  odsid2                       ] 
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1]]
         job.fOutputFormat            = ['art'                         , 'art'                         ]
-        
-        # grid output dir
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # init s1 stntuple
 #------------------------------------------------------------------------------  
@@ -89,9 +82,6 @@ class Project(ProjectBase):
         job.fOutputDsID              = [ odsid1                          ]
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;       
 #------------------------------------------------------------------------------
 # init stage 2. a Stage can have one or several jobs associated with it
 #------------------------------------------------------------------------------        
@@ -142,37 +132,10 @@ class Project(ProjectBase):
 
         job.fOutputStream            = [ 's24'             ]
         job.fOutputDsID              = [  odsid            ]
-        job.fOutputFnPattern         = [ 'sim.mu2e.'+odsid ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid ]
         job.fOutputFormat            = [ 'art'             ]
-
-        # job description defines the grid output directory
-        # desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = self.job_description(job);
 #------------------------------------------------------------------------------
-# s2:stn_tgt : ntuple target stops
-#------------------------------------------------------------------------------  
-        job                          = s.new_job('stn_tgt','bmup2b0s21r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_tgt');
-
-        job.fNInputFiles             = 1                                # number of segments    
-
-        job.fMaxInputFilesPerSegment = 100
-        job.fNEventsPerSegment       = 50000                       
-        job.fResample                = 'no'                               # yes/no
-        job.fRequestedTime           = '3h'
-        job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
-
-        job.fOutputStream            = [ 'InitStntuple'                  ]
-        job.fOutputDsID              = [ odsid21                         ]
-        job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'stn'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
-#------------------------------------------------------------------------------
-# stage 3 : s3:digi_trig : InputDsID is 'bpip0b0s31r0000' 
+# stage 3 : s3:digi_trig : InputDsID is 'bmup2b0s24r0000' (dts from decays in flight)
 #           digitization job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s3');
@@ -195,6 +158,52 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid                          ]
         job.fOutputFnPattern         = ['dig.mu2e.'+job.fOutputDsID[0] ]
         job.fOutputFormat            = ['art'                          ]
+#------------------------------------------------------------------------------
+# s4:reco_kk : reconstruction job has only one output stream
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s4');
+
+        job                          = s.new_job('reco_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  1000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '10h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+
+        job.fOutputStream            = ['defaultOutput'   ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['mcs.mu2e.'+odsid ]
+        job.fOutputFormat            = ['art'             ]
+#------------------------------------------------------------------------------
+# s4:stn_kk : stntupling job has only one output stream
+#             no need to redefine the stage ... N(events / input file) ~ 176000
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('stn_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  10                    # based on bmup0b0, expect < 2GB
+        job.fNEventsPerSegment       =  10000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '5h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+
+        odsid                        = self.fFamilyID+'s5'+output_stream+'r0100';
+
+        job.fOutputStream            = ['InitStntuple'    ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['nts.mu2e.'+odsid ]
+        job.fOutputFormat            = ['stn'             ]
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

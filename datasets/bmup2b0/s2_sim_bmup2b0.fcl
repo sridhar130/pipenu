@@ -46,7 +46,8 @@ physics: {
   ootStopPath    : [ @sequence::Common.g4Sequence, ootMuonFinder, ootStopFilter, compressPVOOTStops]
   IPAStopPath    : [ @sequence::Common.g4Sequence, IPAMuonFinder, IPAStopFilter, compressPVIPAStops]
   trigger_paths  : [ targetStopPath  , ootStopPath  , IPAStopPath   ]
-  outPath        : [ TargetStopOutput, ootStopOutput, IPAStopOutput ]#------------------------------------------------------------------------------
+  outPath        : [ TargetStopOutput, ootStopOutput, IPAStopOutput ]
+#------------------------------------------------------------------------------
 
   end_paths      : [ outPath ]
 }
