@@ -1,0 +1,78 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# - use DeltaFinder to flag compton electron hits
+# - use TZClusterFinder for time clustering
+# - use PhiClusterFinder to provide input to the patttern recognition
+# - TRIGGER_PATHS: p33 : use KFF (BTrk), p34 : use KK (reconstruction_templates)
+#------------------------------------------------------------------------------
+BEGIN_PROLOG
+  INPUT_MODULE  @protect_ignore: RootInput        # choices: EmptyEvent / RootInput
+  TRIGGER_PATHS @protect_ignore: [ p34 ]          # KK (KinKal) fits
+END_PROLOG
+
+#include "Stntuple/fcl/stntuple.fcl"
+
+process_name : S5Reco
+
+services.GeometryService.inputFile    : "pipenu/datasets/bmup2b0/geom_pipenu_bmup2b0.txt"
+services.GeometryService.bFieldFile   : "pipenu/common/bfgeom_DS70_v01.txt"
+services.TFileService.fileName        : "/dev/null"
+
+source.fileNames    : [ "to_be_defined.art" ]
+source.inputCommands: ["keep *",
+                       "drop mu2e::ComboHitCollection_*_*_*"
+		       ]
+physics : {
+    producers : { 
+
+        @table::Digitize.producers
+        @table::Reconstruction.producers
+
+        FlagBkgHits        : { @table::CalPatRec.producers.DeltaFinder }
+
+        TZClusterFinder    : { @table::CalPatRec.producers.TZClusterFinder  } 
+
+#	PhiClusterFinder   : { @table::CalPatRec.producers.PhiClusterFinder }
+       
+	MHFinder   : { @table::TrkReco.producers.MergeHelices  
+	    HelixFinders: [ "MHDeM", "MHDeP" ]
+	}
+	
+	KKDeMHPar : { @table::Reconstruction.producers.KKDeM }
+    }
+    
+    filters   : { @table::Reconstruction.filters   }
+#------------------------------------------------------------------------------
+# muon reconstruction, both signs
+#------------------------------------------------------------------------------
+    @table::production.paths
+
+    trigger_paths : [ @sequence::TRIGGER_PATHS ]
+    
+    e1            : [ defaultOutput ]
+    end_paths     : [ e1            ]
+}
+#------------------------------------------------------------------------------
+# start reconstruction as early as possible
+#------------------------------------------------------------------------------
+#include "pipenu/fcl/reco_start_time.fcl"
+
+physics.producers.TZClusterFinder.clusterThresh           : 10     # min N straw hits
+physics.producers.TZClusterFinder.runDisplay              : 0
+physics.producers.TZClusterFinder.diagLevel               : 0      ## 1
+
+physics.producers.HelixFinderDe.ComboHitCollection             : "makePH"
+physics.producers.HelixFinderDe.TimeClusterCollection          : "TZClusterFinder"
+physics.filters.CalHelixFinderDe.TimeClusterCollectionLabel    : "TZClusterFinder"
+physics.producers.KKDeMHPar.ModuleSettings.HelixSeedCollections : [ "MHFinderDe" ]
+physics.producers.KKDeMHPar.UsePDGCharge                        : false
+#------------------------------------------------------------------------------
+outputs.defaultOutput.fileName        : "mcs.user.bmup2b0s44r0001.pipenu.001210_00000000.art"
+#------------------------------------------------------------------------------
+# Uncomment the below lines if one wants a truncated report i.e with the "Run,Event,SubRun" 
+# numbers not mentioned for every event
+#------------------------------------------------------------------------------
+# services.message.destinations.log.categories.ArtReport.reportEvery : 50
+# services.message.destinations.log.categories.ArtReport.limit       : 5
+# services.message.destinations.log.categories.ArtReport.timespan    : 1000
+
