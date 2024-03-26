@@ -12,7 +12,6 @@ process_name : S5Stn
 #------------------------------------------------------------------------------
 services.GeometryService.inputFile          : "pipenu/datasets/bpip0b0/geom_pipenu_bpip0b0.txt"
 services.GeometryService.bFieldFile         : "pipenu/common/bfgeom_DS70_v01.txt"
-services.TFileService.fileName              : "/dev/null"
 
 source       : { module_type : RootInput fileNames : ["undefined", "undefined"] }
 

@@ -5,7 +5,7 @@
 BEGIN_PROLOG
   PROCESS_NAME    @protect_ignore: S4Digi
   TRIGGER_PATHS   @protect_ignore: [ p1 ]
-  END_PATHS       @protect_ignore: [ e1 ]      # defined below
+  END_PATHS       @protect_ignore: [ e1 ]    ## defined below
   DIGI_START_TIME @protect_ignore: 100.      ## ns
 END_PROLOG 
 
@@ -24,12 +24,13 @@ services : { @table::Services.SimAndReco
 	}
     }
    message: @local::default_message
-} 
+}
 #------------------------------------------------------------------------------
 # control random seeds and the output 
 #------------------------------------------------------------------------------
 services.SeedService.baseSeed         : 8
 services.SeedService.maxUniqueEngines : 100
+services.TFileService.fileName        : "/dev/null"
 #------------------------------------------------------------------------------
 # geometry and magnetic field
 #------------------------------------------------------------------------------
@@ -71,7 +72,7 @@ outputs: {
 #------------------------------------------------------------------------------
 # output files
 #------------------------------------------------------------------------------
-outputs.defaultOutput.fileName                   : "dig.mu2e.bpip2b0s34r0000.pipenu.001210_00000000.art"
+outputs.defaultOutput.fileName                   : "dig.mu2e.bpip2b0s41r0000.pipenu.001210_00000000.art"
 #------------------------------------------------------------------------------
 # everything below is appended by generate_fcl
 #------------------------------------------------------------------------------

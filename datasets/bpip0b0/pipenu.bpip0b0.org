@@ -9,7 +9,7 @@ f# -*- mode:org -*-
  - grid input      : file:../../../tmp/pipenu/fcl
  - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow
  - output_location : file:/exp/mu2e/data/projects/pipenu
- - log files       : file:/exp/mu2e/data/projects/pipenu/log
+ - log files       : file:/exp/mu2e/data/projects/pipenu/log::/bpip0b0/
  - stntuples       : file:/exp/mu2e/data/projects/pipenu/stntuple
  - catalogs        : file:./catalog
  - summary         : [[file:../../doc/][../../doc/]]
@@ -27,30 +27,30 @@ f# -*- mode:org -*-
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
 | s3_gen_sim   | bpip0b0s21r0000 |  100000 |          1 |      1 |      1 |     1 | bpip0b0s31r0000 |        |   53124 |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s4_digi_trig | bpip0b0s31r0000 |   53124 |          1 |      1 |      1 |     1 | bpip0b0s41r0000 |      1 |    5352 |       |        |    *a bug ?*            |
+| s4_digi_trig | bpip0b0s31r0000 |   53124 |          1 |      1 |      1 |     1 | bpip0b0s41r0000 |      1 |   53124 |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s5_reco_kff  | bpip0b0s41r0000 |    5352 |          1 |      1 |      1 |     1 | bpip0b0s51r0000 |      1 |    5352 |       |        |                         |
+| s5_reco_kff  | bpip0b0s41r0000 |         |          1 |      1 |      1 |     1 | bpip0b0s51r0000 |      1 |         |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s5_stn_kff   | bpip0b0s51r0000 |    5352 |          1 |      1 |      1 |     1 | bpip0b0s51r0000 |      1 |    5352 |       |        |                         |
+| s5_stn_kff   | bpip0b0s51r0000 |         |          1 |      1 |      1 |     1 | bpip0b0s51r0000 |      1 |         |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s5_reco_kk   | bpip0b0s41r0000 |    5352 |          1 |      1 |      1 |     1 | bpip0b0s51r0100 |      1 |    5352 |       |        |                         |
+| s5_reco_kk   | bpip0b0s41r0000 |   53124 |          1 |      1 |      1 |     1 | bpip0b0s51r0100 |      1 |   53124 |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s5_stn_kk    | bpip0b0s51r0100 |    5352 |          1 |      1 |      1 |     1 | bpip0b0s51r0100 |      1 |    5352 |       |        |                         |
+| s5_stn_kk    | bpip0b0s51r0100 |   53124 |          1 |      1 |      1 |     1 | bpip0b0s51r0100 |      1 |   53124 |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
 
 * ---------------------------------------------------------------------------------------------------------------
 * data formats                                                                                                
 * ---------------------------------------------------------------------------------------------------------------
 * dts.user.bpip0b0s41r0000.pipenu.art                                                                         
-murat@mu2egpvm06:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-02-16-09-29.s4_gen_sim_bpip0b0.mu2egpvm06.17759/dts.user.bpip0b0s41r0000.pipenu.001210_00000000.art 
+murat@mu2ebuild01:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s /exp/mu2e/data/projects/pipenu/datasets/bpip0b0s31r0000/murat/dts.murat.bpip0b0s31r0000.pipenu.001210_00000000.art 
    ************************** Mu2e Offline **************************
      art v3_14_03    root v6_28_10a    KinKal v02_05_00b
      build  /exp/mu2e/app/users/murat/muse_002
-     build  sl7-debug-e28-p055    02/16/24 08:30:49
+     build  sl7-prof-e28-p055    03/24/24 10:06:55
    ******************************************************************
-17-Feb-2024 09:53:23 CST  Initiating request to open input file "results/2024-02-16-09-29.s4_gen_sim_bpip0b0.mu2egpvm06.17759/dts.user.bpip0b0s41r0000.pipenu.001210_00000000.art"
-17-Feb-2024 09:53:25 CST  Opened input file "results/2024-02-16-09-29.s4_gen_sim_bpip0b0.mu2egpvm06.17759/dts.user.bpip0b0s41r0000.pipenu.001210_00000000.art"
-Begin processing the 1st record. run: 1210 subRun: 0 event: 1 at 17-Feb-2024 09:53:26 CST
+24-Mar-2024 10:29:18 CDT  Initiating request to open input file "/exp/mu2e/data/projects/pipenu/datasets/bpip0b0s31r0000/murat/dts.murat.bpip0b0s31r0000.pipenu.001210_00000000.art"
+24-Mar-2024 10:29:19 CDT  Opened input file "/exp/mu2e/data/projects/pipenu/datasets/bpip0b0s31r0000/murat/dts.murat.bpip0b0s31r0000.pipenu.001210_00000000.art"
+Begin processing the 1st record. run: 1210 subRun: 0 event: 1 at 24-Mar-2024 10:29:20 CDT
 Found 13 data products in this Event
 Data products: 
                                 Friendly Class Name         Module Label    Instance Name  Process Name     Product ID
@@ -74,7 +74,7 @@ Friendly Class Name  Module Label  Instance Name  Process Name     Product ID
 mu2e::GenEventCount    genCounter                      Primary  2659886210
 
 Found 0 data products in this Run
-17-Feb-2024 09:53:29 CST  Closed input file "results/2024-02-16-09-29.s4_gen_sim_bpip0b0.mu2egpvm06.17759/dts.user.bpip0b0s41r0000.pipenu.001210_00000000.art"
+24-Mar-2024 10:29:21 CDT  Closed input file "/exp/mu2e/data/projects/pipenu/datasets/bpip0b0s31r0000/murat/dts.murat.bpip0b0s31r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
 * dig.murat.bpip0b0s41r0000.pipenu.art                                                                        
 murat@mu2egpvm06:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s /exp/mu2e/data/projects/pipenu/datasets/bpip0b0s41r0000/murat/dig.murat.bpip0b0s41r0000.pipenu.001210_00000000.art

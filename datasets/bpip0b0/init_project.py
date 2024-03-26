@@ -19,7 +19,7 @@ class Project(ProjectBase):
         self.add_dataset(Dataset('sim.mu2e.bpip0b0s11r0000.pipenu.art','bpip0b0s11r0000','local'))
         self.add_dataset(Dataset('sim.mu2e.bpip0b0s12r0000.pipenu.art','bpip0b0s12r0000','local'))
 #------------------------------------------------------------------------------
-# s3. input for stage3: pions stopped in the ST .. note: no degrader, so no s24
+# s3. input for stage3 (simulation of pi+ --> e+ nu) : pions stopped in the ST .. note: no degrader, so no s24
 #-------v----------------------------------------------------------------------
         self.add_dataset(Dataset('sim.mu2e.bpip0b0s21r0000.pipenu.art','bpip0b0s21r0000','local'))
 #------------------------------------------------------------------------------
@@ -155,6 +155,8 @@ class Project(ProjectBase):
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 100000
         job.fResample                = 'yes'                             # yes/no
+        job.fResamplingModuleLabel   = 'TargetStopResampler'
+        job.fRunNumber               = 1210
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
@@ -163,6 +165,24 @@ class Project(ProjectBase):
         job.fOutputDsID              = [ odsid31                         ]
         job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'art'                           ]
+#------------------------------------------------------------------------------
+# s3:stn_dts : ntuple output of detector steps
+#------------------------------------------------------------------------------  
+        job                          = s.new_job('stn_dts','bpip0b0s31r0000');
+
+        job.fNInputFiles             = -1                                # defined by the input DS    
+
+        job.fMaxInputFilesPerSegment = 100
+        job.fNEventsPerSegment       = 50000000                       
+        job.fResample                = 'no'                               # yes/no
+        job.fRequestedTime           = '3h'
+        job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
+
+        odsid                        = self.fFamilyID+s.name()+'1'+'r0000';
+        job.fOutputStream            = [ 'InitStntuple'    ]
+        job.fOutputDsID              = [ odsid             ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'stn'             ]
 #------------------------------------------------------------------------------
 # stage 4
 # s4:digi_trig : InputDsID is 'bpip0b0s31r0000' 

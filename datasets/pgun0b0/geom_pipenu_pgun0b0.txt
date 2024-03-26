@@ -1,0 +1,11 @@
+// -*- mode: c++ -*-
+//-----------------------------------------------------------------------------
+// geometry for e+ gun, no degrader
+//-----------------------------------------------------------------------------
+#include "pipenu/common/geom_baseline.txt"
+
+string degrader.filter.materialName = "G4_Ti";
+double degrader.filter.halfLength   = 2.5;
+
+bool   degrader.build               = false;  // DEFAULT: false
+double degrader.rotation            = 60.0;   // 0:in the beam, -90: out of beam (degrees)

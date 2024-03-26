@@ -189,7 +189,7 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  10                    # based on bmup0b0, expect < 2GB
+        job.fMaxInputFilesPerSegment =  20                    # based on bmup0b0, expect < 2GB
         job.fNEventsPerSegment       =  10000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '5h'   

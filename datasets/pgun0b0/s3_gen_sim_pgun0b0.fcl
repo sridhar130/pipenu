@@ -1,0 +1,105 @@
+# -*- mode:tcl -*- 
+#------------------------------------------------------------------------------
+#
+#------------------------------------------------------------------------------
+BEGIN_PROLOG
+  INPUT_MODULE  @protect_ignore: EmptyEvent        # choices: EmptyEvent / RootInput
+
+  TRIGGER_PATHS @protect_ignore: [  p1      ]      # defined below
+  END_PATHS     @protect_ignore: [  e1      ]      # defined below
+END_PROLOG
+
+#include "Stntuple/fcl/stntuple.fcl"
+
+process_name: S3GenSim
+
+services.SeedService.baseSeed: 8
+#------------------------------------------------------------------------------
+# geometry and the magnetic field
+#------------------------------------------------------------------------------
+services.GeometryService.inputFile  : "pipenu/datasets/pgun0b0/geom_pipenu_pgun0b0.txt"
+services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
+services.TFileService.fileName      : "/dev/null"
+#------------------------------------------------------------------------------
+# Enable these commands not to have the printout for each event in the log file
+#------------------------------------------------------------------------------
+services.message.destinations.log.categories.ArtReport.reportEvery : 50
+services.message.destinations.log.categories.ArtReport.limit       : 5
+services.message.destinations.log.categories.ArtReport.timespan    : 1000
+
+physics : {
+
+    analyzers: { @table::Common.analyzers }
+  
+    producers: {   
+        @table::EventGenerator.producers
+        @table::Common.producers
+        @table::Primary.producers
+#------------------------------------------------------------------------------
+# generate fixed momentum positrons 
+#------------------------------------------------------------------------------
+        generate : { module_type: "EventGeneratorMu"
+            simpCollTag     : ""                    ##  "" means particle gun
+            stopPdgCode     : 11                    ##  "stopped electron", just to be there
+            tmin            : 0
+            tmax            : 1700
+            lifetime        : -1.                    ## <0: uniform distribution
+            verbosityLevel  : 0
+#------------------------------------------------------------------------------
+# use particle gun to generate 139.570/2 MeV e+, take into account the radiative corrections
+# those are a universal function
+#------------------------------------------------------------------------------
+            generator  : { tool_type: "ParticleGunMu"
+                nParticles      :   1
+                pdgCode         : -11                        ## positrons
+                processCode     : "mu2ePienu"                ## fake whatever fakeable
+                shape           : "foil"
+                center          : [  -0.,  0., 6249.  ] 
+                dimensions      : [  20., 75.,    0.1 ]
+                czmin           : 0.1
+                czmax           : 0.1
+                pmin            : 70.
+                pmax            : 70.
+                mode            : "flat"
+            }
+        }
+    }
+
+    filters: {
+        @table::Common.filters
+        @table::Primary.filters
+    }
+
+    p1 : [ @sequence::Common.generateSequence,    # generate, genCounter, 
+           @sequence::Common.g4Sequence,          # g4run   , g4consistent,
+           @sequence::TrackerMC.StepSim,          # StrawGasStepMaker,
+           @sequence::CaloMC.StepSim,             # CaloShowerStepMaker,
+           CrvSteps,                              #
+           compressDetStepMCs, 
+           FindMCPrimary                          # compressDetStepMCs, FindMCPrimary
+          ]
+    
+    trigger_paths : [ @sequence::TRIGGER_PATHS      ]
+
+    e1            : [ genCountLogger, PrimaryOutput ]
+    end_paths     : [ @sequence::END_PATHS          ]
+}
+#------------------------------------------------------------------------------
+# output configuration
+#------------------------------------------------------------------------------
+outputs.PrimaryOutput.fileName                       : "dts.user.pgun0b0s31r0000.pipenu.001210_00000000.art"
+outputs.PrimaryOutput.outputCommands                 : [ "drop *_*_*_*", @sequence::Primary.KeptProducts ]
+outputs.PrimaryOutput.SelectEvents                   : [ @sequence::TRIGGER_PATHS ]
+
+physics.producers.compressDetStepMCs.simParticleTags : [ "g4run" ]
+physics.producers.compressDetStepMCs.compressionOptions.simParticleCompressionLevel : "noCompression"
+
+physics.producers.FindMCPrimary.SimParticles     : "compressDetStepMCs"
+# physics.producers.FindMCPrimary.PrimaryProcess   : "mu2ePienu"
+physics.producers.FindMCPrimary.PrimaryGenIds    : [ "particleGun" ]
+
+source.firstRun   : 1210
+source.firstSubRun:    0
+
+# don't use simple physics list - smth wrong with QGSP_BERT
+physics.producers.g4run.physics.physicsListName:ShieldingM_EMZ  ## "QGSP_BERT"

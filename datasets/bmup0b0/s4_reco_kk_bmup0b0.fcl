@@ -34,7 +34,7 @@ physics : {
 
 #	PhiClusterFinder   : { @table::CalPatRec.producers.PhiClusterFinder }
        
-	MHFinder   : { @table::TrkReco.producers.MergeHelices  
+	MHFinderDe         : { @table::TrkReco.producers.MergeHelices  
 	    HelixFinders: [ "MHDeM", "MHDeP" ]
 	}
 	

@@ -2,6 +2,7 @@
 *------------------------------------------------------------------------------
 * PIPENU datasets (summary)       last update : <2023-10-26 Thu>
 * -----------------------------------------------------------------------------
+* reconstruction dataset IDs: KinKal: 'r0100', BTrk: 'r0000'
 * *beam    datasets*                                                             
 - all datasets generated with the 70% BField and the TS3 collimator rotated by 180 deg:
   file:../datasets/bmup0b0/geom_pipenu_bmup0b0.txt

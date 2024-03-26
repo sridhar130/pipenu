@@ -129,7 +129,7 @@ class Project(ProjectBase):
         job.fResamplingModuleLabel   = 'beamResampler'
         job.fRunNumber               = 1210
         job.fRequestedTime           = '30h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fIfdh                    = 'ifdh'                 # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
         odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
