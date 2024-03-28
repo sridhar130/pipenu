@@ -3,7 +3,6 @@
 # use "MDC2020_perfect" calibrations
 #------------------------------------------------------------------------------
 BEGIN_PROLOG
-  PROCESS_NAME    @protect_ignore: S4Digi
   TRIGGER_PATHS   @protect_ignore: [ p1 ]
   END_PATHS       @protect_ignore: [ e1 ]    ## defined below
   DIGI_START_TIME @protect_ignore: 100.      ## ns
@@ -11,7 +10,7 @@ END_PROLOG
 
 #include "Production/JobConfig/digitize/OnSpill.fcl"
 
-process_name : @local::PROCESS_NAME
+process_name : S4Digi
 #------------------------------------------------------------------------------
 # services 
 #------------------------------------------------------------------------------
@@ -41,7 +40,7 @@ services.GeometryService.bFieldFile   : "pipenu/common/bfgeom_DS70_v01.txt"
 #------------------------------------------------------------------------------
 services.DbService.purpose : MDC2020_perfect
 services.DbService.version : v1_0
-# services.DbService.verbose : 2
+services.DbService.verbose : 2
 #------------------------------------------------------------------------------
 # Limit the amount of "Begin processing the ... record" messages
 #------------------------------------------------------------------------------
@@ -66,14 +65,10 @@ outputs: {
     defaultOutput      : { module_type : RootOutput
 	SelectEvents   : [ @sequence::TRIGGER_PATHS ]
         outputCommands : [ @sequence::Digitize.TriggerableOutput.outputCommands ]
+        fileName       : "dig.mu2e.bpip0b0s41r0000.pipenu.001210_00000000.art"
     }
 }
 #------------------------------------------------------------------------------
-# output files
-#------------------------------------------------------------------------------
-outputs.defaultOutput.fileName                   : "dig.mu2e.bpip0b0s41r0000.pipenu.001210_00000000.art"
-#------------------------------------------------------------------------------
 # everything below is appended by generate_fcl
 #------------------------------------------------------------------------------
-# physics.producers.makeSD.printLevel                  : 100
 

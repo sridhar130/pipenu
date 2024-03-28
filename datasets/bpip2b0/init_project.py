@@ -37,12 +37,7 @@ class Project(ProjectBase):
         self.add_dataset(Dataset('mcs.mu2e.bpip2b0s51r0000.pipenu.art','bpip2b0s51r0000','local'))
         self.add_dataset(Dataset('mcs.mu2e.bpip2b0s51r0100.pipenu.art','bpip2b0s51r0100','local'))
         self.add_dataset(Dataset('mcs.mu2e.bpip2b0s54r0100.pipenu.art','bpip2b0s54r0100','local'))
-#------------------------------------------------------------------------------
-# a job always has an input dataset, but...
-#------------------------------------------------------------------------------
-        if (self.fIDsID): self.fInputDataset = self.fDataset[self.fIDsID];
         return;
-
 
 #------------------------------------------------------------------------------
 #

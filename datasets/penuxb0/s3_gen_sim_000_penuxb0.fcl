@@ -1,18 +1,23 @@
 # -*- mode:tcl -*- 
 #------------------------------------------------------------------------------
-#
+# degrader 000
 #------------------------------------------------------------------------------
 #include "Production/JobConfig/primary/TargetStopParticle.fcl"
-
-services.SeedService.baseSeed: 8
 #------------------------------------------------------------------------------
-# geometry and the magnetic field
+# services, geometry and the magnetic field
 #------------------------------------------------------------------------------
-services.GeometryService.inputFile  : "pipenu/datasets/bpip0b0/geom_pipenu_bpip0b0.txt"
+services.SeedService.baseSeed       : 8
+services.GeometryService.inputFile  : "pipenu/datasets/penuxb0/geom_pipenu_000_penuxb0.txt"
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
 services.TFileService.fileName      : "/dev/null"
+#------------------------------------------------------------------------------
+# Enable these commands not to have the printout for each event in the log file
+#------------------------------------------------------------------------------
+services.message.destinations.log.categories.ArtReport.reportEvery : 50
+services.message.destinations.log.categories.ArtReport.limit       : 5
+services.message.destinations.log.categories.ArtReport.timespan    : 1000
 
-physics.producers.generate : { module_type: "EventGeneratorMu"
+physics.producers.generate : { @table::EventGenerator.producers.positronGun
     simpCollTag    : "TargetStopResampler"
     stopPdgCode    : 211                              ## stopped pi+
     lifetime       : 26. ## 2196.98                   ## charged pion lifetime, ns
@@ -26,7 +31,7 @@ physics.producers.generate : { module_type: "EventGeneratorMu"
             spectrumVariable   :  "totalEnergy" ## "kineticEnergy" / "momentum" / "totalEnergy"
             ehi                : 69.785
             elow               : 0.
-            spectrumResolution : 0.1                # MeV
+            spectrumResolution : 0.1                      ## MeV
         }
     }
 }
@@ -49,7 +54,7 @@ physics.producers.FindMCPrimary.PrimaryProcess  : "mu2ePienu"
 physics.filters.TargetStopResampler.mu2e.products.genParticleMixer.mixingMap : [[ "generate", "" ]]
 physics.filters.TargetStopResampler.mu2e.MaxEventsToSkip : 0
 physics.filters.TargetStopResampler.fileNames            : [
-  "/exp/mu2e/data/projects/pipenu/datasets/bpip0b0s21r0000/sim.mu2e.bpip0b0s21r0000.pipenu.001210_00000000.art"
+  "/exp/mu2e/data/projects/pipenu/datasets/penuxb0s21r0000/sim.mu2e.penuxb0s21r0000.pipenu.001210_00000000.art"
 ]
 
 physics.filters.PrimaryFilter.MinimumPartMom      : 30
@@ -62,9 +67,3 @@ source.firstSubRun:    0
 
 # don't use simple physics list - smth wrong with QGSP_BERT
 physics.producers.g4run.physics.physicsListName:ShieldingM_EMZ  ## "QGSP_BERT"
-#------------------------------------------------------------------------------
-# Enable these commands not to have the printout for each event in the log file
-#------------------------------------------------------------------------------
-services.message.destinations.log.categories.ArtReport.reportEvery : 50
-services.message.destinations.log.categories.ArtReport.limit       : 5
-services.message.destinations.log.categories.ArtReport.timespan    : 1000

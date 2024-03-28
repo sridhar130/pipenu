@@ -36,10 +36,6 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('mcs.mu2e.bpip5b0s51r0100.pipenu.art','bpip5b0s51r0100','local'))
         self.add_dataset(Dataset('mcs.mu2e.bpip5b0s54r0100.pipenu.art','bpip5b0s54r0100','local'))
-#------------------------------------------------------------------------------
-# a job always has an input dataset, but...
-#------------------------------------------------------------------------------
-        if (self.fIDsID) : self.fInputDataset = self.dataset(self.fIDsID);
         return
 
 #------------------------------------------------------------------------------
@@ -75,17 +71,10 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid1                        ,  odsid2                       ] 
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1]]
         job.fOutputFormat            = ['art'                         , 'art'                         ]
-        
-        # grid output dir
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s1:stn_beam: stntuple the beam stream
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_beam','bpip5b0s11r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_beam');
 
         job.fNInputFiles             = 1                                # number of segments    
 
@@ -100,17 +89,11 @@ class Project(ProjectBase):
         job.fOutputDsID              = [ odsid1                          ]
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;       
 #------------------------------------------------------------------------------
 # s2:sim : 
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
-
         job                          = s.new_job('sim','bpip5b0s11r0000');
-
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
@@ -128,10 +111,6 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid21            , odsid24              ]
         job.fOutputFnPattern         = ['sim.mu2e.'+odsid21, 'sim.mu2e.'+odsid24  ]
         job.fOutputFormat            = ['art'              , 'art'                ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s2:stn_tgt
 #------------------------------------------------------------------------------  
@@ -175,7 +154,6 @@ class Project(ProjectBase):
 # need a different FCL because of different collection names
 #------------------------------------------------------------------------------  
         s                            = self.new_stage('s3');
-
         job                          = s.new_job('gen_sim_tgt',idsid);
 
         job.fNInputFiles             = 1                                # number of segments 
@@ -194,9 +172,6 @@ class Project(ProjectBase):
         job.fOutputDsID              = [ odsid31                         ]
         job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'art'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:gen_sim_deg : pi+ --> e+ nu decays of pions stopped in the degrader
 #                  those are the input and the output streams number 4
@@ -219,19 +194,13 @@ class Project(ProjectBase):
         job.fOutputDsID              = [ odsid34                         ]
         job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'art'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # stage 4
 # s4:digi_trig : InputDsID is 'bpip2b0s31r0000' or 'bpip2b0s34r0000'
 #                digitization job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s4');
-
         job                          = s.new_job('digi_trig',idsid);
-
-        job.fBaseFcl                 = self.base_fcl(job,'digi_trig');
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
@@ -250,18 +219,11 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid                          ]
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0] ]
         job.fOutputFormat            = ['art'                          ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s5:reco_kk : reconstruction job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s5');
-
         job                          = s.new_job('reco_kk',idsid);
-
-        job.fBaseFcl                 = self.base_fcl(job,'reco_kk');
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
@@ -279,17 +241,11 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid             ]
         job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
         job.fOutputFormat            = ['art'             ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s5:stn_kk : stntupling job has only one output stream
 #             no ned to redefine the stage
 #------------------------------------------------------------------------------        
         job                          = s.new_job('stn_kk',idsid);
-
-        job.fBaseFcl                 = self.base_fcl(job,'stn_kk');
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
@@ -308,10 +264,6 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid             ]
         job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
         job.fOutputFormat            = ['stn'             ]
-
-        # job description defined the grid output directory
-        # desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = self.job_description(job);
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

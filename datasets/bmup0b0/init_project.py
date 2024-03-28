@@ -26,10 +26,9 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('dig.mu2e.bmup0b0s34r0000.pipenu.art','bmup0b0s34r0000','local'))
         self.add_dataset(Dataset('mcs.mu2e.bmup0b0s44r0100.pipenu.art','bmup0b0s44r0100','local'))
+        return
+
 #------------------------------------------------------------------------------
-# a job always has an input dataset, but...
-#------------------------------------------------------------------------------
-        if (self.fIDsID) : self.fInputDataset = self.dataset(self.fIDsID);
 
 #------------------------------------------------------------------------------
 # constructor
@@ -46,8 +45,6 @@ class Project(ProjectBase):
         job                          = s.new_job('sim','bmup0b0s00r0000');
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
-
         job.fNInputFiles             = 1000                      # number of segments
                                      
         job.fMaxInputFilesPerSegment =  1
@@ -68,9 +65,6 @@ class Project(ProjectBase):
 # init s1 stntuple
 #------------------------------------------------------------------------------  
         job                          = s.new_job('beam_stn','bmup0b0s11r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'beam_stn');
 
         job.fNInputFiles             = 1                                # number of segments    
 
@@ -162,7 +156,7 @@ class Project(ProjectBase):
         job.fMaxInputFilesPerSegment =  1
         job.fNEventsPerSegment       =  2000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '10h'   
+        job.fRequestedTime           = '20h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 

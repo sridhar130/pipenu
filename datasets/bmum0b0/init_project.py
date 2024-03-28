@@ -27,6 +27,7 @@ class Project(ProjectBase):
 # 3. Input s4 strip and s3 stn -- TargetStopOutput from s3
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('sim.mu2e.bmum0b0s31r0000.art','bmum0b0s31r0000','local'))
+        return
 
 #------------------------------------------------------------------------------
     def __init__(self,idsid=None):
@@ -58,18 +59,12 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid1                        ,  odsid2                       ] 
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1]]
         job.fOutputFormat            = ['art'                         , 'art'                         ]
-        
-        # grid output dir
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s1:stn_beam: stntuple the beam stream
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_beam',idsid);
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_beam');
-
         job.fNInputFiles             = 1                                # number of segments    
 
         job.fMaxInputFilesPerSegment = 1000

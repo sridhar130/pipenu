@@ -3,7 +3,7 @@
 # DIGI_START_TIME has to be defined not here,  but in the top-level FCL (via @protect_ignore)
 # defines the minimal time for the digi making algorithms
 #------------------------------------------------------------------------------
-# DIGI_START_TIME : 400
+# default DIGI_START_TIME : 400
 #------------------------------------------------------------------------------
 # tracker 
 services.ProditionsService.strawElectronics.digitizationStart : @local::DIGI_START_TIME
@@ -14,3 +14,9 @@ physics.producers.CaloDigiMaker.digitizationStart             : @local::DIGI_STA
 physics.producers.CrvPhotons.digitizationStart                : @local::DIGI_START_TIME
 physics.producers.CrvSiPMCharges.digitizationStart            : @local::DIGI_START_TIME
 physics.producers.CrvWaveforms.digitizationStart              : @local::DIGI_START_TIME
+#------------------------------------------------------------------------------
+# deal with something unexpected - changes in the offline
+# for this analysis, the digitization end is not important, just avoid quirks...
+#------------------------------------------------------------------------------
+services.ProditionsService.eventTiming.TimeFromProtonsToDRMarker : 0
+services.ProditionsService.strawElectronics.digitizationEnd      : 1650

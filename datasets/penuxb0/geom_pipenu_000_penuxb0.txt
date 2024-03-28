@@ -1,0 +1,8 @@
+// -*- mode: c++ -*-
+//-----------------------------------------------------------------------------
+// pipenu geometry for pi+ beam: 1. degrader out of the beam
+//-----------------------------------------------------------------------------
+#include "pipenu/common/geom_baseline.txt"
+
+double ts.coll3.rotationAngle       = 180.0; // DEFAULT: 0.0
+bool   degrader.build               = false; // 

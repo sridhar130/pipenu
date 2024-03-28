@@ -42,7 +42,7 @@ services.TFileService.fileName      : "/dev/null"
 #------------------------------------------------------------------------------
 services.DbService.purpose : MDC2020_perfect
 services.DbService.version : v1_0
-# services.DbService.verbose : 2
+services.DbService.verbose : 2
 #------------------------------------------------------------------------------
 # Limit the amount of "Begin processing the ... record" messages
 #------------------------------------------------------------------------------
@@ -67,14 +67,13 @@ outputs: {
     defaultOutput      : { module_type : RootOutput
 	SelectEvents   : [ @sequence::TRIGGER_PATHS ]
         outputCommands : [ @sequence::Digitize.TriggerableOutput.outputCommands ]
-    }
-}
 #------------------------------------------------------------------------------
 # output files
 #------------------------------------------------------------------------------
-outputs.defaultOutput.fileName                   : "dig.mu2e.bpip2b0s41r0000.pipenu.001210_00000000.art"
+        fileName       : "dig.mu2e.bpip2b0s41r0000.pipenu.001210_00000000.art"
+    }
+}
 #------------------------------------------------------------------------------
 # everything below is appended by generate_fcl
 #------------------------------------------------------------------------------
-# physics.producers.makeSD.printLevel                  : 100
 

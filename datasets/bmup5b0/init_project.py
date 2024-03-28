@@ -24,10 +24,7 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('dig.mu2e.bmup5b0s34r0000.pipenu.art','bmup5b0s34r0000','local'))
         self.add_dataset(Dataset('mcs.mu2e.bmup5b0s44r0100.pipenu.art','bmup5b0s44r0100','local'))
-#------------------------------------------------------------------------------
-# a job always has an input dataset, but...
-#------------------------------------------------------------------------------
-        self.fInputDataset = self.dataset(self.fIDsID);
+        return
 
 #------------------------------------------------------------------------------
 #
@@ -125,6 +122,75 @@ class Project(ProjectBase):
         job.fOutputDsID              = [  odsid            ]
         job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid ]
         job.fOutputFormat            = [ 'art'             ]
+#------------------------------------------------------------------------------
+# stage 3 : s3:digi_trig : InputDsID is 'bmup2b0s24r0000' (dts from decays in flight)
+#           digitization job has only one output stream
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s3');
+        job                          = s.new_job('digi_trig',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  2000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '10h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = job.input_dataset().output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
+
+        job.fOutputStream            = ['defaultOutput'                ]
+        job.fOutputDsID              = [odsid                          ]
+        job.fOutputFnPattern         = ['dig.mu2e.'+job.fOutputDsID[0] ]
+        job.fOutputFormat            = ['art'                          ]
+#------------------------------------------------------------------------------
+# s4:reco_kk : reconstruction job has only one output stream
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s4');
+
+        job                          = s.new_job('reco_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  1000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '10h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = job.input_dataset().output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+
+        job.fOutputStream            = ['defaultOutput'   ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['mcs.mu2e.'+odsid ]
+        job.fOutputFormat            = ['art'             ]
+#------------------------------------------------------------------------------
+# s4:stn_kk : stntupling job has only one output stream
+#             no need to redefine the stage ... N(events / input file) ~ 176000
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('stn_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  20                    # based on bmup0b0, expect < 2GB
+        job.fNEventsPerSegment       =  10000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '5h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = job.input_dataset().output_stream()
+
+        odsid                        = self.fFamilyID+'s5'+output_stream+'r0100';
+
+        job.fOutputStream            = ['InitStntuple'    ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['nts.mu2e.'+odsid ]
+        job.fOutputFormat            = ['stn'             ]
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

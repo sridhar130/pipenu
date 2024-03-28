@@ -5,9 +5,7 @@ from local_classes import *
 
 class Project(ProjectBase):
 
-    def __init__(self,idsid=None):
-
-        ProjectBase.__init__(self,project='pipenu',family_id='bpip0b0',idsid=idsid);
+    def init_datasets(self):
 #------------------------------------------------------------------------------
 # datasets of this family
 # 1. stage 1 : generator input, trace up to the exit from TS5 coll
@@ -37,11 +35,12 @@ class Project(ProjectBase):
         self.add_dataset(Dataset('mcs.mu2e.bpip0b0s51r0000.pipenu.art','bpip0b0s51r0000','local'))
         self.add_dataset(Dataset('mcs.mu2e.bpip0b0s51r0100.pipenu.art','bpip0b0s51r0100','local'))
         self.add_dataset(Dataset('mcs.mu2e.bpip0b0s52r0000.pipenu.art','bpip0b0s52r0000','local'))
-#------------------------------------------------------------------------------
-# a job always has an input dataset, but...
-#------------------------------------------------------------------------------
-        self.fInputDsID = None;
-        if (idsid) : self.fInputDataset = self.fDataset[idsid];
+        return
+
+    def __init__(self,idsid=None):
+
+        ProjectBase.__init__(self,project='pipenu',family_id='bpip0b0',idsid=idsid);
+        self.init_datasets();
 #------------------------------------------------------------------------------
 # S1 10^8 (250x400,000) proton interactions in the PT, half field in the DS
 #-------v----------------------------------------------------------------------        

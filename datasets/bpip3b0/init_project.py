@@ -36,10 +36,6 @@ class Project (ProjectBase):
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('mcs.mu2e.bpip3b0s51r0100.pipenu.art','bpip3b0s51r0100','local'))
         self.add_dataset(Dataset('mcs.mu2e.bpip3b0s54r0100.pipenu.art','bpip3b0s54r0100','local'))
-#------------------------------------------------------------------------------
-# a job always has an input dataset, but...
-#-------v----------------------------------------------------------------------
-        if (self.fIDsID) : self.fInputDataset = self.dataset(self.fIDsID);
         return
 
 #------------------------------------------------------------------------------
@@ -98,7 +94,6 @@ class Project (ProjectBase):
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
         job                          = s.new_job('sim','bpip3b0s11r0000');
-        print("emoe 00031")
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
@@ -136,7 +131,6 @@ class Project (ProjectBase):
         job.fOutputDsID              = [ odsid             ]
         job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
         job.fOutputFormat            = [ 'stn'             ]
-        print("emoe 0005")
 #------------------------------------------------------------------------------
 # s2:stn_deg
 #------------------------------------------------------------------------------  
@@ -176,16 +170,10 @@ class Project (ProjectBase):
         job.fOutputDsID              = [ odsid31                         ]
         job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'art'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s3:gen_sim_deg : pi+ --> e+ nu decays of pions stopped in the degrader
 #------------------------------------------------------------------------------  
         job                          = s.new_job('gen_sim_deg',idsid);
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'gen_sim_deg');
 
         job.fNInputFiles             = -1                                # number of segments defined by  the input dataset    
 
@@ -201,19 +189,13 @@ class Project (ProjectBase):
         job.fOutputDsID              = [ odsid34                         ]
         job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'art'                           ]
-
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # stage 4
 # s4:digi_trig : InputDsID is 'bpip2b0s31r0000' or 'bpip2b0s34r0000'
 #                digitization job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s4');
-
         job                          = s.new_job('digi_trig',idsid);
-
-        job.fBaseFcl                 = self.base_fcl(job,'digi_trig');
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
@@ -231,18 +213,11 @@ class Project (ProjectBase):
         job.fOutputDsID              = [odsid                          ]
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0] ]
         job.fOutputFormat            = ['art'                          ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s5:reco_kk : reconstruction job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s5');
-
         job                          = s.new_job('reco_kk',idsid);
-
-        job.fBaseFcl                 = self.base_fcl(job,'reco_kk');
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
@@ -260,17 +235,11 @@ class Project (ProjectBase):
         job.fOutputDsID              = [odsid             ]
         job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
         job.fOutputFormat            = ['art'             ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # s5:stn_kk : stntupling job has only one output stream
 #             no ned to redefine the stage
 #------------------------------------------------------------------------------        
         job                          = s.new_job('stn_kk',idsid);
-
-        job.fBaseFcl                 = self.base_fcl(job,'stn_kk');
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
@@ -288,10 +257,6 @@ class Project (ProjectBase):
         job.fOutputDsID              = [odsid             ]
         job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
         job.fOutputFormat            = ['stn'             ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

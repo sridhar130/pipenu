@@ -67,12 +67,12 @@ class Project(ProjectBase):
         desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
         job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# init s1 stntuple
+# init s1:stntuple
 #------------------------------------------------------------------------------  
-        job                          = s.new_job('beam_stn','bmup3b0s11r0000');
+        job                          = s.new_job('stn_beam','bmup3b0s11r0000');
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'beam_stn');
+        job.fBaseFcl                 = self.base_fcl(job,'stn_beam');
 
         job.fNInputFiles             = 1                                # number of segments    
 
@@ -94,10 +94,7 @@ class Project(ProjectBase):
 # init stage 2. a Stage can have one or several jobs associated with it
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
-
         job                          = s.new_job('sim','bmup3b0s11r0000');
-
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
@@ -117,7 +114,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
 #------------------------------------------------------------------------------
-# stage, s2:resample
+# s2:resample
 #------------------------------------------------------------------------------        
         job                          = s.new_job('resample','bmup3b0s11r0000');
 
@@ -138,6 +135,75 @@ class Project(ProjectBase):
         job.fOutputDsID              = [  odsid            ]
         job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid ]
         job.fOutputFormat            = [ 'art'             ]
+#------------------------------------------------------------------------------
+# s3:digi_trig : InputDsID is 'bmup2b0s24r0000' (dts from decays in flight)
+#                digitization job has only one output stream
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s3');
+        job                          = s.new_job('digi_trig',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  2000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '10h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
+
+        job.fOutputStream            = ['defaultOutput'                ]
+        job.fOutputDsID              = [odsid                          ]
+        job.fOutputFnPattern         = ['dig.mu2e.'+job.fOutputDsID[0] ]
+        job.fOutputFormat            = ['art'                          ]
+#------------------------------------------------------------------------------
+# s4:reco_kk : reconstruction job has only one output stream
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s4');
+
+        job                          = s.new_job('reco_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  1000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '10h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+
+        job.fOutputStream            = ['defaultOutput'   ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['mcs.mu2e.'+odsid ]
+        job.fOutputFormat            = ['art'             ]
+#------------------------------------------------------------------------------
+# s4:stn_kk : stntupling job has only one output stream
+#             no need to redefine the stage ... N(events / input file) ~ 176000
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('stn_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  20                    # based on bmup0b0, expect < 2GB
+        job.fNEventsPerSegment       =  10000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '5h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+
+        odsid                        = self.fFamilyID+'s5'+output_stream+'r0100';
+
+        job.fOutputStream            = ['InitStntuple'    ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['nts.mu2e.'+odsid ]
+        job.fOutputFormat            = ['stn'             ]
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

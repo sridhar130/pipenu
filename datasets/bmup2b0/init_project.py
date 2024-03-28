@@ -24,10 +24,7 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('dig.mu2e.bmup2b0s34r0000.pipenu.art','bmup2b0s34r0000','local'))
         self.add_dataset(Dataset('mcs.mu2e.bmup2b0s44r0100.pipenu.art','bmup2b0s44r0100','local'))
-#------------------------------------------------------------------------------
-# a job always has an input dataset, but...
-#------------------------------------------------------------------------------
-        self.fInputDataset = self.dataset(self.fIDsID);
+        return
 
 #------------------------------------------------------------------------------
 #
@@ -43,7 +40,6 @@ class Project(ProjectBase):
         job                          = s.new_job('sim','bmup2b0s00r0000');
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
 
         job.fNInputFiles             = 250                      # number of segments
                                      
@@ -66,9 +62,6 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------  
         job                          = s.new_job('beam_stn','bmup2b0s11r0000');
 
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'beam_stn');
-
         job.fNInputFiles             = 1                                # number of segments    
 
         job.fMaxInputFilesPerSegment = 1000
@@ -86,10 +79,7 @@ class Project(ProjectBase):
 # init stage 2. a Stage can have one or several jobs associated with it
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
-
         job                          = s.new_job('sim','bmup2b0s11r0000');
-
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
@@ -108,10 +98,6 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
-
-        # job description defined the grid output directory
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
 # stage, s2:resample
 #------------------------------------------------------------------------------        
@@ -151,7 +137,6 @@ class Project(ProjectBase):
         job.fMaxMemory               = '3000MB'
 
         output_stream                = self.fInputDataset.output_stream()
-
         odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
 
         job.fOutputStream            = ['defaultOutput'                ]
