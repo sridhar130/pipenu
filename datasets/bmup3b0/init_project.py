@@ -24,10 +24,6 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('dig.mu2e.bmup3b0s34r0000.pipenu.art','bmup3b0s34r0000','local'))
         self.add_dataset(Dataset('mcs.mu2e.bmup3b0s44r0100.pipenu.art','bmup3b0s44r0100','local'))
-#------------------------------------------------------------------------------
-# a job always has an input dataset, but...
-#------------------------------------------------------------------------------
-        self.fInputDataset = self.dataset(self.fIDsID);
         return
 
 #------------------------------------------------------------------------------
@@ -44,7 +40,6 @@ class Project(ProjectBase):
         job                          = s.new_job('sim','bmup3b0s00r0000');
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
 
         job.fNInputFiles             = 250                      # number of segments
                                      
@@ -62,17 +57,10 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid1                        ,  odsid2                       ] 
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1]]
         job.fOutputFormat            = ['art'                         , 'art'                         ]
-        
-        # grid output dir
-        desc                         = self.name()+'.'+job.input_dataset().id()+'.'+s.name()+'_'+job.name()
-        job.fDescription             = desc;
 #------------------------------------------------------------------------------
-# init s1:stntuple
+# s1:stntuple
 #------------------------------------------------------------------------------  
         job                          = s.new_job('stn_beam','bmup3b0s11r0000');
-
-        job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'stn_beam');
 
         job.fNInputFiles             = 1                                # number of segments    
 
@@ -162,12 +150,11 @@ class Project(ProjectBase):
 # s4:reco_kk : reconstruction job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s4');
-
         job                          = s.new_job('reco_kk',idsid);
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  1
+        job.fMaxInputFilesPerSegment =  2                     # can combine by 2
         job.fNEventsPerSegment       =  1000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '10h'   
@@ -197,7 +184,6 @@ class Project(ProjectBase):
         job.fMaxMemory               = '3000MB'
 
         output_stream                = self.fInputDataset.output_stream()
-
         odsid                        = self.fFamilyID+'s5'+output_stream+'r0100';
 
         job.fOutputStream            = ['InitStntuple'    ]

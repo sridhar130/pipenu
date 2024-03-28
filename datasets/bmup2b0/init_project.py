@@ -152,7 +152,7 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  1
+        job.fMaxInputFilesPerSegment =  2                     # can combine by 2
         job.fNEventsPerSegment       =  1000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '10h'   
