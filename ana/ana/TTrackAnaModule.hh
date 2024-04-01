@@ -174,6 +174,7 @@ public:
 
     TH1F*    fFrE1;
     TH1F*    fFrE2;
+    TH2F*    ft0Vsp0;
   };
 
   struct GenpHist_t {

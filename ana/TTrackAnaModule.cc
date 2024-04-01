@@ -171,6 +171,7 @@ void TTrackAnaModule::BookTrackHistograms(TrackHist_t* Hist, const char* Folder)
   HBook1F(Hist->fFitCons[1] ,"fcon1"    ,Form("%s: track fit cons [1]",Folder), 1000, 0,   0.1,Folder);
   HBook1F(Hist->fD0         ,"d0"       ,Form("%s: track D0      "    ,Folder), 200,-200, 200,Folder);
   HBook1F(Hist->fZ0         ,"z0"       ,Form("%s: track Z0      "    ,Folder), 200,-2000,2000,Folder);
+  
   HBook1F(Hist->fTanDip     ,"tdip"     ,Form("%s: track tan(dip)"    ,Folder), 200, 0.0 ,2.0,Folder);
   HBook1F(Hist->fResid      ,"resid"    ,Form("%s: hit residuals"     ,Folder), 500,-0.5 ,0.5,Folder);
   HBook1F(Hist->fAlgMask    ,"alg"      ,Form("%s: algorithm mask"    ,Folder),  10,  0, 10,Folder);
@@ -236,6 +237,7 @@ void TTrackAnaModule::BookTrackHistograms(TrackHist_t* Hist, const char* Folder)
 
   HBook1F(Hist->fFrE1   ,"fre1"   ,Form("%s: E1/Etot"       ,Folder),200, 0,  1,Folder);
   HBook1F(Hist->fFrE2   ,"fre2"   ,Form("%s: (E1+E2)/Etot"  ,Folder),200, 0,  1,Folder);
+HBook2F(Hist->ft0Vsp0   ,"trk t0_vs_p0",Form("%s: Track t0 Vs p0" ,Folder),  200,   0. ,1000.,200,0.,100.,Folder);
 }
 
 //-----------------------------------------------------------------------------
@@ -256,6 +258,7 @@ void TTrackAnaModule::BookSimpHistograms(SimpHist_t* Hist, const char* Folder) {
   HBook2F(Hist->fTimeVsPMom   ,"PMom_vs_Time",Form("%s: time vs pmom"   ,Folder),  100,   0 ,1000,50, 0., 100.,Folder);
   HBook2F(Hist->fTimeVsPEndz   ,"PEndz_vs_Time",Form("%s: time vs pendz"   ,Folder),  100,   0 ,1000,50, 5400., 6400.,Folder);
   HBook2F(Hist->fTimeVsPTime   ,"PTime_vs_Time",Form("%s: time vs ptime"   ,Folder),  100, 0 ,1000,100,0.,1000.,Folder);
+
 }
 
 
@@ -479,7 +482,7 @@ void TTrackAnaModule::BookHistograms() {
             {        
             WP2=ttau2;
             }
-          Hist->fTau->Fill(ParentTau);
+          Hist->fTau->Fill(ParentTau,WP2);
           Hist->fPTime->Fill(ParentTime,WP2);
           Hist->fParentMom->Fill(ParentMom,WP2);
           Hist->fParentZEnd->Fill(ParentEndZ,WP2);
@@ -563,6 +566,7 @@ void TTrackAnaModule::BookHistograms() {
   Hist->fXc->Fill(tp->fXc,Weight);
   Hist->fYc->Fill(tp->fYc,Weight);
   Hist->fPhic->Fill(tp->fPhic,Weight);
+  Hist->ft0Vsp0->Fill(Track->fT0,Track->fP0);
 
 //-----------------------------------------------------------------------------
 // Print from get header block:
@@ -763,7 +767,8 @@ void TTrackAnaModule::FillHistograms() {
 
    
   fParticle1 = NULL;
-  for (int i=fN1Simp-1; i>=0; i--) {
+  //  for (int i=fN1Simp-1; i>=0; i--) {
+  for (int i=0; i<fN1Simp;i++) {
     simp1           = fSimpBlock->Particle(i);
     //    pdg_code       = simp->PDGCode();
     // generator_code = simp->GeneratorID();
