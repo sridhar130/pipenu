@@ -52,8 +52,6 @@ class Project (ProjectBase):
         job                          = s.new_job('sim','bpip3b0s00r0000');
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
-
         job.fNInputFiles             = 500                      # number of segments
                                      
         job.fMaxInputFilesPerSegment =  1
@@ -125,7 +123,7 @@ class Project (ProjectBase):
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
 
-        odsid                        = self.fFamilyID+s.name()+'1'+'r0000';
+        odsid                        = job.family_id()+s.name()+'1'+'r0000';
 
         job.fOutputStream            = [ 'InitStntuple'    ]
         job.fOutputDsID              = [ odsid             ]
@@ -162,14 +160,16 @@ class Project (ProjectBase):
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 100000
         job.fResample                = 'yes'                             # yes/no
+        job.fResamplingModuleLabel   = 'TargetStopResampler'
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
-        odsid31                      = self.fFamilyID+'s31'+'r0000';
-        job.fOutputStream            = [ 'PrimaryOutput'                 ]
-        job.fOutputDsID              = [ odsid31                         ]
-        job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'art'                           ]
+        odsid                        = job.family_id()+s.name()+'1'+'r0000';
+
+        job.fOutputStream            = [ 'PrimaryOutput'   ]
+        job.fOutputDsID              = [ odsid             ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'art'             ]
 #------------------------------------------------------------------------------
 # s3:gen_sim_deg : pi+ --> e+ nu decays of pions stopped in the degrader
 #------------------------------------------------------------------------------  
@@ -184,11 +184,12 @@ class Project (ProjectBase):
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
-        odsid34                      = self.fFamilyID+'s34'+'r0000';
-        job.fOutputStream            = [ 'PrimaryOutput'                 ]
-        job.fOutputDsID              = [ odsid34                         ]
-        job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'art'                           ]
+        odsid                        = job.family_id()+s.name()+'4'+'r0000';
+
+        job.fOutputStream            = [ 'PrimaryOutput'   ]
+        job.fOutputDsID              = [ odsid             ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'art'             ]
 #------------------------------------------------------------------------------
 # stage 4
 # s4:digi_trig : InputDsID is 'bpip2b0s31r0000' or 'bpip2b0s34r0000'
@@ -206,8 +207,8 @@ class Project (ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        output_stream                = self.fInputDataset.output_stream()
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
+        ostream                      = job.input_dataset().output_stream()
+        odsid                        = job.family_id()+s.name()+ostream+'r0000';
 
         job.fOutputStream            = ['defaultOutput'                ]
         job.fOutputDsID              = [odsid                          ]
@@ -228,8 +229,8 @@ class Project (ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        output_stream                = self.fInputDataset.output_stream()
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+        output_stream                = job.input_dataset().output_stream()
+        odsid                        = job.family_id()+s.name()+output_stream+'r0100';
 
         job.fOutputStream            = ['defaultOutput'   ]
         job.fOutputDsID              = [odsid             ]
@@ -250,8 +251,8 @@ class Project (ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        output_stream                = self.fInputDataset.output_stream()
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+        ostream                      = job.input_dataset().output_stream()
+        odsid                        = job.family_id()+s.name()+ostream+'r0100';
 
         job.fOutputStream            = ['InitStntuple'    ]
         job.fOutputDsID              = [odsid             ]

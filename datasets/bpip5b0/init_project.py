@@ -211,14 +211,13 @@ class Project(ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        output_stream                = self.fInputDataset.output_stream()
+        ostream                      = job.input_dataset().output_stream()
+        odsid                        = job.family_id()+s.name()+ostream+'r0000';
 
-        odsid                        = self.fFamilyID+'s4'+output_stream+'r0000';
-
-        job.fOutputStream            = ['defaultOutput'                ]
-        job.fOutputDsID              = [odsid                          ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0] ]
-        job.fOutputFormat            = ['art'                          ]
+        job.fOutputStream            = ['defaultOutput'   ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
+        job.fOutputFormat            = ['art'             ]
 #------------------------------------------------------------------------------
 # s5:reco_kk : reconstruction job has only one output stream
 #------------------------------------------------------------------------------        

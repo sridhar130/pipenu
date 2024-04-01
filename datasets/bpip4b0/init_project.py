@@ -180,7 +180,8 @@ class Project(ProjectBase):
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
-        odsid34                      = self.fFamilyID+'s34'+'r0000';
+        odsid34                      = job.family_id()+s.name()+'4'+'r0000';
+
         job.fOutputStream            = [ 'PrimaryOutput'                 ]
         job.fOutputDsID              = [ odsid34                         ]
         job.fOutputFnPattern         = [ 'dts.mu2e.'+job.fOutputDsID[0]  ]
@@ -202,9 +203,8 @@ class Project(ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        output_stream                = self.fInputDataset.output_stream()
-
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
+        output_stream                = job.input_dataset().output_stream()
+        odsid                        = job.family_id()+s.name()+output_stream+'r0000';
 
         job.fOutputStream            = ['defaultOutput'                ]
         job.fOutputDsID              = [odsid                          ]
@@ -225,8 +225,8 @@ class Project(ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        output_stream                = self.fInputDataset.output_stream()
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+        output_stream                = job.input_dataset().output_stream()
+        odsid                        = job.family_id()+s.name()+output_stream+'r0100';
 
         job.fOutputStream            = ['defaultOutput'   ]
         job.fOutputDsID              = [odsid             ]
@@ -247,9 +247,8 @@ class Project(ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        output_stream                = self.fInputDataset.output_stream()
-
-        odsid                        = self.fFamilyID+'s5'+output_stream+'r0100';
+        ostream                      = job.input_dataset().output_stream()
+        odsid                        = job.family_id()+s.name()+ostream+'r0100';
 
         job.fOutputStream            = ['InitStntuple'    ]
         job.fOutputDsID              = [odsid             ]

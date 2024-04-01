@@ -19,6 +19,7 @@ class Project(ProjectBase):
 # 3. input for s3(digitization): dts. for decays in flight
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('dts.mu2e.bmup5b0s24r0000.pipenu.art','bmup5b0s24r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup5b0s25r0000.pipenu.art','bmup5b0s25r0000','local'))
 #------------------------------------------------------------------------------
 # s4: reconstruction and ntupling
 #------------------------------------------------------------------------------
@@ -101,7 +102,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
 #------------------------------------------------------------------------------
-# s2:resample - for muon decays in flight, this produces dts files
+# s2:resample - for muon decays in flight, this produces 's24' dts files 
 #------------------------------------------------------------------------------        
         job                          = s.new_job('resample','bmup5b0s11r0000');
 
@@ -113,7 +114,7 @@ class Project(ProjectBase):
         job.fResamplingModuleLabel   = 'beamResampler'
         job.fRunNumber               = 1210
         job.fRequestedTime           = '30h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fIfdh                    = 'ifdh'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
         odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
@@ -122,6 +123,55 @@ class Project(ProjectBase):
         job.fOutputDsID              = [  odsid            ]
         job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid ]
         job.fOutputFormat            = [ 'art'             ]
+#------------------------------------------------------------------------------
+# s2:resample_default - don't force muon decays within 150 ns ... for muon decays in flight, 
+#                       produces 's25' dts files 
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('resample_default','bmup5b0s11r0000');
+
+        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  1000000
+        job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
+        job.fResamplingModuleLabel   = 'beamResampler'
+        job.fRunNumber               = 1210
+        job.fRequestedTime           = '30h'   
+        job.fIfdh                    = 'ifdh'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        odsid                        = self.fFamilyID+s.name()+'5'+'r0000';
+
+        job.fOutputStream            = [ 's24'             ]
+        job.fOutputDsID              = [  odsid            ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'art'             ]
+#------------------------------------------------------------------------------
+# s2:stn_dif : ntuple decays in flight
+#              use the same fcl for s24 and s25 
+#              s24 needs fMaxInputFilesPerSegment=10 
+#              s25 is OK with fMaxInputFilesPerSegment=100
+#------------------------------------------------------------------------------  
+        job                          = s.new_job('stn_dif',idsid);
+
+        job.fNInputFiles             = 1                    # number of segments    
+        job.fMaxInputFilesPerSegment = 10                  # default, resulting in a 1GB file for 's24'
+
+        if (idsid == 'bmup5b0s24r0000'): job.fMaxInputFilesPerSegment =  10
+        if (idsid == 'bmup5b0s25r0000'): job.fMaxInputFilesPerSegment = 100
+
+        job.fNEventsPerSegment       = 50000000                       
+        job.fResample                = 'no'                 # yes/no
+        job.fRequestedTime           = '3h'
+        job.fIfdh                    = 'ifdh'               # ifdh/xrootd
+
+        ostream                      = job.input_dataset().output_stream();
+        odsid                        = self.fFamilyID+s.name()+ostream+'r0000';
+
+        job.fOutputStream            = [ 'InitStntuple'    ]
+        job.fOutputDsID              = [ odsid             ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'stn'             ]
 #------------------------------------------------------------------------------
 # stage 3 : s3:digi_trig : InputDsID is 'bmup2b0s24r0000' (dts from decays in flight)
 #           digitization job has only one output stream
@@ -149,7 +199,6 @@ class Project(ProjectBase):
 # s4:reco_kk : reconstruction job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s4');
-
         job                          = s.new_job('reco_kk',idsid);
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
@@ -176,7 +225,7 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  20                    # based on bmup0b0, expect < 2GB
+        job.fMaxInputFilesPerSegment =  10                    # reco_kk did x5
         job.fNEventsPerSegment       =  10000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '5h'   
@@ -184,8 +233,7 @@ class Project(ProjectBase):
         job.fMaxMemory               = '3000MB'
 
         output_stream                = job.input_dataset().output_stream()
-
-        odsid                        = self.fFamilyID+'s5'+output_stream+'r0100';
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
 
         job.fOutputStream            = ['InitStntuple'    ]
         job.fOutputDsID              = [odsid             ]

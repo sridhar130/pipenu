@@ -53,8 +53,6 @@ class Project(ProjectBase):
         job                          = s.new_job('sim','bpip2b0s00r0000');
 
         job.fRunNumber               = 1210;
-        job.fBaseFcl                 = self.base_fcl(job,'sim');
-
         job.fNInputFiles             = 500                      # number of segments
                                      
         job.fMaxInputFilesPerSegment =  1
@@ -163,6 +161,7 @@ class Project(ProjectBase):
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 100000
         job.fResample                = 'yes'                             # yes/no
+        job.fResamplingModuleLabel   = 'TargetStopResampler'
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
@@ -183,11 +182,12 @@ class Project(ProjectBase):
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 100000
         job.fResample                = 'yes'                             # yes/no
+        job.fResamplingModuleLabel   = 'TargetStopResampler'
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
         ostream                      = job.input_dataset().output_stream();
-        odsid                        = self.fFamilyID+s.name()+ostream+'r0000';
+        odsid                        = job.family_id()+s.name()+ostream+'r0000';
 
         job.fOutputStream            = [ 'PrimaryOutput'   ]
         job.fOutputDsID              = [ odsid             ]
@@ -207,7 +207,7 @@ class Project(ProjectBase):
         job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
 
         stream                       = job.input_dataset().output_stream();
-        odsid                        = self.fFamilyID+s.name()+stream+'r0000';
+        odsid                        = job.family_id()+s.name()+stream+'r0000';
 
         job.fOutputStream            = [ 'InitStntuple'    ]
         job.fOutputDsID              = [ odsid             ]
@@ -231,8 +231,7 @@ class Project(ProjectBase):
         job.fMaxMemory               = '3000MB'
 
         output_stream                = job.input_dataset().output_stream()
-
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
+        odsid                        = job.family_id()+s.name()+output_stream+'r0000';
 
         job.fOutputStream            = ['defaultOutput'   ]
         job.fOutputDsID              = [odsid             ]
@@ -254,7 +253,7 @@ class Project(ProjectBase):
         job.fMaxMemory               = '3000MB'
 
         ostream                      = job.input_dataset().output_stream()
-        odsid                        = self.fFamilyID+s.name()+ostream+'r0100';
+        odsid                        = job.family_id()+s.name()+ostream+'r0100';
 
         job.fOutputStream            = ['defaultOutput'   ]
         job.fOutputDsID              = [odsid             ]

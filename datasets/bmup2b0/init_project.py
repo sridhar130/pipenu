@@ -147,7 +147,6 @@ class Project(ProjectBase):
 # s4:reco_kk : reconstruction job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s4');
-
         job                          = s.new_job('reco_kk',idsid);
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
@@ -174,7 +173,7 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  20                    # based on bmup0b0, expect < 2GB
+        job.fMaxInputFilesPerSegment =  10                    # based on bmup0b0, expect < 2GB (s4 does x2)
         job.fNEventsPerSegment       =  10000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '5h'   

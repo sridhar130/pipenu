@@ -176,15 +176,15 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  20                    # based on bmup0b0, expect < 2GB
+        job.fMaxInputFilesPerSegment =  10                    # s4_reco_kk used x2
         job.fNEventsPerSegment       =  10000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '5h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        output_stream                = self.fInputDataset.output_stream()
-        odsid                        = self.fFamilyID+'s5'+output_stream+'r0100';
+        output_stream                = job.input_dataset().output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
 
         job.fOutputStream            = ['InitStntuple'    ]
         job.fOutputDsID              = [odsid             ]

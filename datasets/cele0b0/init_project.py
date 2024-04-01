@@ -39,7 +39,7 @@ class Project(ProjectBase):
         job.fNInputFiles             = 1                                # number of segments 
 
         job.fMaxInputFilesPerSegment = 1
-        job.fNEventsPerSegment       = 100000
+        job.fNEventsPerSegment       = 1000
         job.fResample                = 'yes'                             # yes/no
         job.fResamplingModuleLabel   = 'TargetStopResampler'
         job.fRunNumber               = 1210
@@ -88,6 +88,48 @@ class Project(ProjectBase):
 
         output_stream                = self.fInputDataset.output_stream()
         odsid                        = self.fFamilyID+'s4'+output_stream+'r0000';
+
+        job.fOutputStream            = ['defaultOutput'                ]
+        job.fOutputDsID              = [odsid                          ]
+        job.fOutputFnPattern         = ['dig.mu2e.'+job.fOutputDsID[0] ]
+        job.fOutputFormat            = ['art'                          ]
+#------------------------------------------------------------------------------
+# s4:digi_trig_early_000 : r0001
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('digi_trig_early_000',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  20000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+        odsid                        = self.fFamilyID+'s4'+output_stream+'r0001';
+
+        job.fOutputStream            = ['defaultOutput'                ]
+        job.fOutputDsID              = [odsid                          ]
+        job.fOutputFnPattern         = ['dig.mu2e.'+job.fOutputDsID[0] ]
+        job.fOutputFormat            = ['art'                          ]
+#------------------------------------------------------------------------------
+# s4:digi_trig_early_200 : r0002
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('digi_trig_early_200',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  50
+        job.fNEventsPerSegment       =  20000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = self.fInputDataset.output_stream()
+        odsid                        = self.fFamilyID+'s4'+output_stream+'r0002';
 
         job.fOutputStream            = ['defaultOutput'                ]
         job.fOutputDsID              = [odsid                          ]

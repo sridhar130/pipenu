@@ -91,9 +91,9 @@ class Project(ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        odsid21                      = self.fFamilyID+'s21'+'r0000';
-        odsid22                      = self.fFamilyID+'s22'+'r0000';
-        odsid23                      = self.fFamilyID+'s23'+'r0000';
+        odsid21                      = self.fFamilyID+s.name()+'1'+'r0000';
+        odsid22                      = self.fFamilyID+s.name()+'2'+'r0000';
+        odsid23                      = self.fFamilyID+s.name()+'3'+'r0000';
 
         job.fOutputStream            = ['TargetStopOutput'            , 'ootStopOutput'               , 'IPAStopOutput'               ]
         job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
@@ -148,7 +148,6 @@ class Project(ProjectBase):
 # s4:reco_kk : reconstruction job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s4');
-
         job                          = s.new_job('reco_kk',idsid);
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
@@ -175,7 +174,7 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  20                    # based on bmup0b0, expect < 2GB
+        job.fMaxInputFilesPerSegment =  10                    # reco_kk does x5, expect < 2GBytes files
         job.fNEventsPerSegment       =  10000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '5h'   
@@ -183,8 +182,7 @@ class Project(ProjectBase):
         job.fMaxMemory               = '3000MB'
 
         output_stream                = job.input_dataset().output_stream()
-
-        odsid                        = self.fFamilyID+'s5'+output_stream+'r0100';
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
 
         job.fOutputStream            = ['InitStntuple'    ]
         job.fOutputDsID              = [odsid             ]
