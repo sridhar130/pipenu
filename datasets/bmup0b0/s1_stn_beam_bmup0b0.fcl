@@ -23,21 +23,21 @@ physics : {
 #------------------------------------------------------------------------------
 # disable everything, enable StepPointMC's, VDET block is just yet another StepPointMC block
 #------------------------------------------------------------------------------
-	    makeClusters     : 0
-	    makeCrvClusters  : 0  # default: 1
-	    makePid          : 0
-	    makeSimp         : 1
-	    makeStepPointMC  : 1
-	    makeTracks       : 0
-	    makeTrigger      : 0
+	    makeClusters       : 0
+	    makeCrvClusters    : 0  # default: 1
+	    makePid            : 0
+	    makeSimp           : 1
+	    makeStepPointMC    : 1
+	    makeTracks         : 0
+	    makeTrigger        : 0
 
-	    simpCollTag      : "muonBeamFilter"
-            minSimpMomentum  : -1   ## store all particles
-            primaryParticleTag : "" ## no primaries
+	    simpCollTag        : "BeamFilter"
+            minSimpMomentum    : -1   ## store all particles
+            primaryParticleTag : ""   ## no primaries
 
-	    spmcBlockName    : ["SpmcBlock"            , "VDetBlock"                  ]
-	    spmcCollTag      : ["BeamFilter:mubeam"    , "BeamFilter:virtualdetector" ]
-	    statusG4Tag      : [ "g4run"               , "g4run"                      ]
+	    spmcBlockName      : ["VDetBlock"                  ]
+	    spmcCollTag        : ["BeamFilter:virtualdetector" ]
+	    statusG4Tag        : ["g4run"                      ]
 	}
     }
 
@@ -48,12 +48,10 @@ physics : {
     end_paths     : [ e1, out ]
 }
 
+physics.analyzers.InitStntuple.histFileName : "nts.user.pipenu.bmup0b0s11r0000.000000_00000000.stn"
 #------------------------------------------------------------------------------
 # uncomment the next 2 lines if you want the DST file to be written out
 #-----------------------------------------------------------------------------
 # physics.out                               : [ detectorOutput ]
 # outputs.detectorOutput.SelectEvents       : [ path_gen_digi_reco_stn_dem_dmm ]
-
-services.TFileService.fileName              : "nts.user.pipenu.pbar0s11b0.000000_00000000.hist"
-physics.analyzers.InitStntuple.histFileName : "nts.user.pipenu.pbar0s11b0.000000_00000000.stn"
-outputs.detectorOutput.fileName             : "sim.user.pipenu.pbar0sq1b0.000000_00000000.art"
+# outputs.detectorOutput.fileName             : "sim.user.pipenu.pbar0sq1b0.000000_00000000.art"

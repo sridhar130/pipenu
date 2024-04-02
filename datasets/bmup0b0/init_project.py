@@ -65,9 +65,10 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = ['sim.mu2e.'+odsid1 ] ## , 'sim.mu2e.'+odsid2 ]
         job.fOutputFormat            = ['art'              ] ## , 'art'              ]
 #------------------------------------------------------------------------------
-# init s1 stntuple
+# s1:stn job. The beam and non-beam output strams have different collection names,
+#             thus different FCLs
 #------------------------------------------------------------------------------  
-        job                          = s.new_job('beam_stn','bmup0b0s11r0000');
+        job                          = s.new_job('stn_beam','bmup0b0s11r0000');
 
         job.fNInputFiles             = 1                                # number of segments    
 
@@ -78,10 +79,12 @@ class Project(ProjectBase):
         job.fRequestedTime           = '2h'
         job.fIfdh                    = 'xrootd'                           # ifdh/xrootd
 
-        job.fOutputStream            = [ 'InitStntuple'                  ]
-        job.fOutputDsID              = [ odsid1                          ]
-        job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
-        job.fOutputFormat            = [ 'stn'                           ]
+        odsid                        = job.family_id()+s.name()+'1'+'r0000';
+
+        job.fOutputStream            = [ 'InitStntuple'    ]
+        job.fOutputDsID              = [ odsid1            ]
+        job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'stn'             ]
 #------------------------------------------------------------------------------
 # init stage 2. a Stage can have one or several jobs associated with it
 #------------------------------------------------------------------------------        
@@ -188,9 +191,9 @@ class Project(ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        output_stream                = self.fInputDataset.output_stream()
+        output_stream                = job.input_dataset().output_stream()
 
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
+        odsid                        = job.family_id()+s.name()+output_stream+'r0000';
 
         job.fOutputStream            = ['defaultOutput'                ]
         job.fOutputDsID              = [odsid                          ]
