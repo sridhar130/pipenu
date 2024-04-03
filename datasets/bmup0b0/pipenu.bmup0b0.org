@@ -7,30 +7,30 @@ f# -*- mode:org -*-
  - directory       : file:./
  - configuration   : [[file:./init_project.py][init_project.py]]
  - submitted jobs  : file:../AAA_SUBMITTED_JOBS
- - grid input      : file:/pnfs/mu2e/resilient/users/murat/
- - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup0b0s00r0000.s1_sim/outstage
- - output_location : file:/exp/mu2e/data/projects/pipenu/
+ - grid input      : file:/exp/mu2e/data/users/murat/
+ - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow
+ - output_location : file:/exp/mu2e/data/projects/pipenu/log
  - catalogs        : file:./catalog
  - summary         : 
  - fcl             : 
-# ----------------------------------------------------------------------------------------------------
+* ----------------------------------------------------------------------------------------------------
 
-|--------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+-----------+--------+--------+-------------------------------|
-| job          | input dsid      |  Nevents | Resampling | Nfiles | Nfiles | Njobs | output_dsid     | Nfiles |   Nevents |    Nev | file   | comments                      |
-|              |                 |          |     factor |        |  / job |       |                 |        |           |  /file | size   |                               |
-|--------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+-----------+--------+--------+-------------------------------|
-| [[file:s1_sim_bmup0b0.fcl][s1_sim]]       | bmup0b0s00r0000 |      5e8 |          1 |        |      1 |  1000 |                 |        |           |        |        | 1000x500,000                  |
-|              |                 |          |            |        |        |       | bmup0b0s11r0000 |   1000 |   1523359 |   1500 | 3 MB   |                               |
-|--------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+-----------+--------+--------+-------------------------------|
-|              |                 |          |            |        |        |       |                 |        |           |        |        |                               |
-| [[file:s2_resample_bmup0b0.fcl][s2_resample]]  | bmup0b0s11r0000 |  1523359 |       1000 |   1000 |      1 |  1000 | bmup0b0s24r0000 |    979 | 122046380 | 125000 | 500 MB | counted events in failed jobs |
-|--------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+-----------+--------+--------+-------------------------------|
-| s3_digi_trig | bmup0b0s24r0000 | 88360951 |          1 |    501 |      1 |   501 | bmup0b0s34r0000 |    501 |  88360951 | 176369 |        |                               |
-|--------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+-----------+--------+--------+-------------------------------|
-| s4_reco_kk   | bmup0b0s34r0000 | 88360951 |          1 |    501 |      1 |   501 | bmup0b0s44r0000 |    501 |  88360951 | 176369 | 1.8 GB |                               |
-|--------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+-----------+--------+--------+-------------------------------|
-| s4_stn_kk    | bmup0b0s44r0000 | 88360951 |          1 |    501 |     10 |    51 | bmup0b0s44r0000 |     51 |  88360951 |  1.76M | 1.7 GB |                               |
-|--------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+-----------+--------+--------+-------------------------------|
+|-----------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+--------+----------+--------+-----------------------------------------|
+| job             | input dsid      |  Nevents | Resampling | Nfiles | Nfiles | Njobs | output_dsid     | Nfiles | file   |  Nevents |    Nev | comments                                |
+|                 |                 |          |     factor |        |  / job |       |                 |        | size   |          |  /file |                                         |
+|-----------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+--------+----------+--------+-----------------------------------------|
+| [[file:s1_sim_bmup0b0.fcl][s1_sim]]          | bmup0b0s00r0000 |      5e8 |          1 |        |      1 |  1000 | bmup0b0s11r0000 |   1000 | 3 MB   |  1523359 |   1500 | 1000x500,000                            |
+|-----------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+--------+----------+--------+-----------------------------------------|
+| [[file:s2_resample_bmup0b0.fcl][s2_resample]]     | bmup0b0s11r0000 |  1523359 |       1000 |   1000 |      1 |  1000 | bmup0b0s24r0000 |    979 | 500 MB | 88360951 | 125000 | resampling in the DS                    |
+|-----------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+--------+----------+--------+-----------------------------------------|
+| s3_digi_trig    | bmup0b0s24r0000 | 88360951 |          1 |    501 |      1 |   501 | bmup0b0s34r0000 |    501 |        | 88360951 | 176369 | digitization                            |
+|-----------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+--------+----------+--------+-----------------------------------------|
+| s4_reco_kk      | bmup0b0s34r0000 | 88360951 |          1 |    501 |      1 |   501 | bmup0b0s44r0000 |    501 | 1.8 GB | 88360951 | 176369 | reconstruction                          |
+|-----------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+--------+----------+--------+-----------------------------------------|
+| s4_stn_kk       | bmup0b0s44r0000 | 88360951 |          1 |    501 |     10 |    51 | bmup0b0s44r0000 |     51 | 1.7 GB | 88360951 |        | stntuple                                |
+|-----------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+--------+----------+--------+-----------------------------------------|
+| s5_track_filter | bmup0b0s44r0000 | 88360951 |          1 |    501 |     20 |    26 | bmup0b0s54r0000 |     26 | 1.3 GB |   556538 |  22000 | events with at least one p>60 MeV track |
+|-----------------+-----------------+----------+------------+--------+--------+-------+-----------------+--------+--------+----------+--------+-----------------------------------------|
 
 * ------------------------------------------------------------------------------
 * stage output and per-stage comments
@@ -243,6 +243,179 @@ Art has completed and will exit with status 0.
   -rw-r--r--   1 murat mu2e 1829599127 Mar 22 07:35 mcs.murat.bmup0b0s44r0100.pipenu.001210_00000016.art
   -rw-r--r--   1 murat mu2e       1063 Mar 22 07:36 mcs.murat.bmup0b0s44r0100.pipenu.001210_00000016.art.json
 #+end_src 
+** file contents                                                                                              
+#+begin_src
+murat@mu2ebuild01:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s /pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup0b0s34r0000.s4_reco_kk/outstage/10116174/00/00000/mcs.murat.bmup0b0s44r0100.pipenu.001210_00000016.art
+   ************************** Mu2e Offline **************************
+     art v3_14_03    root v6_28_10a    KinKal v03_00_01
+     build  /exp/mu2e/app/users/murat/muse_002
+     build  sl7-prof-e28-p056    04/02/24 15:52:21
+   ******************************************************************
+02-Apr-2024 16:08:22 CDT  Initiating request to open input file "/pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup0b0s34r0000.s4_reco_kk/outstage/10116174/00/00000/mcs.murat.bmup0b0s44r0100.pipenu.001210_00000016.art"
+02-Apr-2024 16:08:23 CDT  Opened input file "/pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup0b0s34r0000.s4_reco_kk/outstage/10116174/00/00000/mcs.murat.bmup0b0s44r0100.pipenu.001210_00000016.art"
+Begin processing the 1st record. run: 1210 subRun: 16 event: 9 at 02-Apr-2024 16:08:26 CDT
+Found 56 data products in this Event
+Data products: 
+                                Friendly Class Name           Module Label    Instance Name  Process Name     Product ID
+                                     mu2e::StatusG4                  g4run                     S2Resample   176362224
+                            mu2e::ProtonBunchTimeMC            EWMProducer                         S4Digi   308577467
+                                   mu2e::HelixSeeds          HelixFinderDe         Positive        S5Reco   354380613
+                                 mu2e::TimeClusters            FlagBkgHits                         S5Reco   372647698
+                                 mu2e::TimeClusters        TZClusterFinder                         S5Reco   426524433
+                                 mu2e::TimeClusters      CalTimePeakFinder                         S5Reco   433942212
+                              mu2e::CaloShowerSteps        compressDigiMCs                         S4Digi   609364269
+                           mu2e::ComboHitCollection            FlagBkgHits                         S5Reco   670200675
+                                   mu2e::HelixSeeds       CalHelixFinderDe         Negative        S5Reco   934987395
+mu2e::SimParticleart::Ptrmu2e::MCTrajectorystd::map        compressDigiMCs                         S4Digi  1053189294
+                                   mu2e::HelixSeeds                  MHDeM                         S5Reco  1092177889
+                                mu2e::SimParticlemv        compressDigiMCs                         S4Digi  1105776846
+                                mu2e::CaloRecoDigis      CaloRecoDigiMaker                         S5Reco  1153742571
+                                     mu2e::KalSeeds              KKDeMHPar                         S5Reco  1201493993
+                                 mu2e::TimeClusters                  MHDeM                         S5Reco  1288493691
+                                     mu2e::CaloHits           CaloHitMaker                         S5Reco  1338955140
+                                 mu2e::StepPointMCs        compressDigiMCs  virtualdetector        S4Digi  1340925977
+                                 mu2e::StepPointMCs        compressDigiMCs   protonabsorber        S4Digi  1515516505
+                           mu2e::ComboHitCollection                 makeSH                         S5Reco  1685887312
+                                mu2e::CaloShowerROs        compressDigiMCs                         S4Digi  1719572767
+                                art::TriggerResults         TriggerResults                     S2Resample  1781825273
+                           mu2e::ComboHitCollection            FlagBkgHits        StrawHits        S5Reco  1932755004
+                     mu2e::IntensityInfoTimeCluster            FlagBkgHits                         S5Reco  1933173690
+                           mu2e::ComboHitCollection                makeSTH                         S5Reco  2020601002
+                            mu2e::EventWindowMarker            EWMProducer                         S4Digi  2030615861
+                                   mu2e::StrawDigis                 makeSD                         S4Digi  2166256422
+                              mu2e::ProtonBunchTime                 PBTFSD                         S5Reco  2328122442
+                              mu2e::ProtonBunchTime            EWMProducer                         S4Digi  2352589440
+                                   mu2e::CrvDigiMCs        compressDigiMCs                         S4Digi  2357687454
+                            mu2e::CaloProtoClusters  CaloProtoClusterMaker             main        S5Reco  2375731718
+                                   mu2e::HelixSeeds          HelixFinderDe         Negative        S5Reco  2443755132
+                                   mu2e::HelixSeeds                  MHDeP                         S5Reco  2471052729
+                                art::TriggerResults         TriggerResults                         S4Digi  2505664162
+                                 mu2e::TimeClusters             MHFinderDe                         S5Reco  2507134218
+                                 mu2e::CaloClusters       CaloClusterMaker                         S5Reco  2520950669
+                                 mu2e::GenParticles        compressDigiMCs                         S4Digi  2558710106
+                              mu2e::PrimaryParticle        compressDigiMCs                         S4Digi  2622908547
+                                 mu2e::TimeClusters                  MHDeP                         S5Reco  2661077027
+                                mu2e::StrawGasSteps        compressDigiMCs                         S4Digi  2678734716
+                     mu2e::IntensityInfoTrackerHits                 makeSH                         S5Reco  2719782748
+                                 mu2e::StepPointMCs        compressDigiMCs   stoppingtarget        S4Digi  2755426575
+                                art::TriggerResults         TriggerResults                         S5Reco  2854250439
+                                   mu2e::HelixSeeds       CalHelixFinderDe         Positive        S5Reco  3003978682
+                         mu2e::ProtonBunchIntensity                 PBISim                         S4Digi  3015531818
+                                   mu2e::HelixSeeds             MHFinderDe                         S5Reco  3131798203
+                                    mu2e::StrawHits                 makeSH                         S5Reco  3150302477
+                     mu2e::IntensityInfoTimeCluster        TZClusterFinder                         S5Reco  3176511871
+         mu2e::HelixSeedmu2e::KalSeedvoidart::Assns              KKDeMHPar                         S5Reco  3186089484
+                                    mu2e::CaloDigis          CaloDigiMaker                         S4Digi  3264368242
+                            mu2e::CaloProtoClusters  CaloProtoClusterMaker            split        S5Reco  3512963609
+                        mu2e::StrawDigiADCWaveforms                 makeSD                         S4Digi  3743567522
+                               mu2e::CaloShowerSims        compressDigiMCs                         S4Digi  3795473155
+                                     mu2e::CrvSteps        compressDigiMCs                         S4Digi  3827785517
+                                 mu2e::StrawDigiMCs        compressDigiMCs                         S4Digi  3833959220
+                                     mu2e::CrvDigis                CrvDigi                         S4Digi  4038702950
+                           mu2e::ComboHitCollection                 makePH                         S5Reco  4255055697
+
+Found 2 data products in this SubRun
+Data products: 
+       Friendly Class Name  Module Label  Instance Name  Process Name     Product ID
+mu2e::ProtonBunchIntensity        PBISim  MeanIntensity        S4Digi  2388004991
+       mu2e::GenEventCount    genCounter                   S2Resample  3960419778
+
+Found 0 data products in this Run
+02-Apr-2024 16:08:27 CDT  Closed input file "/pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup0b0s34r0000.s4_reco_kk/outstage/10116174/00/00000/mcs.murat.bmup0b0s44r0100.pipenu.001210_00000016.art"
+Art has completed and will exit with status 0.
+#+end_src
+** product sizes                                                                                              
+#+begin_src                                                                                                   
+murat@mu2ebuild01:/exp/mu2e/app/users/murat/muse_002>artProductSizes results/2024-04-02-16-15.trackFilter.mu2ebuild01.32221/mcs.mu2e.bmup0b0s61r0100.pipenu.001210_00000000.art 
+
+Size on disk for the file: results/2024-04-02-16-15.trackFilter.mu2ebuild01.32221/mcs.mu2e.bmup0b0s61r0100.pipenu.001210_00000000.art
+Size on disk (bytes):      563153998
+         Size   Size/Entry       Entries    Fraction  TTree/TKey Name
+      (bytes)      (bytes)
+    560552574      64691.6          8665       0.995  Events
+      1878159        216.8          8665       0.003  EventMetaData
+       507968           --            --       0.001  RootFileDB
+        75704          8.7          8667       0.000  FileIndex
+         5797       5797.0             1       0.000  MetaData
+         2145       2145.0             1       0.000  SubRuns
+         2086         53.5            39       0.000  Parentage
+          580        580.0             1       0.000  SubRunMetaData
+          515        515.0             1       0.000  ResultsMetaData
+          501        501.0             1       0.000  ResultsTree
+          498        498.0             1       0.000  RunMetaData
+          498        498.0             1       0.000  Runs
+----------------------------------------------------
+    563027025                                  1.000  Total
+
+Details for each TTree that occupies more than the fraction 0.05 of the size on disk.
+
+
+Details for branch: Events
+Number of entries:  8665
+        Size     Size/Entry   Fraction  Data Product Name
+     (bytes)       (bytes)
+
+   351012944        40509.3      0.626  mu2e::KalSeeds_KKDeMHPar__S5Reco.
+    24003789         2770.2      0.043  mu2e::StrawGasSteps_compressDigiMCs__S4Digi.
+    22768490         2627.6      0.041  mu2e::CaloShowerROs_compressDigiMCs__S4Digi.
+    21265937         2454.2      0.038  mu2e::ComboHitCollection_FlagBkgHits_StrawHits_S5Reco.
+    21191629         2445.7      0.038  mu2e::ComboHitCollection_makeSH__S5Reco.
+    14336470         1654.5      0.026  mu2e::StrawDigiMCs_compressDigiMCs__S4Digi.
+    12855402         1483.6      0.023  mu2e::ComboHitCollection_FlagBkgHits__S5Reco.
+    12821368         1479.7      0.023  mu2e::ComboHitCollection_makePH__S5Reco.
+     9774915         1128.1      0.017  mu2e::HelixSeeds_MHFinderDe__S5Reco.
+     9269185         1069.7      0.017  mu2e::ComboHitCollection_makeSTH__S5Reco.
+     8621357          995.0      0.015  mu2e::SimParticlemv_compressDigiMCs__S4Digi.
+     8560026          987.9      0.015  mu2e::HelixSeeds_MHDeP__S5Reco.
+     8522713          983.6      0.015  mu2e::HelixSeeds_HelixFinderDe_Negative_S5Reco.
+     6453264          744.8      0.012  mu2e::CaloShowerSteps_compressDigiMCs__S4Digi.
+     6090317          702.9      0.011  mu2e::StrawDigiADCWaveforms_makeSD__S4Digi.
+     5626947          649.4      0.010  mu2e::StrawHits_makeSH__S5Reco.
+     4558161          526.0      0.008  mu2e::StrawDigis_makeSD__S4Digi.
+     3703824          427.4      0.007  mu2e::CaloDigis_CaloDigiMaker__S4Digi.
+     1304818          150.6      0.002  mu2e::CaloRecoDigis_CaloRecoDigiMaker__S5Reco.
+     1234120          142.4      0.002  mu2e::HelixSeeds_HelixFinderDe_Positive_S5Reco.
+     1232919          142.3      0.002  mu2e::HelixSeeds_MHDeM__S5Reco.
+     1119974          129.3      0.002  mu2e::CaloShowerSims_compressDigiMCs__S4Digi.
+      796759           92.0      0.001  mu2e::HelixSeeds_CalHelixFinderDe_Negative_S5Reco.
+      604389           69.8      0.001  mu2e::CaloHits_CaloHitMaker__S5Reco.
+      353121           40.8      0.001  mu2e::TimeClusters_TZClusterFinder__S5Reco.
+      334650           38.6      0.001  mu2e::TimeClusters_MHFinderDe__S5Reco.
+      334114           38.6      0.001  mu2e::CaloClusters_CaloClusterMaker__S5Reco.
+      285072           32.9      0.001  mu2e::TimeClusters_MHDeP__S5Reco.
+      267321           30.9      0.000  mu2e::GenParticles_compressDigiMCs__S4Digi.
+      208012           24.0      0.000  mu2e::CaloProtoClusters_CaloProtoClusterMaker_main_S5Reco.
+      118736           13.7      0.000  mu2e::CaloProtoClusters_CaloProtoClusterMaker_split_S5Reco.
+       99388           11.5      0.000  mu2e::StatusG4_g4run__S2Resample.
+       81393            9.4      0.000  mu2e::TimeClusters_MHDeM__S5Reco.
+       61834            7.1      0.000  EventAuxiliary
+       59607            6.9      0.000  mu2e::ProtonBunchTime_EWMProducer__S4Digi.
+       49239            5.7      0.000  mu2e::TimeClusters_CalTimePeakFinder__S5Reco.
+       43793            5.1      0.000  mu2e::HelixSeedmu2e::KalSeedvoidart::Assns_KKDeMHPar__S5Reco.
+       42927            5.0      0.000  mu2e::HelixSeeds_CalHelixFinderDe_Positive_S5Reco.
+       40974            4.7      0.000  mu2e::PrimaryParticle_compressDigiMCs__S4Digi.
+       35243            4.1      0.000  mu2e::IntensityInfoTrackerHits_makeSH__S5Reco.
+       28507            3.3      0.000  mu2e::ProtonBunchTimeMC_EWMProducer__S4Digi.
+       27793            3.2      0.000  art::TriggerResults_TriggerResults__S2Resample.
+       27577            3.2      0.000  art::TriggerResults_TriggerResults__S5Reco.
+       27571            3.2      0.000  art::TriggerResults_TriggerResults__emoe.
+       27550            3.2      0.000  art::TriggerResults_TriggerResults__S4Digi.
+       26543            3.1      0.000  mu2e::ProtonBunchTime_PBTFSD__S5Reco.
+       26458            3.1      0.000  mu2e::CrvDigiMCs_compressDigiMCs__S4Digi.
+       25561            2.9      0.000  mu2e::EventWindowMarker_EWMProducer__S4Digi.
+       22285            2.6      0.000  mu2e::ProtonBunchIntensity_PBISim__S4Digi.
+       20778            2.4      0.000  mu2e::CrvDigis_CrvDigi__S4Digi.
+       20353            2.3      0.000  mu2e::IntensityInfoTimeCluster_TZClusterFinder__S5Reco.
+       20253            2.3      0.000  mu2e::IntensityInfoTimeCluster_FlagBkgHits__S5Reco.
+       19269            2.2      0.000  mu2e::SimParticleart::Ptrmu2e::MCTrajectorystd::map_compressDigiMCs__S4Digi.
+       18864            2.2      0.000  mu2e::StepPointMCs_compressDigiMCs_virtualdetector_S4Digi.
+       18822            2.2      0.000  mu2e::StepPointMCs_compressDigiMCs_stoppingtarget_S4Digi.
+       18821            2.2      0.000  mu2e::StepPointMCs_compressDigiMCs_protonabsorber_S4Digi.
+       18709            2.2      0.000  mu2e::CrvSteps_compressDigiMCs__S4Digi.
+       18513            2.1      0.000  mu2e::TimeClusters_FlagBkgHits__S5Reco.
+--------------------------------------
+   560559368        64692.4      1.000  Total
+#+end_src
 * ---------------------------------------------------------------------------------------------------------------
 * performance testing (prof build)                                                                            
 ** stage 1 (up to DS)                                                                                         
@@ -276,7 +449,7 @@ end_path:ootStopOutput:RootOutput(write)                         1.018e-06    0.
 targetStopPath:compressPVTargetStops:CompressPhysicalVolumes     5.676e-06    8.3695e-06    2.4434e-05     7.927e-06    2.13816e-06      296    
 ==================================================================================================================================================
 
-* test no DS field option  N(POT)=20000             
+* test no DS field option  N(POT)=20000                                                                       
 ** stopped muons no DS    field : 25 stopped muons                                                            
 TrigReport ---------- Module summary ------------
 TrigReport    Visited        Run     Passed     Failed      Error Name

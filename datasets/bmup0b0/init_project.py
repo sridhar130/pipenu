@@ -246,5 +246,28 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = ['nts.mu2e.'+odsid ]
         job.fOutputFormat            = ['stn'             ]
 #------------------------------------------------------------------------------
+# s5:track_filter : strip events with at least one track above 60 MeV/c
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s5');
+
+        job                          = s.new_job('track_filter',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  20
+        job.fNEventsPerSegment       =  100000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '10h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = job.input_dataset().output_stream()
+        odsid                        = job.family_id()+s.name()+output_stream+'r0100';
+
+        job.fOutputStream            = ['defaultOutput'   ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['mcs.mu2e.'+odsid ]
+        job.fOutputFormat            = ['art'             ]
+#------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------
