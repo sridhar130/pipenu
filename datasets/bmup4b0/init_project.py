@@ -77,7 +77,7 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 #------------------------------------------------------------------------------
-# init stage 2. a Stage can have one or several jobs associated with it
+# s2:sim not used so far
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
         job                          = s.new_job('sim','bmup4b0s11r0000');
@@ -99,6 +99,28 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid21                       , odsid22                       , odsid23                       ]
         job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0], 'sim.mu2e.'+job.fOutputDsID[1], 'sim.mu2e.'+job.fOutputDsID[2]]
         job.fOutputFormat            = ['art'                         , 'art'                         , 'art'                         ]
+#------------------------------------------------------------------------------
+# s2:step : step over the degrader to reduce the number of events 
+#           output dsid=family_id+'s26r0000'
+#------------------------------------------------------------------------------        
+        s                            = self.new_stage('s2');
+        job                          = s.new_job('step',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  20000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '3h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        odsid                        = job.family_id()+s.name()+'6'+'r0000';
+
+        job.fOutputStream            = ['BeamOutput'     ]
+        job.fOutputDsID              = [odsid            ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+odsid]
+        job.fOutputFormat            = ['art'            ]
 #------------------------------------------------------------------------------
 # s2:resample
 #------------------------------------------------------------------------------        

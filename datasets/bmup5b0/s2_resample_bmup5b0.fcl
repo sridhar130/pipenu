@@ -23,11 +23,10 @@ services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
 #------------------------------------------------------------------------------
 # 2. inputs and outputs
 #------------------------------------------------------------------------------
-source : { module_type : EmptyEvent }
+source : { module_type: EmptyEvent firstRun: 1210 firstSubRun: 0 }
 
 outputs : {
-    s24 : {
-        module_type: RootOutput
+    s24 : { module_type: RootOutput
         outputCommands:   [ "drop *_*_*_*", 
                             @sequence::Pileup.DtsKeptProducts ,
                             "keep mu2e::PrimaryParticle_*_*_*",

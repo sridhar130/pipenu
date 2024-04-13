@@ -1,0 +1,105 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# step through the degrader
+#------------------------------------------------------------------------------
+#include "Offline/fcl/standardServices.fcl"
+#include "Production/JobConfig/common/prolog.fcl"
+#include "pipenu/fcl/pileup/prolog.fcl"
+
+#include "pipenu/common/AfterDegraderPlane.fcl"
+
+process_name: S2Step
+
+#------------------------------------------------------------------------------
+services                            : @local::Services.Sim
+services.SeedService.baseSeed       :  8
+services.GeometryService.inputFile  : "pipenu/datasets/bmup5b0/geom_pipenu_bmup5b0.txt"
+services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
+
+#------------------------------------------------------------------------------
+source : { module_type : RootInput }
+
+#------------------------------------------------------------------------------
+physics: {
+  producers : {
+      @table::Common.producers
+      @table::Pileup.producers
+
+      compressPVBeam    : {
+         module_type    : CompressPhysicalVolumes
+         volumesInput   : "g4run"
+         hitInputs      : []
+         particleInputs : [ "BeamFilter" ]
+      }
+  }
+  filters : {
+      @table::Common.filters
+      @table::Pileup.filters
+
+      BeamFilter: {
+          module_type    : FilterG4Out
+          mainHitInputs  : [ "g4run:Beam"            ]
+          extraHitInputs : [ "g4run:virtualdetector" ]
+          vetoDaughters  : []
+      }
+  }
+  analyzers : {
+    @table::Common.analyzers
+  }
+  # setup paths
+  BeamPath      : [ @sequence::Common.g4Sequence, BeamFilter, compressPVBeam]
+  trigger_paths : [ BeamPath   ]
+
+  outPath       : [ BeamOutput ]
+
+  end_paths     : [ outPath    ]
+}
+
+kinematic_cuts : {
+    type : intersection
+    pars : [ { type: kineticEnergy cut: 100.0 },
+             { type: pdgId pars: [ 11, -11, 22, 2112 , 2212] } ]
+}
+
+outputs: {
+    BeamOutput : {
+        module_type: RootOutput
+        outputCommands:   [ "drop *_*_*_*",
+                            @sequence::Pileup.SimKeptProducts,
+                            "keep *_BeamFilter_*_S2Step",
+                            "keep *_compressPVBeam_*_*"
+                           ]
+        SelectEvents: [ BeamPath ]
+    }
+}
+
+# Point Mu2eG4 to the pre-simulated data
+physics.producers.g4run.inputs: {
+    primaryType                 : "StepPoints"
+    primaryTag                  : "BeamFilter:Beam"
+    inputMCTrajectories         : ""
+    # simStageOverride            : 0 # 2
+    inputPhysVolumeMultiInfo    : "compressPVBeam"
+#     updateEventLevelVolumeInfos : {
+# 	input                   : "compressPVBeam"
+#  	# input                   : ""
+# 	outInstance             : "eventlevel"
+#     }
+}
+# copy over VD hits
+physics.producers.g4run.SDConfig.preSimulatedHits:  ["BeamFilter:virtualdetector"]
+
+#include "Production/JobConfig/common/epilog.fcl"
+                                                    # this one overrides g4run.Mu2eG4CommonCut, 
+                                                    # so my redefinition should go after it
+#include "Production/JobConfig/pileup/epilog.fcl"
+
+physics.producers.g4run.Mu2eG4CommonCut : {
+    type : union
+    pars : [
+            @local::kinematic_cuts, 
+	    @local::AfterDegraderPlane         ## defines Beam
+	   ]
+}
+#------------------------------------------------------------------------------
+outputs.BeamOutput.fileName   : "sim.mu2e.bmup5b0s26r0000.pipenu.001210_00000000.art"

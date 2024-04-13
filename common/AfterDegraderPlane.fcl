@@ -1,0 +1,31 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# stop tracing after degrader
+#------------------------------------------------------------------------------
+// AfterDegraderPlane: {
+//    type: intersection
+//    pars: [
+//                                        # plane after degrader
+//       { type: plane normal: [  0, 0, -1 ] point : [ -3904, 0, 4300 ] },
+// 
+//       // This union should direct the output of the above cut into an exclusive streams
+//       { type: union pars:  [
+// 
+//                             {  type: intersection
+//                 pars: [
+// 		  { type: isCharged }
+// 	       ]
+//                write: BeamS2
+//             }
+//                            ]
+//       }
+//      ]
+// }
+
+AfterDegraderPlane: {
+    type  : plane 
+    normal: [     0, 0,    1 ] 
+#    point : [ -3904, 0, 4300 ]
+    point : [ -3904, 0, 4260 ]
+    write : Beam
+}

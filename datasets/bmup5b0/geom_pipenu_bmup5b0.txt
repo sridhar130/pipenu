@@ -15,3 +15,7 @@ double degrader.rotation            = 60.0;   // 0:in the beam, -90: out of beam
 
 // double degrader.pivot.x             = -3262.5;       // -3582.5;
 // double degrader.pivot.y             = 0.;            // -556.8;
+//-----------------------------------------------------------------------------
+// print degrader position
+//-----------------------------------------------------------------------------
+int protonabsorber.verbosityLevel   = 1;
