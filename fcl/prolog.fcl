@@ -580,4 +580,10 @@ EventGenerator : { @table::EventGenerator
     }
 }
 
+PipenuTrackFilter : { module_type:PipenuTrackFilter
+    trkCollTag    : KKDeMHPar
+    nTrkMin       :  1           ## by default, require at least one track
+    pMin          : -1           ## MeV/c
+}
+
 END_PROLOG
