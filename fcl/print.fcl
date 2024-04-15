@@ -21,6 +21,8 @@ physics :{
       genParticlePrinter           : { verbose : 1              }
       caloRecoDigiPrinter          : { verbose : 1              }
       caloClusterPrinter           : { verbose : 1 eCut :  10.0 }
+      crvDigiPrinter               : { verbose : 1              }
+      crvDigiMCPrinter             : { verbose : 1              }
       crvRecoPulsePrinter          : { verbose : 1              }
       crvCoincidenceClusterPrinter : { verbose : 1              }
 #      helixSeedPrinter             : { verbose : 1              }

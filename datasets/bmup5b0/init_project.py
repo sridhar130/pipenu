@@ -17,9 +17,12 @@ class Project(ProjectBase):
         self.add_dataset(Dataset('sim.mu2e.bmup5b0s11r0000.pipenu.art','bmup5b0s11r0000','local'))
 #------------------------------------------------------------------------------
 # 3. input for s3(digitization): dts. for decays in flight
+#    s25: simulation with unconstrained proper decay time
+#    s26: step over the degrader
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('dts.mu2e.bmup5b0s24r0000.pipenu.art','bmup5b0s24r0000','local'))
         self.add_dataset(Dataset('dts.mu2e.bmup5b0s25r0000.pipenu.art','bmup5b0s25r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bmup5b0s26r0000.pipenu.art','bmup5b0s26r0000','local'))
 #------------------------------------------------------------------------------
 # s4: reconstruction and ntupling
 #------------------------------------------------------------------------------
@@ -139,7 +142,7 @@ class Project(ProjectBase):
         job.fIfdh                    = 'ifdh'                 # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        odsid                        = self.fFamilyID+s.name()+'4'+'r0000';
+        odsid                        = job.family_id()+s.name()+job.input_dataset().output_stream()+'r0000';
 
         job.fOutputStream            = [ 's24'             ]
         job.fOutputDsID              = [  odsid            ]
@@ -195,10 +198,34 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
         job.fOutputFormat            = [ 'stn'             ]
 #------------------------------------------------------------------------------
-# stage 3 : s3:digi_trig : InputDsID is 'bmup2b0s24r0000' (dts from decays in flight)
-#           digitization job has only one output stream
+# stage 3
+# s3:resample - for muon decays in flight, 's26' --> 's36' dts files
+#               2M event per job , starting from ~300 2e6/3e2 -> 7e4
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s3');
+        job                          = s.new_job('resample',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
+             
+        job.fMaxInputFilesPerSegment =  1
+        job.fNEventsPerSegment       =  2000000
+        job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
+        job.fResamplingModuleLabel   = 'beamResampler'
+        job.fRunNumber               = 1210
+        job.fRequestedTime           = '40h'   
+        job.fIfdh                    = 'ifdh'                 # ifdh/xrootd ; long job, small input files => use ifdh
+        job.fMaxMemory               = '3000MB'
+
+        odsid                        = job.family_id()+s.name()+job.input_dataset().output_stream()+'r0000';
+
+        job.fOutputStream            = [ 's24'             ]
+        job.fOutputDsID              = [  odsid            ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid ]
+        job.fOutputFormat            = [ 'art'             ]
+#------------------------------------------------------------------------------
+# s3:digi_trig : InputDsID is 'bmup2b0s24r0000' (dts from decays in flight)
+#                digitization job has only one output stream
+#------------------------------------------------------------------------------        
         job                          = s.new_job('digi_trig',idsid);
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
