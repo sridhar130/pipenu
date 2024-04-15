@@ -43,6 +43,12 @@ void init_pipenu_datasets(stn_book* Book) {
 // mu+ decays in flight, different degrader thicknesses
 // 's54' - decay in flight datasets simulated with the [0,150 ns] cutoff
 //-----------------------------------------------------------------------------
+    ds = Book->NewDataset ("pipenu.bmup0b0s24r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.bmup0b0s25r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
     ds = Book->NewDataset ("pipenu.bmup0b0s54r0100" ,"",-1,   1000000000); 
     hf = Book->NewHistFile(ds->id()            ,"","murat_pipenu_ana.0000" );
 
@@ -55,8 +61,35 @@ void init_pipenu_datasets(stn_book* Book) {
     ds = Book->NewDataset ("pipenu.bmup4b0s54r0100" ,"",-1,   1000000000); 
     hf = Book->NewHistFile(ds->id()            ,"","murat_pipenu_ana.0000" );
 
+    ds = Book->NewDataset ("pipenu.bmup5b0s24r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.bmup5b0s25r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
     ds = Book->NewDataset ("pipenu.bmup5b0s54r0100" ,"",-1,   1000000000); 
     hf = Book->NewHistFile(ds->id()            ,"","murat_pipenu_ana.0000" );
+//-----------------------------------------------------------------------------
+// mu+ decays in flight, different timing constraints
+//-----------------------------------------------------------------------------
+    ds = Book->NewDataset ("pipenu.bmup9b0s24r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.bmup9b0s25r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.bmup9b0s26r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.bmup9b0s27r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.bmup9b0s28r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.bmup9b0s29r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
   }
 }
 
