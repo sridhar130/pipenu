@@ -35,7 +35,7 @@ namespace mu2e {
 
       fhicl::Atom<art::InputTag> trkCollTag{Name("trkCollTag"), Comment("Track Collection Tag")};
       fhicl::Atom<double>        pMin      {Name("pMin"   )   , Comment("pMin, MeV/c"         )};
-      fhicl::Atom<double>        nTrkMin   {Name("ntrkMin")   , Comment("min N(trk)"          )};
+      fhicl::Atom<double>        nTrkMin   {Name("nTrkMin")   , Comment("min N(trk)"          )};
     };
 
     using Parameters = art::EDFilter::Table<Config>;

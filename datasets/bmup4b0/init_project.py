@@ -19,12 +19,18 @@ class Project(ProjectBase):
 # 3. input for s3(digitization): dts. for decays in flight
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('dts.mu2e.bmup4b0s24r0000.pipenu.art','bmup4b0s24r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.bmup4b0s26r0000.pipenu.art','bmup4b0s26r0000','local'))
 #------------------------------------------------------------------------------
 # s4: reconstruction and ntupling
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('dig.mu2e.bmup4b0s34r0000.pipenu.art','bmup4b0s34r0000','local'))
         self.add_dataset(Dataset('mcs.mu2e.bmup4b0s44r0100.pipenu.art','bmup4b0s44r0100','local'))
+#------------------------------------------------------------------------------
+# after making a s2:step
+#------------------------------------------------------------------------------
+        self.add_dataset(Dataset('sim.mu2e.bmup4b0s26r0000.pipenu.art','bmup4b0s26r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.bmup4b0s36r0000.pipenu.art','bmup4b0s36r0000','local'))
+        self.add_dataset(Dataset('dig.mu2e.bmup4b0s46r0000.pipenu.art','bmup4b0s46r0000','local'))
+        self.add_dataset(Dataset('mcs.mu2e.bmup4b0s56r0100.pipenu.art','bmup4b0s56r0100','local'))
         return
 
 #------------------------------------------------------------------------------
@@ -158,7 +164,7 @@ class Project(ProjectBase):
         job.fResample                = 'yes'                  # yes/no, for resampling, need to define the run number again
         job.fResamplingModuleLabel   = 'beamResampler'
         job.fRunNumber               = 1210
-        job.fRequestedTime           = '40h'                  # 10h min
+        job.fRequestedTime           = '50h'                  # 10h min
         job.fIfdh                    = 'ifdh'                 # ifdh/xrootd ; long job, use ifdh
         job.fMaxMemory               = '3000MB'
 
@@ -256,10 +262,52 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = ['nts.mu2e.'+odsid ]
         job.fOutputFormat            = ['stn'             ]
 #------------------------------------------------------------------------------
-# s5:track_filter : strip events with at least one track above 60 MeV/c
+# s5:reco_kk : reconstruction job has only one output stream, keep that of the input dataset
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s5');
+        job                          = s.new_job('reco_kk',idsid);
 
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  2                     # can combine by 2
+        job.fNEventsPerSegment       =  1000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '10h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = job.input_dataset().output_stream()
+        odsid                        = job.family_id()+s.name()+output_stream+'r0100';
+
+        job.fOutputStream            = ['defaultOutput'   ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['mcs.mu2e.'+odsid ]
+        job.fOutputFormat            = ['art'             ]
+#------------------------------------------------------------------------------
+# s4:stn_kk : stntupling job has only one output stream
+#             no need to redefine the stage ... N(events / input file) ~ 176000
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('stn_kk',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
+             
+        job.fMaxInputFilesPerSegment =  10                    # reco_kk does x5, expect < 2GBytes files
+        job.fNEventsPerSegment       =  10000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '5h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        output_stream                = job.input_dataset().output_stream()
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
+
+        job.fOutputStream            = ['InitStntuple'    ]
+        job.fOutputDsID              = [odsid             ]
+        job.fOutputFnPattern         = ['nts.mu2e.'+odsid ]
+        job.fOutputFormat            = ['stn'             ]
+#------------------------------------------------------------------------------
+# s5:track_filter : strip events with at least one track above 60 MeV/c
+#------------------------------------------------------------------------------        
         job                          = s.new_job('track_filter',idsid);
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
