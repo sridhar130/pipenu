@@ -291,10 +291,10 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment = 20                     # reco_kk does x5, expect < 2GBytes files
-        job.fNEventsPerSegment       = 10000000
+        job.fMaxInputFilesPerSegment = 40                     # reco_kk does x5, expect < 2GBytes files
+        job.fNEventsPerSegment       = 100000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '5h'   
+        job.fRequestedTime           = '10h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
