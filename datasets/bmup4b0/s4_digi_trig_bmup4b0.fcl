@@ -75,3 +75,4 @@ outputs.defaultOutput.fileName                   : "dig.mu2e.bmup4b0s46r0000.pip
 # everything below is appended by generate_fcl
 #------------------------------------------------------------------------------
 # physics.producers.makeSD.printLevel                  : 100
+# source.maxEvents : 1000          # debugging test submission
