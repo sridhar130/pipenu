@@ -5,6 +5,7 @@
 // when given a cut efficiency
 //
 // ======================================================================
+#include "messagefacility/MessageLogger/MessageLogger.h"
 
 #include "art/Framework/Core/EDFilter.h"
 #include "art/Framework/Principal/Event.h"
@@ -240,13 +241,20 @@ namespace mu2e {
         }
       }
 
-      KinKal::CentralHelix helx = kseg->centralHelix();
+      float d0(-1.e6);
+      try {
+        KinKal::CentralHelix helx = kseg->centralHelix();
+        d0   = helx.d0();
+      }
+      catch (...) {
+        mf::LogWarning("PipenuTrackFilter::filter") << " ERROR in " << __FILE__ << ":" << __FUNCTION__ << ":" << __LINE__ 
+                                                    << " Dave couldn\'t make a helix for event " 
+                                                    << event.run() << ":" << event.subRun() << ":" << event.event() ;
+      }
 
-
-      float p = kseg->mom();
+      float p          = kseg->mom();
       _data.tp[i].kseg = kseg;
       _data.tp[i].p    = p;
-      float d0         = helx.d0();
       _data.tp[i].d0   = d0;
 
       if (p >= _minP) {
