@@ -34,8 +34,10 @@ namespace mu2e {
       using Comment = fhicl::Comment;
 
       fhicl::Atom<art::InputTag> trkCollTag{Name("trkCollTag"), Comment("Track Collection Tag")};
-      fhicl::Atom<double>        pMin      {Name("pMin"   )   , Comment("pMin, MeV/c"         )};
-      fhicl::Atom<double>        nTrkMin   {Name("nTrkMin")   , Comment("min N(trk)"          )};
+      fhicl::Atom<float>         minP      {Name("minP"   )   , Comment("min(P), MeV/c"       )};
+      fhicl::Atom<int>           minNTrk   {Name("minNTrk")   , Comment("min N(trk)"          )};
+      fhicl::Atom<float>         minD0     {Name("minD0")     , Comment("min d0, mm"          )};
+      fhicl::Atom<double>        maxD0     {Name("maxD0")     , Comment("max d0, mm"          )};
     };
 
     using Parameters = art::EDFilter::Table<Config>;
@@ -64,6 +66,7 @@ namespace mu2e {
     struct TrackPar_t {
       const KalSegment* kseg;
       float             p;
+      float             d0;
     };
 
     struct Data_t {
@@ -89,8 +92,10 @@ namespace mu2e {
     void     fillHistograms();
 
     art::InputTag                  _trkCollTag;
-    int                            _nTrkMin;
-    float                          _pMin;
+    int                            _minNTrk;
+    float                          _minP;
+    float                          _minD0;
+    float                          _maxD0;
 
     const mu2e::KalSeedCollection* _ksColl;
     bool                           _passed;
@@ -102,8 +107,10 @@ namespace mu2e {
   PipenuTrackFilter::PipenuTrackFilter(const Parameters& conf): 
     art::EDFilter{conf}
     , _trkCollTag(conf().trkCollTag())
-    , _nTrkMin   (conf().nTrkMin()   )
-    , _pMin      (conf().pMin()      )
+    , _minNTrk   (conf().minNTrk()   )
+    , _minP      (conf().minP ()     )
+    , _minD0     (conf().minD0()     )
+    , _maxD0     (conf().maxD0()     )
     {
     }
 
@@ -233,14 +240,23 @@ namespace mu2e {
         }
       }
 
-      float p = kseg->mom();
-      _data.tp[i].p    = p;
-      _data.tp[i].kseg = kseg;
+      KinKal::CentralHelix helx = kseg->centralHelix();
 
-      if (p >= _pMin) _data.ntrk_good++;
+
+      float p = kseg->mom();
+      _data.tp[i].kseg = kseg;
+      _data.tp[i].p    = p;
+      float d0         = helx.d0();
+      _data.tp[i].d0   = d0;
+
+      if (p >= _minP) {
+        if ((d0 >= _minD0) and (d0 < _maxD0)) {
+          _data.ntrk_good++;
+        }
+      }
     }
 
-    _passed = (_data.ntrk_good >= _nTrkMin);
+    _passed = (_data.ntrk_good >= _minNTrk);
     fillHistograms();
 
     return _passed;
