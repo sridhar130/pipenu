@@ -156,4 +156,4 @@ physics.filters.DetStepFilter.MinimumPartMom            :   40.
 physics.filters.DetStepFilter.MinimumTrkSteps           :   10.
 physics.filters.DetStepFilter.MinimumCrvSteps           : 1000.
 #------------------------------------------------------------------------------
-outputs.s24.fileName   : "dts.mu2e.bmup5b0s24r0000.pipenu.001210_00000000.art"
+outputs.s24.fileName   : "dts.mu2e.bmup5b0s36r0000.pipenu.001210_00000000.art"

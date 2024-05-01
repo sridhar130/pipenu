@@ -152,17 +152,19 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
 # s3:gen_sim_tgt : pi+ --> e+ nu decays of pions stopped in the ST
 # need a different FCL because of different collection names
+# this is a resampling job, so the input stops dataset needs to be made 
+# out of as many files as needed
 #------------------------------------------------------------------------------  
         s                            = self.new_stage('s3');
         job                          = s.new_job('gen_sim_tgt',idsid);
 
-        job.fNInputFiles             = 1                                # number of segments 
+        job.fRunNumber               = 1210;
+        job.fNInputFiles             = 20                                # number of segments 
 
         job.fMaxInputFilesPerSegment = 1
-        job.fNEventsPerSegment       = 100000
+        job.fNEventsPerSegment       = 50000
         job.fResample                = 'yes'                             # yes/no
         job.fResamplingModuleLabel   = 'TargetStopResampler'
-        job.fRunNumber               = 1210;
 
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
@@ -175,16 +177,17 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
 # s3:gen_sim_deg : pi+ --> e+ nu decays of pions stopped in the degrader
 #                  those are the input and the output streams number 4
+# also a resampling job, see above
 #------------------------------------------------------------------------------  
         job                          = s.new_job('gen_sim_deg',idsid);
 
+        job.fRunNumber               = 1210;
         job.fNInputFiles             = -1                                # number of segments defined by  the input dataset    
 
         job.fMaxInputFilesPerSegment = 1
-        job.fNEventsPerSegment       = 100000
+        job.fNEventsPerSegment       = 50000
         job.fResample                = 'yes'                             # yes/no
         job.fResamplingModuleLabel   = 'TargetStopResampler'
-        job.fRunNumber               = 1210;
 
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
@@ -204,8 +207,7 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  100000
+        job.fMaxInputFilesPerSegment =  1
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '3h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
@@ -216,7 +218,7 @@ class Project(ProjectBase):
 
         job.fOutputStream            = ['defaultOutput'   ]
         job.fOutputDsID              = [odsid             ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
+        job.fOutputFnPattern         = ['dig.mu2e.'+odsid ]
         job.fOutputFormat            = ['art'             ]
 #------------------------------------------------------------------------------
 # s5:reco_kk : reconstruction job has only one output stream
@@ -226,8 +228,7 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  100000
+        job.fMaxInputFilesPerSegment =  1
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '3h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
@@ -238,7 +239,7 @@ class Project(ProjectBase):
 
         job.fOutputStream            = ['defaultOutput'   ]
         job.fOutputDsID              = [odsid             ]
-        job.fOutputFnPattern         = ['sim.mu2e.'+odsid ]
+        job.fOutputFnPattern         = ['mcs.mu2e.'+odsid ]
         job.fOutputFormat            = ['art'             ]
 #------------------------------------------------------------------------------
 # s5:stn_kk : stntupling job has only one output stream
@@ -249,7 +250,6 @@ class Project(ProjectBase):
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
         job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  100000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '3h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
