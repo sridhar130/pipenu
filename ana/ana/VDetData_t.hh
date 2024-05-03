@@ -5,7 +5,6 @@
 //  vector normal to the VD is pointed along IZLocal
 //------------------------------------------------------------------------------
 namespace pipenu {
-  //namespace pipenu {
   struct VDetData_t {
     int    fID;
     int    fIXLocal;			// orientation of the local axis to calculate Pt wrt to the field

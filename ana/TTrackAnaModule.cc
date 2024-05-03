@@ -121,6 +121,7 @@ void TTrackAnaModule::BookEventHistograms(EventHist_t* Hist, const char* Folder)
   // HBook1F(Hist->fECalOverEKin,"ec_over_ek",Form("%s: E(cal)/E(kin)",Folder), 200, 0,2,Folder);
 }
 
+
 //-----------------------------------------------------------------------------
 void TTrackAnaModule::BookGenpHistograms(GenpHist_t* Hist, const char* Folder) {
 //   char name [200];
@@ -135,8 +136,8 @@ void TTrackAnaModule::BookGenpHistograms(GenpHist_t* Hist, const char* Folder) {
   HBook1F(Hist->fR0     ,"r"       ,Form("%s: R0"           ,Folder), 100,     0,  100,Folder);
   HBook1F(Hist->fCosTh  ,"cos_th"  ,Form("%s: Cos(Theta)"   ,Folder), 200,   -1.,   1.,Folder);
 }
-
 //-----------------------------------------------------------------------------
+
 void TTrackAnaModule::BookTrackHistograms(TrackHist_t* Hist, const char* Folder) {
 //   char name [200];
 //   char title[200];
@@ -145,6 +146,7 @@ void TTrackAnaModule::BookTrackHistograms(TrackHist_t* Hist, const char* Folder)
   HBook1F(Hist->fP[1]       ,"p_1"      ,Form("%s: Track P(total)[1]" ,Folder), 100, 104.5,105.5,Folder);
   HBook1F(Hist->fP[2]       ,"p_2"      ,Form("%s: Track P(total)[1]" ,Folder),1000,   0  ,500. ,Folder);
   HBook1F(Hist->fP0         ,"p0"       ,Form("%s: Track P(Z0)"       ,Folder),1000,   0  ,500. ,Folder);
+  //  HBook1F(Hist->fP0_cut         ,"p_cut"       ,Form("%s: Track P(Z0) Momentum cut"       ,Folder),20, 67.5 ,70. ,Folder);
   HBook1F(Hist->fP2         ,"p2"       ,Form("%s: Track P(z=-1540)"  ,Folder),1000,   0  ,500. ,Folder);
   HBook1D(Hist->fPDio       ,"pdio"     ,Form("%s: Track P(DIO WT)"   ,Folder), 400,  90  ,110. ,Folder);
   Hist->fPDio->Sumw2(kTRUE);
@@ -171,6 +173,7 @@ void TTrackAnaModule::BookTrackHistograms(TrackHist_t* Hist, const char* Folder)
   HBook1F(Hist->fFitCons[1] ,"fcon1"    ,Form("%s: track fit cons [1]",Folder), 1000, 0,   0.1,Folder);
   HBook1F(Hist->fD0         ,"d0"       ,Form("%s: track D0      "    ,Folder), 200,-200, 200,Folder);
   HBook1F(Hist->fZ0         ,"z0"       ,Form("%s: track Z0      "    ,Folder), 200,-2000,2000,Folder);
+  
   HBook1F(Hist->fTanDip     ,"tdip"     ,Form("%s: track tan(dip)"    ,Folder), 200, 0.0 ,2.0,Folder);
   HBook1F(Hist->fResid      ,"resid"    ,Form("%s: hit residuals"     ,Folder), 500,-0.5 ,0.5,Folder);
   HBook1F(Hist->fAlgMask    ,"alg"      ,Form("%s: algorithm mask"    ,Folder),  10,  0, 10,Folder);
@@ -236,6 +239,7 @@ void TTrackAnaModule::BookTrackHistograms(TrackHist_t* Hist, const char* Folder)
 
   HBook1F(Hist->fFrE1   ,"fre1"   ,Form("%s: E1/Etot"       ,Folder),200, 0,  1,Folder);
   HBook1F(Hist->fFrE2   ,"fre2"   ,Form("%s: (E1+E2)/Etot"  ,Folder),200, 0,  1,Folder);
+HBook2F(Hist->ft0Vsp0   ,"trk t0_vs_p0",Form("%s: Track t0 Vs p0" ,Folder),  200,   0. ,1000.,200,0.,100.,Folder);
 }
 
 //-----------------------------------------------------------------------------
@@ -256,9 +260,8 @@ void TTrackAnaModule::BookSimpHistograms(SimpHist_t* Hist, const char* Folder) {
   HBook2F(Hist->fTimeVsPMom   ,"PMom_vs_Time",Form("%s: time vs pmom"   ,Folder),  100,   0 ,1000,50, 0., 100.,Folder);
   HBook2F(Hist->fTimeVsPEndz   ,"PEndz_vs_Time",Form("%s: time vs pendz"   ,Folder),  100,   0 ,1000,50, 5400., 6400.,Folder);
   HBook2F(Hist->fTimeVsPTime   ,"PTime_vs_Time",Form("%s: time vs ptime"   ,Folder),  100, 0 ,1000,100,0.,1000.,Folder);
+
 }
-
-
 //_____________________________________________________________________________
 void TTrackAnaModule::BookHistograms() {
 
@@ -290,6 +293,7 @@ void TTrackAnaModule::BookHistograms() {
       BookEventHistograms(fHist.fEvent[i],Form("Hist/%s",folder_name));
     }
   }
+
 //-----------------------------------------------------------------------------
 // book simp histograms
 //-----------------------------------------------------------------------------
@@ -319,6 +323,8 @@ void TTrackAnaModule::BookHistograms() {
   book_track_histset[  3] = 1;		// tracks  tdip > 0.8 hits
   book_track_histset[  4] = 1;		// tracks  Na > 30 tdip > 0.8 hits
   book_track_histset[  5] = 1;		// tracks  t0> 500 ns
+  book_track_histset[  50] = 1;		// tracks  cut c 
+  book_track_histset[  51] = 1;		// tracks  cut c t0> 300 ns
 
   for (int i=0; i<kNTrackHistSets; i++) {
     if (book_track_histset[i] != 0) {
@@ -438,7 +444,6 @@ void TTrackAnaModule::BookHistograms() {
   Hist->fP->Fill(p);
   Hist->fCosTh->Fill(cos_th);
 }
-
 //-----------------------------------------------------------------------------
   void TTrackAnaModule::FillSimpHistograms(SimpHist_t* Hist, TSimParticle* Simp,double Weight) {
 
@@ -514,6 +519,15 @@ void TTrackAnaModule::BookHistograms() {
   double          r;
   int             itrk;
   TrackPar_t*     tp;
+//-----------------------------------------------------------------------------
+////Normalization-- To Do: remove
+//-----------------------------------------------------------------------------
+  double NPOT = 2.5e8;
+  double S3Gen = 100000.;
+  double NStops =40346.;
+  double fBR_pienu = 1.23e-4;
+  double NormF = (NStops*fBR_pienu)/(NPOT*S3Gen);
+
   //int ncc = GetHeaderBlock()->NComboHits();
   //int evt = GetHeaderBlock()->EventNumber();
 					// pointer to local track parameters
@@ -527,7 +541,8 @@ void TTrackAnaModule::BookHistograms() {
   Hist->fP[0]->Fill (Track->fP,Weight);
   Hist->fP[1]->Fill (Track->fP,Weight);
   Hist->fP[2]->Fill (Track->fP,Weight);
-  Hist->fP0->  Fill (Track->fP0,Weight);
+  Hist->fP0->  Fill (Track->fP0,Weight*NormF);
+  //  Hist->fP0_cut->  Fill (Track->fP0,Weight*NormF);
   Hist->fP2->  Fill (Track->fP2,Weight);
 
   Hist->fPDio->Fill(Track->fP,tp->fDioWt);
@@ -549,7 +564,7 @@ void TTrackAnaModule::BookHistograms() {
   Hist->fNDof->Fill(Track->NActive()-5.,Weight);
   Hist->fChi2Dof->Fill(Track->fChi2/(Track->NActive()-5.),Weight);
   Hist->fNActive->Fill(Track->NActive(),Weight);
-  Hist->fT0->Fill(Track->fT0,Weight);
+  Hist->fT0->Fill(Track->fT0,Weight*NormF);
   Hist->fT0Err->Fill(Track->fT0Err);
   Hist->fQ->Fill(Track->Charge(),Weight);
   Hist->fFitCons[0]->Fill(Track->fFitCons,Weight);
@@ -818,6 +833,18 @@ void TTrackAnaModule::FillHistograms() {
       if (trk->NActive() >= 30) FillTrackHistograms(fHist.fTrack[4],trk,WP);
     }
     if (trk->fT0 >= 550.)   FillTrackHistograms(fHist.fTrack[5],trk,WP);
+    // cuts similar to cut C
+    if ((trk->NActive() >= 20) & (trk->Chi2Dof() <3.0) & (trk->TanDip()>0.6) & (trk->TanDip()<1.0) & (trk->FitMomErr()<0.25) & (trk->D0()>-100.0) & (trk->D0()<100.0))
+      {
+        FillTrackHistograms(fHist.fTrack[50],trk,WP);
+      }
+    if ((trk->NActive() >= 25) & (trk->Chi2Dof() <3.0) & (trk->TanDip()>0.6) & (trk->TanDip()<1.0) & (trk->FitMomErr()<0.25) & (trk->D0()>-100.0) & (trk->D0()<100.0) & (trk->fT0 >= 300.))
+      {
+        FillTrackHistograms(fHist.fTrack[51],trk,WP);
+      }
+
+
+
   }
 //-----------------------------------------------------------------------------
 // fill GENP histograms

@@ -1,0 +1,157 @@
+# -*- mode:tcl -*-
+#------------------------------------------------------------------------------
+# starting from : Production/JobConfig/pileup/MuonBeamResampler.fcl
+# do not Re-sample muons and associated particles entering the DS, 
+# propagate them to the detectors or stopping target, and write out 
+# the corresponding flash DetectorSteps and target mustops.
+# Note the main flash stream has a time cut to avoid energy 
+# far outside the digitization window.  A prescaled but otherwise uncut stream is used to
+# record the flash peak
+#
+# incorporate OOT
+#------------------------------------------------------------------------------
+#include "Offline/fcl/standardServices.fcl"
+#include "Production/JobConfig/common/prolog.fcl"
+#include "pipenu/fcl/pileup/prolog.fcl"
+
+process_name: S2Sim
+#------------------------------------------------------------------------------
+# services: local re-deinitions
+#------------------------------------------------------------------------------
+services : @local::Services.Sim
+services.SeedService.baseSeed       :  8
+
+source : { module_type : RootInput }
+
+physics: {
+  producers : {
+    @table::Common.producers
+    @table::Pileup.producers
+  }
+  filters : {
+    @table::Common.filters
+    @table::Pileup.filters
+  }
+  analyzers : {
+    @table::Common.analyzers
+  }
+  # setup paths
+  targetStopPath : [ @sequence::Common.g4Sequence, 
+                     # TargetStopPrescaleFilter, ## P.M. not quite sure what the use case is
+                     TargetMuonFinder, TargetStopFilter, compressPVTargetStops]
+
+  degraderStopPath : [ @sequence::Common.g4Sequence, DegraderMuonFinder, DegraderStopFilter, compressPVDegraderStops]
+
+  ootStopPath    : [ @sequence::Common.g4Sequence, ootMuonFinder, ootStopFilter, compressPVOOTStops]
+  IPAStopPath    : [ @sequence::Common.g4Sequence, IPAMuonFinder, IPAStopFilter, compressPVIPAStops]
+  trigger_paths  : [ targetStopPath  , degraderStopPath, ootStopPath  , IPAStopPath   ]
+    #   outPath        : [ allOutput, TargetStopOutput, ootStopOutput, IPAStopOutput ]
+  outPath        : [ TargetStopOutput, DegraderStopOutput ] ## , ootStopOutput, IPAStopOutput ]
+  end_paths      : [ outPath ]
+}
+#------------------------------------------------------------------------------
+# configure output of interest: mu+/mu-, pi+/pi-, pbars
+#------------------------------------------------------------------------------
+outputs: {
+    allOutput : { module_type: RootOutput
+        outputCommands:   [ "keep *_*_*_*" ]
+        SelectEvents  :   []
+    }
+
+  TargetStopOutput : { module_type: RootOutput
+      outputCommands:   [ "drop *_*_*_*",
+                          @sequence::Pileup.SimKeptProducts,
+                          "keep *_TargetStopFilter_*_*",
+                          "keep *_compressPVTargetStops_*_*"
+                         ]
+      SelectEvents: [targetStopPath]
+  }
+
+  DegraderStopOutput : { module_type: RootOutput
+      outputCommands:   [ "drop *_*_*_*",
+                          @sequence::Pileup.SimKeptProducts,
+                          "keep *_DegraderStopFilter_*_*",
+#                          "keep *_compressPVTargetStops_*_*"
+                          "keep *_compressPVDegraderStops_*_*"
+                         ]
+      SelectEvents: [degraderStopPath]
+  }
+
+  IPAStopOutput : { module_type: RootOutput
+      outputCommands:   [ "drop *_*_*_*",
+                          @sequence::Pileup.SimKeptProducts,
+                          "keep *_IPAStopFilter_*_*",
+                          "keep *_compressPVIPAStops_*_*"
+                         ]
+      SelectEvents: [IPAStopPath]
+  }
+    
+    ootStopOutput : { module_type: RootOutput
+        outputCommands:   [ "drop *_*_*_*",
+                            @sequence::Pileup.SimKeptProducts,
+                            "keep *_ootStopFilter_*_*",
+                            "keep *_compressPVOOTStops_*_*"
+                           ]
+        SelectEvents: [ ootStopPath ]
+    }
+}
+
+# set prescale factors
+# physics.filters.TargetStopPrescaleFilter.nPrescale : @local::Pileup.MuminusTargetStopPrescale
+# physics.filters.EarlyPrescaleFilter.nPrescale      : @local::Pileup.EarlyMuBeamFlashPrescale
+
+# Point Mu2eG4 to the pre-simulated data
+physics.producers.g4run.inputs: {
+    primaryType                 : "StepPoints"
+    primaryTag                  : "BeamFilter:Beam"
+    inputMCTrajectories         : ""
+    # simStageOverride            : 0 # 2
+    inputPhysVolumeMultiInfo    : "compressPVBeam"
+#     updateEventLevelVolumeInfos : {
+# 	input                   : "compressPVBeam"
+#  	# input                   : ""
+# 	outInstance             : "eventlevel"
+#     }
+}
+# copy over VD hits
+physics.producers.g4run.SDConfig.preSimulatedHits:  ["BeamFilter:virtualdetector"]
+
+#include "Production/JobConfig/common/epilog.fcl"
+#include "Production/JobConfig/pileup/epilog.fcl"
+#------------------------------------------------------------------------------
+# !!!! overrides have to be placed after all includes .... 
+#------------------------------------------------------------------------------
+services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
+services.GeometryService.inputFile  : "pipenu/datasets/bpipab0/geom_pipenu_bpipab0.txt"
+#------------------------------------------------------------------------------
+# disable pion decays 
+#------------------------------------------------------------------------------
+physics.producers.g4run.physics.noDecay                 : [ 211, -211 ]
+#------------------------------------------------------------------------------
+# reconfigure StepPoint producers to avoid double-counting particles from the mustop filter deep copy
+# important : 
+# - disable useEventLevelVolumeInfo by MuonFinders
+# - use "g4run" tag of physVolInfoInput       , different from "g4run:eventlevel"
+#------------------------------------------------------------------------------
+physics.producers.IPAMuonFinder.particleTypes              : [ -211, 211]
+physics.producers.IPAMuonFinder.physVolInfoInput           : "g4run"  ## "g4run:eventlevel"
+physics.producers.IPAMuonFinder.useEventLevelVolumeInfo    : false    ## true
+# physics.producers.IPAMuonFinder.verbosityLevel           : 100
+
+physics.producers.TargetMuonFinder.particleTypes           : [ -211, 211]
+physics.producers.TargetMuonFinder.physVolInfoInput        : "g4run" ## "g4run:eventlevel"
+physics.producers.TargetMuonFinder.useEventLevelVolumeInfo : false   ## true
+# physics.producers.TargetMuonFinder.verbosityLevel          : 100
+
+physics.producers.DegraderMuonFinder.particleTypes           : [ -211, 211]
+physics.producers.DegraderMuonFinder.physVolInfoInput        : "g4run" ## "g4run:eventlevel"
+physics.producers.DegraderMuonFinder.useEventLevelVolumeInfo : false   ## true
+# physics.producers.TargetMuonFinder.verbosityLevel          : 100
+
+physics.producers.ootMuonFinder.particleTypes              : [ -211, 211]
+#------------------------------------------------------------------------------
+outputs.TargetStopOutput.fileName   : "sim.mu2e.bpipab0s21r0000.pipenu.001210_00000000.art"
+outputs.ootStopOutput.fileName      : "sim.mu2e.bpipab0s22r0000.pipenu.001210_00000000.art"
+outputs.IPAStopOutput.fileName      : "sim.mu2e.bpipab0s23r0000.pipenu.001210_00000000.art"
+outputs.DegraderStopOutput.fileName : "sim.mu2e.bpipab0s24r0000.pipenu.001210_00000000.art"
+# outputs.allOutput.fileName          : "sim.mu2e.bpipab0s2ar0000.pbar2m.001210_00000000.art"

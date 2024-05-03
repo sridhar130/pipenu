@@ -20,18 +20,17 @@
 
 #include "Stntuple/alg/TStntuple.hh"
 
-#include "Stntuple/ana/VDetData_t.hh"
-
-#include "Stntuple/ana/AnaDefs.hh"
-#include "Stntuple/ana/HistBase_t.h"
-#include "Stntuple/ana/SimPar_t.hh"
+#include "pipenu/ana/VDetData_t.hh"
+#include "pipenu/ana/AnaDefs.hh"
+#include "pipenu/ana/HistBase_t.h"
+#include "pipenu/ana/SimPar_t.hh"
 #include "cetlib_except/exception.h"
 
 namespace pipenu {
 
-  using stntuple::HistBase_t;
-  using stntuple::SimPar_t;
-  using stntuple::VDetData_t;
+  // using stntuple::HistBase_t;
+  // using stntuple::SimPar_t;
+  // using stntuple::VDetData_t;
 
 class TSpmcAnaModule: public TStnModule {
 public:

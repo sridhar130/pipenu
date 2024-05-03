@@ -1,0 +1,18 @@
+// -*- mode: c++ -*-
+//-----------------------------------------------------------------------------
+// pipenu geometry for pi+ beam
+// test with Be degrader 3.5 mm, docdb: 5195
+//-----------------------------------------------------------------------------
+#include "pipenu/common/geom_baseline.txt"
+//
+
+double ts.coll3.rotationAngle       = 180.0; // DEFAULT: 0.0
+
+string degrader.filter.materialName = "G4_Be";
+double degrader.filter.halfLength   = 1.75;
+
+bool   degrader.build               = true;  // DEFAULT: false
+double degrader.rotation            = 60.0;   // 0:in the beam, -90: out of beam (degrees)
+
+// double degrader.pivot.x             = -3262.5;       // -3582.5;
+// double degrader.pivot.y             = 0.;            // -556.8;

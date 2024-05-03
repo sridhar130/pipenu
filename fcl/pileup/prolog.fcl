@@ -14,12 +14,27 @@ Pileup : { @table::Pileup
             particleTypes    : [ 13, -13 ]             // mu- , mu+
             verbosityLevel   : 1
         }
+        DegraderMuonFinder: {
+            module_type            : "StoppedParticlesFinder"
+            particleInput          : "g4run"
+            particleTypes          : [ 13, -13 ]
+            physVolInfoInput       : "g4run:eventlevel"
+            useEventLevelVolumeInfo: true
+            stoppingMaterial       : "G4_Ti"
+            verbosityLevel         : 1
+        }
 
         compressPVOOTStops: {
             module_type    : CompressPhysicalVolumes
             volumesInput   : "g4run"
             hitInputs      : []
             particleInputs : [ "ootStopFilter" ]
+        }
+        compressPVDegraderStops: {
+            module_type: CompressPhysicalVolumes
+            volumesInput : "g4run"
+            hitInputs : []
+            particleInputs : [ "DegraderStopFilter" ]
         }
     }
 
@@ -28,6 +43,12 @@ Pileup : { @table::Pileup
             mainHitInputs  : []
             extraHitInputs : [ "g4run:virtualdetector" ]
             mainSPPtrInputs: [ "ootMuonFinder" ]
+        }
+        DegraderStopFilter: {
+            module_type: FilterG4Out
+            mainHitInputs: []
+            extraHitInputs: [ "g4run:virtualdetector" ]
+            mainSPPtrInputs: [ "DegraderMuonFinder" ]
         }
     }
 }

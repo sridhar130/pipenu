@@ -37,7 +37,7 @@
 #include "Stntuple/obj/TStnHeaderBlock.hh"
 #include "Stntuple/val/stntuple_val_functions.hh"
 //-----------------------------------------------------------------------------
-#include "Stntuple/ana/InitVirtualDetectors.hh"
+#include "pipenu/ana/ana/InitVirtualDetectors.hh"
 #include "pipenu/ana/ana/TSpmcAnaModule.hh"
 
 ClassImp(pipenu::TSpmcAnaModule)
@@ -891,6 +891,7 @@ void TSpmcAnaModule::FillSimpHistograms(HistBase_t* Hist, TSimParticle* Simp, Si
   //double tau= Step->ProperTime();
   float end_tau =  Step->ProperTime();
   float surv_prob = exp(-end_tau);
+  //std::cout<<"weight: "<<surv_prob<<std::endl;
  
   hist->fIndex   ->Fill(id              ,Weight);
   hist->fPDGCode ->Fill(Step->PDGCode() ,Weight);

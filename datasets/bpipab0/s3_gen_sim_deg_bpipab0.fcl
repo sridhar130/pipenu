@@ -1,0 +1,78 @@
+# -*- mode:tcl -*- 
+#------------------------------------------------------------------------------
+# pi+ --> enu decays of the pions stopped in the degrader
+#------------------------------------------------------------------------------
+#include "Production/JobConfig/primary/TargetStopParticle.fcl"
+
+services.SeedService.baseSeed: 8
+#------------------------------------------------------------------------------
+# geometry and the magnetic field
+#------------------------------------------------------------------------------
+services.GeometryService.inputFile  : "pipenu/datasets/bpip10b0/geom_pipenu_bpip10b0.txt"
+services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
+
+physics.producers.generate : { module_type: "EventGeneratorMu"
+    simpCollTag    : "TargetStopResampler"
+    tmin           : 1000
+    tmax           : 1700
+    verbosityLevel : 0
+    stopPdgCode    : 211                              ## stopped pi+
+    lifetime       : 26. ## 2196.98                   ## charged pion lifetime, ns
+#------------------------------------------------------------------------------
+# use particle gun to generate 139.570/2 MeV e+, take into account the radiative corrections
+# those are a universal function
+#------------------------------------------------------------------------------
+    generator  : { tool_type: "StoppedPiENuGenerator" 
+        spectrum: {
+            pdgCode            : -11                      ## e+
+            spectrumShape      : "ceLeadingLog"
+            spectrumVariable   :  "totalEnergy" ## "kineticEnergy" / "momentum" / "totalEnergy"
+            ehi                : 69.785
+            elow               : 0.
+            spectrumResolution : 0.1                # MeV
+        }
+    }
+}
+
+physics.producers.g4run.inputs  : {
+    primaryType                 : StageParticles
+    primaryTag                  : "generate"
+    inputMCTrajectories         : ""
+    inputPhysVolumeMultiInfo    : "TargetStopResampler"   ## "compressPVTargetStops" / "TargetStopResampler"
+    simStageOverride            : 2                       ## 3, if extra tracing step
+    updateEventLevelVolumeInfos : {
+ 	input                   : "TargetStopResampler:eventlevel" ## "compressPVTargetStops:eventlevel"
+ 	outInstance             : "eventlevel"
+    }
+}
+
+physics.producers.FindMCPrimary.PrimaryProcess  : "mu2ePienu"
+# physics.producers.FindMCPrimary.debugLevel      : 100
+
+physics.filters.TargetStopResampler.mu2e.MaxEventsToSkip : 0
+physics.filters.TargetStopResampler.fileNames            : [
+  "/exp/mu2e/data/projects/pipenu/datasets/bpip10b0s24r0000/sim.mu2e.bpip10b0s24r0000.pipenu.001210_00000000.art"
+]
+physics.filters.TargetStopResampler.mu2e.products.genParticleMixer.mixingMap : [[ "generate", "" ]]
+physics.filters.TargetStopResampler.mu2e.products.simParticleMixer.mixingMap : [[ "DegraderStopFilter", "" ]]
+physics.filters.TargetStopResampler.mu2e.products.stepPointMCMixer.mixingMap : [[ "DegraderStopFilter:virtualdetector", ":" ]]
+# this was a mistake, but carry it over
+physics.filters.TargetStopResampler.mu2e.products.volumeInfoMixer.srInput    : "compressPVTargetStops"
+
+physics.filters.PrimaryFilter.MinimumPartMom      : 30
+physics.filters.PrimaryFilter.MinimumSumCaloStepE : 10
+
+outputs.PrimaryOutput.fileName: "dts.user.bpip10b0s34r0000.pipenu.001210_00000000.art"
+services.TFileService.fileName: "/dev/null"
+
+source.firstRun   : 1210
+source.firstSubRun:    0
+
+# don't use simple physics list - smth wrong with QGSP_BERT
+physics.producers.g4run.physics.physicsListName:ShieldingM_EMZ  ## "QGSP_BERT"
+#------------------------------------------------------------------------------
+# Enable these commands not to have the printout for each event in the log file
+#------------------------------------------------------------------------------
+services.message.destinations.log.categories.ArtReport.reportEvery : 50
+services.message.destinations.log.categories.ArtReport.limit       : 5
+services.message.destinations.log.categories.ArtReport.timespan    : 1000
