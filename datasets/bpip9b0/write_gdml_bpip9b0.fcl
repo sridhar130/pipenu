@@ -12,7 +12,7 @@ process_name : WriteGdml
 
 services : { @table::Services.Sim }
 services.SeedService.baseSeed      : 8
-services.GeometryService.inputFile : "pipenu/datasets/bpip9b0/geom_pbar2m_bpip9b0.txt"
+services.GeometryService.inputFile : "pipenu/datasets/bpip9b0/geom_pipenu_bpip9b0.txt"
 
 source : {
   module_type : EmptyEvent
@@ -28,7 +28,7 @@ physics : {
 	g4run: { @table::Mu2eG4.producers.g4run
 	    debug  : { @table::Mu2eG4.producers.g4run.debug 
 		writeGDML    : true 
-		GDMLFileName : "mu2e_geometry_pbar2m_bpip9b0.gdml"
+		GDMLFileName : "mu2e_geometry_pipenu_bpip9b0.gdml"
 	    }
 	}
     }

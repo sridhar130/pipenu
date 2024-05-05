@@ -59,7 +59,7 @@ physics.filters.TargetStopResampler.fileNames            : [
 physics.filters.PrimaryFilter.MinimumPartMom      : 30
 physics.filters.PrimaryFilter.MinimumSumCaloStepE : 10
 
-outputs.PrimaryOutput.fileName: "FileTransfer2/bpip9b0_100k/dts.user.bpip9b0s31r0000.pipenu.001210_00000000.art"
+outputs.PrimaryOutput.fileName: "dts.user.bpip9b0s31r0000.pipenu.001210_00000000.art"
 
 source.firstRun   : 1210
 source.firstSubRun:    0
