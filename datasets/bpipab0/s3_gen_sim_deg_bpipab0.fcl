@@ -8,7 +8,7 @@ services.SeedService.baseSeed: 8
 #------------------------------------------------------------------------------
 # geometry and the magnetic field
 #------------------------------------------------------------------------------
-services.GeometryService.inputFile  : "pipenu/datasets/bpip10b0/geom_pipenu_bpip10b0.txt"
+services.GeometryService.inputFile  : "pipenu/datasets/bpip10b0/geom_pipenu_bpipab0.txt"
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
 
 physics.producers.generate : { module_type: "EventGeneratorMu"
@@ -51,7 +51,7 @@ physics.producers.FindMCPrimary.PrimaryProcess  : "mu2ePienu"
 
 physics.filters.TargetStopResampler.mu2e.MaxEventsToSkip : 0
 physics.filters.TargetStopResampler.fileNames            : [
-  "/exp/mu2e/data/projects/pipenu/datasets/bpip10b0s24r0000/sim.mu2e.bpip10b0s24r0000.pipenu.001210_00000000.art"
+  "/exp/mu2e/data/projects/pipenu/datasets/bpipab0s24r0000/sim.mu2e.bpipab0s24r0000.pipenu.001210_00000000.art"
 ]
 physics.filters.TargetStopResampler.mu2e.products.genParticleMixer.mixingMap : [[ "generate", "" ]]
 physics.filters.TargetStopResampler.mu2e.products.simParticleMixer.mixingMap : [[ "DegraderStopFilter", "" ]]
@@ -62,7 +62,7 @@ physics.filters.TargetStopResampler.mu2e.products.volumeInfoMixer.srInput    : "
 physics.filters.PrimaryFilter.MinimumPartMom      : 30
 physics.filters.PrimaryFilter.MinimumSumCaloStepE : 10
 
-outputs.PrimaryOutput.fileName: "dts.user.bpip10b0s34r0000.pipenu.001210_00000000.art"
+outputs.PrimaryOutput.fileName: "dts.user.bpipab0s34r0000.pipenu.001210_00000000.art"
 services.TFileService.fileName: "/dev/null"
 
 source.firstRun   : 1210

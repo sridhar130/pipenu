@@ -13,5 +13,5 @@ physics.outpath                            : [ muonout ]
 # geometry service is not needed, and it is not defined above.
 # an attempt to define the B-field leads to the FCL parser failure
 #------------------------------------------------------------------------------
-services.TFileService.fileName             : "nts.mu2e.bpip10b0s32r0000.pbar2m.001210_00000000.root"
-outputs.muonout.fileName                   : "sim.mu2e.bpip10b0s32r0000.pbar2m.001210_00000000.art"
+services.TFileService.fileName             : "nts.mu2e.bpipab0s32r0000.pbar2m.001210_00000000.root"
+outputs.muonout.fileName                   : "sim.mu2e.bpipab0s32r0000.pbar2m.001210_00000000.art"

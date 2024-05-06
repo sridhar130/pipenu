@@ -74,5 +74,5 @@ physics : {
 }
 
 #------------------------------------------------------------------------------
-physics.analyzers.InitStntuple.histFileName : "FileTransfer2/bpipab0_100k/nts.mu2e.bpipab0s51r0100.pipenu.001210_00000000.stn"
-outputs.defaultOutput.fileName              : "FileTransfer2/bpipab0_100k/sim.mu2e.bpipab0s51r0100.pipenu.001210_00000000.art"
+physics.analyzers.InitStntuple.histFileName : "nts.mu2e.bpipab0s51r0100.pipenu.001210_00000000.stn"
+outputs.defaultOutput.fileName              : "sim.mu2e.bpipab0s51r0100.pipenu.001210_00000000.art"
