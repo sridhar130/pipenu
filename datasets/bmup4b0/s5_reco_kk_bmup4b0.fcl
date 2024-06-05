@@ -10,8 +10,7 @@ BEGIN_PROLOG
   TRIGGER_PATHS @protect_ignore: [ p341 ]         # KK (KinKal) fits
 END_PROLOG
 
-#include "Stntuple/fcl/stntuple_external_prologs.fcl"
-#include "Stntuple/fcl/prolog.fcl"
+#include "Stntuple/fcl/stntuple_prologs.fcl"
 #include "pipenu/fcl/prolog.fcl"
 #------------------------------------------------------------------------------
 # prologs end here

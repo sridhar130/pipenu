@@ -1,8 +1,8 @@
-f# -*- mode:org -*-
+# -*- mode:org -*-
 #+startup:fold
-  *bmup5b0* : positive muon beam, produce stopped muon output file, 
-  geometry: TS3 collimator rotated by 180 deg
-  DS magnetic field 50% - think of Michel edge calibration
+  *bmup5b0* : positive muon beam, muon decays in flight in the DS
+  geometry  : TS3 collimator rotated by 180 deg, 5mm Ti degrader
+  DS magnetic field 70% 
 # ----------------------------------------------------------------------------------------------------
  - directory       : file:./
  - configuration   : [[file:./init_project.py][init_project.py]]

@@ -7,16 +7,9 @@ BEGIN_PROLOG
   TRIGGER_PATHS @protect_ignore: [ p1 ]
 END_PROLOG
 
-#include "Stntuple/fcl/stntuple_external_prologs.fcl"
-#include "Stntuple/fcl/prolog.fcl"
+#include "Stntuple/fcl/stntuple_prologs.fcl"
 #include "pipenu/fcl/prolog.fcl"
-
-#include "Stntuple/fcl/stntuple_services.fcl"
-#include "Stntuple/fcl/stntuple_inputs_outputs.fcl"
-#------------------------------------------------------------------------------
-# here come table definitions
-#------------------------------------------------------------------------------
-#include "Stntuple/fcl/stntuple_table.fcl"
+#include "Stntuple/fcl/stntuple_templates.fcl"
 
 process_name : emoe
 #------------------------------------------------------------------------------

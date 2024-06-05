@@ -1,21 +1,41 @@
-f# -*- mode:org -*-
+# -*- mode:org -*-
 #+startup:fold
-  *bmup4b0* : positive muon beam, 4mm Ti degrader
-  geometry: TS3 collimator rotated by 180 deg
+  *bmup4b0*         : positive muon beam, generate muon decays in flight in the DS
+  geometry          : TS3 collimator rotated by 180 deg, 4mm Ti degrader
   DS magnetic field : 70%
+  stage 2           : step through the degrader. Reduces the number of events by a factor of 4 and allows 
+                      to increase the resampling factor by the same amount
 # ----------------------------------------------------------------------------------------------------
  - directory       : file:./
  - configuration   : [[file:./init_project.py][init_project.py]]
  - submitted jobs  : file:../AAA_SUBMITTED_JOBS
- - grid input      : file:/pnfs/mu2e/resilient/users/murat/
  - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow/
- - output_location : file:/exp/mu2e/data/projects/pipenu/log/
+ - log files       : file:/exp/mu2e/data/projects/pipenu/log/
  - catalogs        : file:./catalog
  - summary         : 
  - fcl             : 
-# ----------------------------------------------------------------------------------------------------
+
+# dataset summary :
+
+- bmup4b0s00r0000 :
+- bmup4b0s11r0000 : muons traced down to the DS
+
+- bmup4b0s24r0000 : muon decays in the DS
+- bmup4b0s34r0000 : digitized
+- bmup4b0s44r0100 : reconstructed
+- bmup4b0s54r0100 : events with one good standard ID track p>60
+
+- bmup4b0s26r0000 : muons right after the degrader
+- bmup4b0s36r0000 : muon decays in the DS
+- bmup4b0s46r0000 : digitized
+- bmup4b0s56r0100 : reconstructed
+- bmup4b0s56r0100 : stntuple
+- bmup4b0s66s0100 : stntuple, events with one good standard ID track T0>250 ns
+
 - histogram file marking : pipenu_ana.0000 : standard tight ID
--                          pipenu_ana.0001 : tight ID d0 > -4 mm
+-                          pipenu_ana.0001 : tight ID d0 > -4 mm (instead of -5 mm)
+-                          pipenu_ana.0002 : tight ID tdip > 0.7 (instead of 0.65)
+
 # ----------------------------------------------------------------------------------------------------
 
 |-----------------+---------------------+-----------+------------+--------+--------+-------+----------+---------------------+--------+--------+-----------+---------+------------------------|
@@ -82,7 +102,6 @@ f# -*- mode:org -*-
 |                 | bmup4b0s56r0100.008 |           |            |   1000 |     40 |    25 |          | bmup4b0s56r0100.008 |     25 |        |           |         |                        |
 |                 | bmup4b0s56r0100.009 |           |            |   1000 |     40 |    25 |          | bmup4b0s56r0100.009 |     25 |        |           |         |                        |
 |-----------------+---------------------+-----------+------------+--------+--------+-------+----------+---------------------+--------+--------+-----------+---------+------------------------|
-
 * ------------------------------------------------------------------------------
 * stage output
 * ------------------------------------------------------------------------------

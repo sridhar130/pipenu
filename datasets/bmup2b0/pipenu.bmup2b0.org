@@ -1,15 +1,14 @@
 f# -*- mode:org -*-
 #+startup:fold
-  *bmup2b0* : positive muon beam, produce stopped muon output file, 
-  geometry: TS3 collimator rotated by 180 deg
+  *bmup2b0* : positive muon beam, 
+  geometry: 2 mm Ti degrader in the beam, TS3 collimator rotated by 180 deg
   DS magnetic field 50% - think of Michel edge calibration
 # ----------------------------------------------------------------------------------------------------
  - directory       : file:./
  - configuration   : [[file:./init_project.py][init_project.py]]
  - submitted jobs  : file:../AAA_SUBMITTED_JOBS
- - grid input      : file:/pnfs/mu2e/resilient/users/murat/
  - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow/pipenu.bmup2b0s00r0000.s1_sim/outstage
- - output_location : file:/exp/mu2e/data/projects/pipenu/log
+ - log files       : file:/exp/mu2e/data/projects/pipenu/log
  - catalogs        : file:./catalog
  - summary         : 
  - fcl             : 

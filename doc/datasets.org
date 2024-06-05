@@ -2,6 +2,8 @@
 *------------------------------------------------------------------------------
 * PIPENU datasets (summary)       last update : <2023-10-26 Thu>
 * -----------------------------------------------------------------------------
+* all data/log files: file:/exp/mu2e/data/projects/pipenu
+- logfiles: file:/exp/mu2e/data/projects/pipenu/log
 * reconstruction dataset IDs: KinKal: 'r0100', BTrk: 'r0000'
 * *beam    datasets*                                                             
 - all datasets generated with the 70% BField and the TS3 collimator rotated by 180 deg:
@@ -41,7 +43,8 @@
 |---------+--------+--------------------------------+-------------+----------------------------------------------------|
 | [[file:../datasets/cele0b0/pbar2m.cele0b0.org][cele0b0]] |     xx |                                | ok          | mu- --> e- conversion electrons on Al, leading log |
 |---------+--------+--------------------------------+-------------+----------------------------------------------------|
-* *stntuples*                                                                     
+* *stntuples*                                      
+- Stntuple catalogs: https://mu2e.fnal.gov/public/hep/computing/Stntuple/cafdfc/pipenu/index.shtml                         
 |-----------------+---------------+--------+---------+----------------+--------------+-----------|
 | dataset id      | ntuple status | N(POT) | nevents | N(stopped pi+) | sum(weights) | comments  |
 |                 |               |        |         |                |              |           |
@@ -96,11 +99,12 @@
 |-----------------+---------------+--------+---------+----------------+--------------+-----------|
 
 * histograms                                                                     
-  file:/srv/mu2e/data/projects/pipenu/hist                                       
+**  file:/exp/mu2e/data/projects/pipenu/hist/murat                               
   - bmum0b0s21r0000 : 7783 events / 5.0e6
   - bmumcb0s21r0000 : 7906 events / 5.0e6
   - bmup0b0s21r0000 : 3068 events / 4.5e6
-* upload status: a bit word                                                      
+**  file:/exp/mu2e/data/projects/pipenu/hist/tripathy                                       
+* upload status: a bit word      (not used)                                                
   - bit 0 = 1 : SAM defname created, files moved by *mu2eDatasetUpload*          
                 to a tape-backed dCache pool
   - bit 1 = 1 : tape labels assigned with *mu2eDatasetLocation* to all files     
