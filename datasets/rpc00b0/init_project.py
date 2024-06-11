@@ -13,15 +13,15 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
 # s4: digi_trig, use only pi+ --> e+ nu  decays in the ST
 #-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('dts.mu2e.rpc00b0s31r0000.pipenu.art','rpc00b0s31r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.rpc00b0s34r0000.pipenu.art','rpc00b0s31r0000','local'))
 #------------------------------------------------------------------------------
 # s5: reco_kk, reco_kff 
 #-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('dig.mu2e.rpc00b0s41r0000.pipenu.art','rpc00b0s41r0000','local'))
+        self.add_dataset(Dataset('dig.mu2e.rpc00b0s44r0000.pipenu.art','rpc00b0s41r0000','local'))
 #------------------------------------------------------------------------------
 # s5 : stn_kk, stn_kff
 #-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('mcs.mu2e.rpc00b0s51r0100.pipenu.art','rpc00b0s51r0100','local'))
+        self.add_dataset(Dataset('mcs.mu2e.rpc00b0s54r0100.pipenu.art','rpc00b0s51r0100','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
@@ -43,16 +43,16 @@ class Project(ProjectBase):
         job.fNInputFiles             = 1                                # number of segments 
 
         job.fMaxInputFilesPerSegment = 1
-        job.fNEventsPerSegment       = 1000
+        job.fNEventsPerSegment       = 500000
         job.fResample                = 'no'                             # yes/no
         job.fRunNumber               = 1210
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
 
-        odsid31                      = self.fFamilyID+s.name()+'1'+'r0000';
+        odsid34                      = self.fFamilyID+s.name()+'4'+'r0000';
         job.fOutputStream            = [ 'PrimaryOutput'     ]
-        job.fOutputDsID              = [ odsid31             ]
-        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid31 ]
+        job.fOutputDsID              = [ odsid34             ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid34 ]
         job.fOutputFormat            = [ 'art'               ]
 #------------------------------------------------------------------------------
 # s3:stn_dts : ntuple output of detector steps

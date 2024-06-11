@@ -69,7 +69,7 @@ physics : {
     end_paths     : [ e1            ]
 }
 #------------------------------------------------------------------------------
-# amke straw hits out of all digis and use all straw hits to make combo hits
+# make straw hits out of all digis and use all straw hits to make combo hits
 #------------------------------------------------------------------------------
 physics.producers.makeSH.MinimumTime                      : 100
 physics.producers.makePH.MinimumTime                      : 100
