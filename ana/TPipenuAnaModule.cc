@@ -456,6 +456,7 @@ void TPipenuAnaModule::BookHistograms() {
   book_pipenu_histset[107] = 1;		// IDWord[0]=0 tracks Q>0 T>300 DnTrackTc
   book_pipenu_histset[108] = 1;		// IDWord[0]=0 tracks Q>0 T>300 DnTrackTc DtTcTc
 
+
   book_pipenu_histset[121] = 1;		// IDWord[1]=0 tracks Q>0
   book_pipenu_histset[122] = 1;		// IDWord[1]=0 tracks Q>0 p>60
   book_pipenu_histset[123] = 1;		// IDWord[1]=0 tracks Q>0 p>60 T>300
@@ -598,6 +599,7 @@ void TPipenuAnaModule::BookHistograms() {
   book_track_histset[106] = 1;		// IDWord[0]=0 tracks Q=1 T>300 
   book_track_histset[107] = 1;		// IDWord[0]=0 tracks Q=1 T>300 DnTrackTc 
   book_track_histset[108] = 1;		// IDWord[0]=0 tracks Q=1 T>300 DnTrackTc DtTcTc
+  book_track_histset[109] = 1;		// IDWord[0]=0 tracks Q>0 T>300 p>67.5 & p<70.0
 
   book_track_histset[121] = 1;		// IDWord[1]=0 tracks Q=1
   book_track_histset[122] = 1;		// IDWord[1]=0 tracks Q=1 p>60 
@@ -607,6 +609,7 @@ void TPipenuAnaModule::BookHistograms() {
   book_track_histset[126] = 1;		// IDWord[1]=0 tracks Q=1 T>300 
   book_track_histset[127] = 1;		// IDWord[1]=0 tracks Q=1 T>300 DnTrackTc 
   book_track_histset[128] = 1;		// IDWord[1]=0 tracks Q=1 T>300 DnTrackTc DtTcTc
+  book_track_histset[129] = 1;		// IDWord[1]=0 tracks Q=1 T>300 DnTrackTc DtTcTc p>67.5 & p<70.0
 
   book_track_histset[150] = 1;          // all         tracks          wt=pionSurvProb Q=1
 
@@ -1276,6 +1279,11 @@ if (trk->Charge() > 0) {
 // the same, but w/o p>60 MeV/c cut
 //-----------------------------------------------------------------------------
         if (trk->T0() > 300) {
+          // p>67.5 & < 70.0
+          if(tp->fP >=67.5 && tp->fP <=70.0)
+            {
+              FillTrackHistograms (fHist.fTrack [109],trk,tp,&fSimPar);
+            }
           FillTrackHistograms (fHist.fTrack [106],trk,tp,&fSimPar);
           FillPipenuHistograms(fHist.fPipenu[106],trk,tp,&fSimPar);
           if (tp->fDnTrackTc <= fDnMax) { 
@@ -1337,6 +1345,11 @@ if (trk->Charge() > 0) {
 // the same, but w/o p>60 MeV/c cut
 //-----------------------------------------------------------------------------
         if (trk->T0() > 300) {
+          // p>67.5 & < 70.0
+          if(tp->fP >=67.5 && tp->fP <=70.0)
+            {
+              FillTrackHistograms (fHist.fTrack [129],trk,tp,&fSimPar);
+            }
           FillTrackHistograms (fHist.fTrack [126],trk,tp,&fSimPar);
           FillPipenuHistograms(fHist.fPipenu[126],trk,tp,&fSimPar);
           if (tp->fDnTrackTc <= fDnMax) { 
