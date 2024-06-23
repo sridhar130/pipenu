@@ -78,6 +78,14 @@ namespace pipenu {
     ch->fNSimSignal = 1000000.;
     ch->fNormSF     = (ch->fNStops/ch->fNPOT)*fBR_pienu*(1/ch->fNSimSignal);
     AddChannel(ch);
+
+    ch = new AnalysisChannel("bpip4b0s51r0105","bpip4b0s51r0105");
+    ch->fNPOT       = 2.5e8  ;
+    ch->fNStops     = 31681. ;
+    ch->fNSimSignal = 1000000.;
+    ch->fNormSF     = (ch->fNStops/ch->fNPOT)*fBR_pienu*(1/ch->fNSimSignal);
+    AddChannel(ch);
+
 //-----------------------------------------------------------------------------
 // pi+ , 5 mm degrader
 //-----------------------------------------------------------------------------
@@ -94,6 +102,34 @@ namespace pipenu {
     ch->fNSimSignal = 1000000.;
     ch->fNormSF     = (ch->fNStops/ch->fNPOT)*fBR_pienu*(1/ch->fNSimSignal);
     AddChannel(ch);
+
+    ch = new AnalysisChannel("bpip5b0s51r0105","bpip5b0s51r0105");
+    ch->fNPOT       = 2.5e8  ;
+    ch->fNStops     = 17225. ;
+    ch->fNSimSignal = 1000000.;
+    ch->fNormSF     = (ch->fNStops/ch->fNPOT)*fBR_pienu*(1/ch->fNSimSignal);
+    AddChannel(ch);
+
+
+//-----------------------------------------------------------------------------
+// pi+ , 3.5 mm Ti degrader
+//-----------------------------------------------------------------------------
+    ch = new AnalysisChannel("bpipab0s51r0100","bpipab0s51r0100");
+    ch->fNPOT       = 2.5e8  ;
+    ch->fNStops     = 40341. ;
+    ch->fNSimSignal = 100000.;
+    ch->fNormSF     = (ch->fNStops/ch->fNPOT)*fBR_pienu*(1/ch->fNSimSignal);
+    AddChannel(ch);
+//-----------------------------------------------------------------------------
+// pi+ , 3.5 mm Be degrader
+//-----------------------------------------------------------------------------
+    ch = new AnalysisChannel("bpip9b0s51r0100","bpip9b0s51r0100");
+    ch->fNPOT       = 2.5e8  ;
+    ch->fNStops     = 107822. ;
+    ch->fNSimSignal = 100000.;
+    ch->fNormSF     = (ch->fNStops/ch->fNPOT)*fBR_pienu*(1/ch->fNSimSignal);
+    AddChannel(ch);
+
 
 //-----------------------------------------------------------------------------
 // DIF
@@ -137,6 +173,12 @@ namespace pipenu {
  
     // 's56' : full dataset, huge, ultimately ~330M events, now - 20% of that)
     ch  = new AnalysisChannel("bmup5b0s56r0100","bmup5b0s56r0100");
+    ch->fNPOT       = 5e8*10*(2000./0.265798)*15  ;
+    ch->fNormSF     = 1./ch->fNPOT;
+    AddChannel(ch);
+
+    //s66
+    ch  = new AnalysisChannel("bmup5b0s66r0100","bmup5b0s66r0100");
     ch->fNPOT       = 5e8*10*(2000./0.265798)*15  ;
     ch->fNormSF     = 1./ch->fNPOT;
     AddChannel(ch);
