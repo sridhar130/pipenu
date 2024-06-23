@@ -10,6 +10,7 @@
 #include "Stntuple/val/stn_catalog.hh"
 
 #include "pipenu/ana/Analysis.hh"
+R__LOAD_LIBRARY($/exp/mu2e/app/users/tripathy/Development_pipenu4/build/al9-prof-e28-p057/pipenu/lib/libpipenu_ana.so)
 
 pipenu::Analysis* gPipenu; 
 

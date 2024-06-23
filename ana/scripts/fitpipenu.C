@@ -68,6 +68,7 @@ void fitpipenu()
    TH1D * hcons = new TH1D("hcons","constraint ",200,-2.5,2.5);
    // Fill each bin content of this histogram with the fucntion value here.
    int nbins = hSB0->GetNbinsX();
+   int iter  = 1000;
    for (int j=0; j<=nbins; j++)
      {
        x_value = (*total)(60.0+0.2*j);
@@ -83,7 +84,7 @@ void fitpipenu()
    //TF1 *f = new TF1("f", "TMath::Poisson(x, 5.0)", 0, 10.0);
    f->SetParameter(0, 0.3);
    TH1D * hSB = new TH1D("hSB","histoSB",60,60.,72.);
-   for (int kk=0;kk<10;kk++)
+   for (int kk=0;kk<1000;kk++)
      {
    for (int jk=0; jk<=nbins; jk++)
      {

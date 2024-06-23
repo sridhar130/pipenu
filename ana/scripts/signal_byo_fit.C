@@ -28,6 +28,9 @@
 
 #include "pipenu/ana/Analysis.hh"
 
+R__LOAD_LIBRARY($/exp/mu2e/app/users/tripathy/Development_pipenu4/build/al9-prof-e28-p057/pipenu/lib/libpipenu_ana.so)
+//gSystem->Load("$/exp/mu2e/app/users/tripathy/Development_pipenu4/build/al9-prof-e28-p057/pipenu/lib/libpipenu_ana.so"); 
+
 pipenu::Analysis* gPipenu; 
 //-----------------------------------------------
 // Define the fit function
@@ -85,6 +88,66 @@ double f_crystal_ball1(double* X, double* P) {
   return f1;
 }
 
+// dependent n
+double f_crystal_ball2(double* X, double* P) {
+  double f, alpha, abs_alpha, n, a, b, C, D, nby_alpha, exp_alpha, erf_alpha, N;
+
+  double dx0 = (X[0]-P[0]);
+  double dx  = (X[0]-P[0])/P[1];
+
+  alpha     = P[2];
+  abs_alpha = fabs(alpha);
+  n         = P[3];
+  nby_alpha = n/abs_alpha;
+  exp_alpha = TMath::Exp(-abs_alpha*abs_alpha*0.5);
+  erf_alpha = TMath::Erf(abs_alpha*0.7071); // |alpha|/sqrt(2)
+  C         = (nby_alpha/(n-1))*exp_alpha;
+  D         = 1.2533*(1+erf_alpha); // sqrt(pi/2)
+  N         = 1/(P[1]*(C+D));
+    
+  if (dx0 > -abs_alpha) {
+
+    f = N*TMath::Exp(-dx*dx/2.);
+  }
+  else {
+    a = TMath::Power((n/abs_alpha),n)*TMath::Exp(-(alpha*alpha)/2);
+    b = (n/abs_alpha)-abs_alpha;
+    f = N*a*TMath::Power((b-dx),-n);
+  }
+  
+  return f;
+}
+
+// dependent cyrstal ball root
+
+double crystalball_root(double* X, double*P) {
+       double mean    = P[0];
+       double sigma   = P[1];
+       double alpha   = P[2];
+       double n       = P[3];
+       double N       = P[4];
+       double x       = X[0];
+
+       // evaluate the crystal ball function
+       if (sigma < 0.)     return 0.;
+       double z = (x - mean)/sigma; 
+       if (alpha < 0) z = -z; 
+       double abs_alpha = std::abs(alpha);
+       // double C = n/abs_alpha * 1./(n-1.) * std::exp(-alpha*alpha/2.);
+       // double D = std::sqrt(M_PI/2.)*(1.+ROOT::Math::erf(abs_alpha/std::sqrt(2.)));
+       // double N = 1./(sigma*(C+D));
+       if (z  > - abs_alpha)
+          return N*std::exp(- 0.5 * z * z);
+       else {
+          //double A = std::pow(n/abs_alpha,n) * std::exp(-0.5*abs_alpha*abs_alpha);
+          double nDivAlpha = n/abs_alpha;
+          double AA =  std::exp(-0.5*abs_alpha*abs_alpha);
+          double B = nDivAlpha -abs_alpha;
+          double arg = nDivAlpha/(B-z);
+          return N*AA * std::pow(arg,n);
+       }
+    }
+
 Double_t myFunc(double x) { 
   double ff = x+sin(x);
   return ff; }
@@ -109,7 +172,7 @@ void signal_byo_fit()
  hist1->Rebin(2);
 
  hist1->Scale(gPipenu->GetChannel("bpip4b0s51r0105")->NormSF());
- // hist1->Scale(1e16);
+ // hist1->Scale(1e16); //check with and with noramlizing
  hist1->SetLineColor(kRed);
  hist1->SetLineStyle(1);
  hist1->SetLineWidth(2);
@@ -128,23 +191,67 @@ void signal_byo_fit()
  hist1->Draw();
 
  //fitting------------
+ //crystalball_root
+ TF1 * cbFit1 = new TF1("cbFit1",crystalball_root,64.0,70.0,5);
  TF1 * u_cbFit = new TF1("u_cbFit",f_crystal_ball,64.0,70.0,5);
+ TF1 * u_cbt = new TF1("u_cb",f_crystal_ball,64.0,70.0,5); 
  //TF1 *f1 = new TF1("myfunc",myfunction,0,10,2);
- u_cbFit->SetParameter(0, 2.65e-14); // normalization (peak height)
+ // u_cbFit->SetParameter(0, 2.65e-14); // normalization (peak height)
+ // u_cbFit->SetParName(0,"normt");
+ // u_cbFit->SetParLimits(0,2.6e-14,3.1e-14);
+
+ u_cbFit->SetParameter(0, 269.0); // normalization (peak height)
  u_cbFit->SetParName(0,"normt");
- u_cbFit->SetParLimits(0,2.6e-14,3.1e-14);
+ //u_cbFit->SetParLimits(0,268.0,275.0);
+
+ //u_cbFit->SetParameters(68.9,0.32,0.5,6); 
  u_cbFit->SetParameter(1, 68.9); // mean value
  u_cbFit->SetParName(1,"mean");
  u_cbFit->SetParLimits(1,68.7,69.0);
  u_cbFit->SetParameter(2, 0.32); // sigma
  u_cbFit->SetParName(2,"sigma");
- u_cbFit->SetParLimits(2,0.3,0.6);
- u_cbFit->SetParameter(3, 0.3); // power law tail parameter
+ // u_cbFit->SetParLimits(2,0.2,0.4);
+ u_cbFit->SetParameter(3, 1.3); // power law tail parameter
  u_cbFit->SetParName(3,"alpha");
- u_cbFit->SetParLimits(3,0.2,0.5);
- u_cbFit->SetParameter(4, 6); // power of the power law component (exponent)
+ // u_cbFit->SetParLimits(3,1.0,2.0);
+ u_cbFit->SetParameter(4, 52); // power of the power law component (exponent)
  u_cbFit->SetParName(4,"n");
- u_cbFit->SetParLimits(4,10,15);
+ // u_cbFit->SetParLimits(4,0,70);
+
+ u_cbt->SetParameters(265.42,68.89,0.34,0.6,51.03);
+ //cbFit1->SetParameters(68.89,0.34,0.6,51.03);
+
+ // crystall ball root parameters
+ cbFit1->SetParameter(0, 68.9); // mean value
+ cbFit1->SetParName(0,"mean");
+ cbFit1->SetParLimits(0,68.7,69.0);
+ cbFit1->SetParameter(1, 0.32); // sigma
+ cbFit1->SetParName(1,"sigma");
+ //cbFit1->SetParLimits(1,0.2,0.4);
+ cbFit1->SetParameter(2, 1.3); // power law tail parameter
+ cbFit1->SetParName(2,"alpha");
+ //cbFit1->SetParLimits(2,1.0,2.0);
+ cbFit1->SetParameter(3, 52); // power of the power law component (exponent)
+ cbFit1->SetParName(3,"n");
+ //cbFit1->SetParLimits(3,0,70);
+ // cbFit1->SetParameter(4, 269.0); // normalization (peak height)
+ // cbFit1->SetParName(4,"normt");
+ // cbFit1->SetParLimits(4,268.0,275.0);
+
+ cbFit1->SetParameter(4, 2.65e-14); // normalization (peak height)
+ cbFit1->SetParName(4,"normt");
+ cbFit1->SetParLimits(4,2.6e-14,3.1e-14);
+
+ 
+ // u_cbt->SetParameter(0, 265.0); // mean value
+ // u_cbt->SetParameter(0, 68.94); // mean value
+ // u_cbt->SetParameter(1, 0.34); // sigma
+ // u_cbt->SetParameter(2, 0.46); // power law tail parameter
+ // u_cbt->SetParameter(3,50);
+ 
+ 
+ //u_cbt->SetLineColor(kBlue);
+ //u_cbt->Draw("same");
  
 
 // u_cbFit->SetParameter(5, 1);
@@ -171,14 +278,24 @@ void signal_byo_fit()
  // cbFit->SetParameters(2.0, 68.9, 0.3, 2, 1.5);
  // cbFit->SetParameters(1.5,6.0e-14,68.1,1.5,1.0);
  //  cbFit->SetParameters(1.5,100,68.1,1.5,1.0);
-  hist1->Fit("u_cbFit","L","",64.0,70.0);
-  u_cbFit->Draw("same");
+
+ hist1->Fit("cbFit1","L","",64.0,70.0);
+ cbFit1->Draw("same");
+ 
+ 
+ //hist1->Fit("u_cbFit","L","",64.0,70.0);
+ //u_cbFit->Draw("same");
   //  u_cbFit->Draw();
  // TLegend *legend = new TLegend(0.55,0.65,0.76,0.82);
  // legend->AddEntry(hist1,"Signal","lep");
  // legend->AddEntry(hist2,"DIF","lep");
  // legend->Draw();
  // //c1->SetLogy();
+
+
+  // just fit don't draw
+  
+  
  c1->Modified();
  c1->Update();
  // gPad->BuildLegend();
