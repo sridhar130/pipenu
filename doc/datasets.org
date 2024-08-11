@@ -41,7 +41,9 @@
 | dataset | N(gen) | dataset in the DH system       | date/status | description                                        |
 | family  |        | (3-rd field is the dataset ID) |             |                                                    |
 |---------+--------+--------------------------------+-------------+----------------------------------------------------|
-| [[file:../datasets/cele0b0/pbar2m.cele0b0.org][cele0b0]] |     xx |                                | ok          | mu- --> e- conversion electrons on Al, leading log |
+| [[file:../datasets/cele0b0/pbar2m.cele0b0.org][cele0b0]] | xx     |                                | ok          | mu- --> e- conversion electrons on Al, leading log |
+| rpc00b0 |        |                                |             | test0: simualte RPC on H2 in Ti degrader           |
+| rpc01b0 |        |                                |             | test1: RPC on hydrogen, Rconverter = 20cm          |
 |---------+--------+--------------------------------+-------------+----------------------------------------------------|
 * *stntuples*                                      
 - Stntuple catalogs: https://mu2e.fnal.gov/public/hep/computing/Stntuple/cafdfc/pipenu/index.shtml                         

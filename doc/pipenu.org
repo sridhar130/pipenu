@@ -1,7 +1,10 @@
-#+startup:fold
+#+startup:fold -*- buffer-read-only:t -*-
 
 * directory:   [[file:./]]
 * ------------------------------------------------------------------------------
+* general
+- degrader is dwscribed in file:../../Offline/GeometryService/src/MECOStyleProtonAbsorberMaker.cc
+- default parameters : file:../../Offline/Mu2eG4/geom/degrader_v02.txt
 * [[file:./software_setup.org][software setup]]        
 * mu2e-41916: forcing muon decays                                            
   https://mu2e-docdb.fnal.gov/cgi-bin/sso/RetrieveFile?docid=41916

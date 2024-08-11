@@ -1,13 +1,16 @@
 // -*- mode: c++ -*-
 //-----------------------------------------------------------------------------
-// default for 4mm Ti degrader
+// test if conversions of 130 MeV photons are reconstructable at all in full field
+// at all
 //-----------------------------------------------------------------------------
 #include "pipenu/common/geom_baseline.txt"
 //
 
-double ts.coll3.rotationAngle       = 0.0; // DEFAULT: 0.0
+double ts.coll3.rotationAngle       = 180.0; // DEFAULT: 0.0
 
-string degrader.filter.materialName = "G4_Ti";
+string degrader.filter.materialName = "G4_Au";
+double degrader.filter.rIn          = 249.0;
+double degrader.filter.rOut         = 250.0;
 double degrader.filter.halfLength   = 2.0;
 
 bool   degrader.build               = true;  // DEFAULT: false
