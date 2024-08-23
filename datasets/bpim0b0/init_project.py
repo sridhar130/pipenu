@@ -24,6 +24,11 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
         self.add_dataset(Dataset('sim.mu2e.bpim0b0s21r0000.pipenu.art','bpim0b0s21r0000','local'))
         self.add_dataset(Dataset('sim.mu2e.bpim0b0s24r0000.pipenu.art','bpim0b0s24r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bpim0b0s25r0000.pipenu.art','bpim0b0s25r0000','local'))
+# concatenated versions of s21, s24, s25:
+        self.add_dataset(Dataset('sim.mu2e.bpim0b0s2ar0000.pipenu.art','bpim0b0s2ar0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bpim0b0s2dr0000.pipenu.art','bpim0b0s2dr0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.bpim0b0s2er0000.pipenu.art','bpim0b0s2er0000','local'))
 #------------------------------------------------------------------------------
 # 4. Input for s4
 #------------------------------------------------------------------------------
@@ -171,6 +176,29 @@ class Project(ProjectBase):
         job.fOutputDsID              = [ odsid             ]
         job.fOutputFnPattern         = [ 'nts.mu2e.'+odsid ]
         job.fOutputFormat            = [ 'stn'             ]
+#------------------------------------------------------------------------------
+# s2:concat: there are 3 datasets to be concatenated, so can't specify
+#            the input dataset explicitly
+# the stream of the first concat dataset is 's2a'
+#------------------------------------------------------------------------------        
+        job                          = s.new_job('concat',idsid);
+
+        job.fNInputFiles             = -1                     # number of segments defined by s1:sim
+             
+        job.fMaxInputFilesPerSegment =  500 ;                # individual files are small
+        # job.fNEventsPerSegment       =  20000000
+        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
+        job.fRequestedTime           = '5h'   
+        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
+
+        os                           = int(job.input_dataset().output_stream()) + 9;
+        odsid                        = self.fFamilyID+s.name()+"%x"%os+'r0000';       # this is concatenation...
+
+        job.fOutputStream            = ['defaultOutput'                ]
+        job.fOutputDsID              = [odsid                          ]
+        job.fOutputFnPattern         = ['sim.mu2e.'+job.fOutputDsID[0] ]
+        job.fOutputFormat            = ['art'                          ]
 #------------------------------------------------------------------------------
 # s3:gen_sim_tgt : pi+ --> e+ nu decays of pions stopped in the ST
 # need a different FCL because of different collection names

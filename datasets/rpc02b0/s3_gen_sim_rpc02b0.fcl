@@ -25,8 +25,8 @@ physics.producers.generate : { module_type: "EventGeneratorMu"
         nParticles      :   1
         pdgCode         : 22                        ## positrons
         processCode     : "mu2eExternalRPC"                ## fake whatever fakeable
-        pmin            : 130.
-        pmax            : 130.
+        pmin            : 129.4.
+        pmax            : 129.4.
         mode            : "flat"
         czmin           : -0.01
         czmax           :  0.01
