@@ -1,0 +1,20 @@
+#+startup:fold
+
+
+
+* <2024-08-23 Fri> RPC01B0 events with two tracks:
+  
+- file:  /exp/mu2e/data/projects/pipenu/datasets/rpc01b0s44r0000/dig.mu2e.rpc01b0s44r0000.pipenu.001210_00000000.art
+- events:
+
+   1210:0:459
+   1210:0:1296
+   1210:0:2627
+   1210:0:2931
+   1210:0:4062
+   1210:0:5340
+   1210:0:5910
+   1210:0:5920
+   1210:0:6651
+   1210:0:7323
+   

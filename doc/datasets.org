@@ -23,6 +23,8 @@
 |-----------+--------+-------------+-------------+-----------------------------------------+----------+----------------------------------------|
 | [[file:../datasets/bmup9b0/pipenu.bmup9b0.org][bmup9b0]]   |    1e8 |             | mu+ beam    | ShieldingM, no forcing of mu+ decays    | none     | tests, bmup9b0/bmup0b0 : normalization |
 |-----------+--------+-------------+-------------+-----------------------------------------+----------+----------------------------------------|
+| [[file:../datasets/bpim0b0/pipenu.bpim0b0.org][bpim0b0]]   |  2.5e8 |             | pi- beam    | ShieldingM, pi decays OFF               | none     | input for RPC on degrader (CH2+Pb)     |
+|-----------+--------+-------------+-------------+-----------------------------------------+----------+----------------------------------------|
 | [[file:../datasets/bpip0b0/pipenu.bpip0b0.org][bpip0b0]]   |  2.5e8 |             | pi+ beam    | ShieldingM, pi decays OFF               | none     |                                        |
 |-----------+--------+-------------+-------------+-----------------------------------------+----------+----------------------------------------|
 | [[file:../datasets/bpip1b0/pipenu.bpip1b0.org][bpip1b0]]   |  2.5e8 |             | pi+ beam    | ShieldingM, pi+ decays ON               | none     | validataion dataset                    |

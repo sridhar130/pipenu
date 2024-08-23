@@ -2,9 +2,12 @@
 
 * directory:   [[file:./]]
 * ------------------------------------------------------------------------------
-* general
-- degrader is dwscribed in file:../../Offline/GeometryService/src/MECOStyleProtonAbsorberMaker.cc
+* general                                                                    
+- degrader is described in file:../../Offline/GeometryService/src/MECOStyleProtonAbsorberMaker.cc
 - default parameters : file:../../Offline/Mu2eG4/geom/degrader_v02.txt
+- extending degrader: rpc02b0 - 2-layered , with a CH2 disk and extra conversion ring at R=25
+- parameters are stored in 
+-  file:../../Offline/MECOStyleProtonAbsorberGeom/inc/MECOStyleProtonAbsorber.hh
 * [[file:./software_setup.org][software setup]]        
 * mu2e-41916: forcing muon decays                                            
   https://mu2e-docdb.fnal.gov/cgi-bin/sso/RetrieveFile?docid=41916
@@ -25,6 +28,7 @@
    - murat's clone of Stntuple/ana/TSpmcAnaModule.cc creates folder named "murat_SpmcAna"
 
 * histograms: file:/exp/mu2e/data/projects/pipenu/hist
+* RPC on the modified degrader : file:rpc.org 
 * ------------------------------------------------------------------------------
 * [[file:datasets.org][datasets]] :  so far, the structure  not finalized, more or less playground 
 * ------------------------------------------------------------------------------

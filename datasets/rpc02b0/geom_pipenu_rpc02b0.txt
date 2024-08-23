@@ -1,0 +1,16 @@
+// -*- mode: c++ -*-
+//-----------------------------------------------------------------------------
+// test if conversions of 130 MeV photons are reconstructable at all in full field
+// at all
+//-----------------------------------------------------------------------------
+#include "pipenu/common/geom_baseline.txt"
+#include "pipenu/common/degrader_v03.txt"
+//
+
+double ts.coll3.rotationAngle       = 0.0; // 180.0; // DEFAULT: 0.0
+
+bool   degrader.build               = true;  // DEFAULT: false
+double degrader.rotation            = 60.0;   // 0:in the beam, -90: out of beam (degrees)
+
+// double degrader.pivot.x             = -3262.5;       // -3582.5;
+// double degrader.pivot.y             = 0.;            // -556.8;

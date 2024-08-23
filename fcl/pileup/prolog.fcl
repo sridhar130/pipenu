@@ -45,10 +45,10 @@ Pileup : { @table::Pileup
             mainSPPtrInputs: [ "ootMuonFinder" ]
         }
         DegraderStopFilter: {
-            module_type: FilterG4Out
-            mainHitInputs: []
-            extraHitInputs: [ "g4run:virtualdetector" ]
-            mainSPPtrInputs: [ "DegraderMuonFinder" ]
+            module_type    : FilterG4Out
+            mainHitInputs  : []
+            extraHitInputs : [ "g4run:virtualdetector" ]
+            mainSPPtrInputs: [ "DegraderMuonFinder"    ]
         }
     }
 }

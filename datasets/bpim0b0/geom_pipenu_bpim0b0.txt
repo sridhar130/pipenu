@@ -1,0 +1,27 @@
+// -*- mode: c++ -*-
+//-----------------------------------------------------------------------------
+// pipenu geometry for 'degrader+'
+// list all relevant degrader/converter parameters
+// for bpim0b0, the values below are the defaults from pipenu/common/degrader_v03.txt
+//-----------------------------------------------------------------------------
+#include "pipenu/common/geom_baseline.txt"
+#include "pipenu/common/degrader_v03.txt"
+//
+bool   degrader.build                      = true;  // DEFAULT: false
+double degrader.rotation                   = 60.0;   // 60:in the beam, 120: out of beam (degrees)
+
+string degrader.filter.materialName        = "Polyethylene";
+double degrader.filter.rIn                 = 0.0;
+double degrader.filter.rOut                = 150.0;
+double degrader.filter.halfLength          = 4.5;
+
+string degrader.filter2.materialName       = "G4_Pb";
+double degrader.filter2.rIn                = 0.0;
+double degrader.filter2.rOut               = 150.0;
+double degrader.filter2.halfLength         = 0.5;
+
+string degrader.converter.materialName     = "G4_Au";
+double degrader.converter.rIn              = 249.0;
+double degrader.converter.rOut             = 250.0;
+double degrader.converter.halfLength       = 5.00;
+double degrader.converter.dz               = 0;
