@@ -4,8 +4,8 @@
 #------------------------------------------------------------------------------
 BEGIN_PROLOG
   TRIGGER_PATHS       @protect_ignore: [ ] 
-  STN_VDHITS_COLL_TAG @protect_ignore: "DegraderStopFilterCH2:virtualdetector"
-  SIMP_COLL_TAG       @protect_ignore: "DegraderStopFilterCH2"
+  STN_VDHITS_COLL_TAG @protect_ignore: "DegraderStopFilterPb:virtualdetector"
+  SIMP_COLL_TAG       @protect_ignore: "DegraderStopFilterPb"
 END_PROLOG
 
 #include "Stntuple/fcl/stntuple.fcl"

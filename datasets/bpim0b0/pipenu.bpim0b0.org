@@ -3,7 +3,12 @@ f# -*- mode:org -*-
   *bpim0b0* : dataset to generate pi- stops for the advanced degrader study
   Trace only pi-
   Degrader consists of two layers: 9mm of CH2 and 1mm of Pb, together weight approximately equivalent to that of 4mm Ti
-  Consider RPC on Ch2 
+  Consider RPC on Ch2
+
+  the concatenated S2 stop datasets are copied to file:/exp/mu2e/data/projects/pipenu/datasets
+
+  - pi-/POT (T>200 ns) : 68.42/2.5e8 = 2.7e-7;
+  - out of these, about 3.e-2 become pi- p -- > n gamma : 8.2e-9
 # ----------------------------------------------------------------------------------------------------
  - directory       : file:./
  - configuration   : [[file:./init_project.py][init_project.py]]

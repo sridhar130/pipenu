@@ -97,7 +97,7 @@ outputs: {
         outputCommands:   [ "drop *_*_*_*",
                             @sequence::Pileup.SimKeptProducts,
                             "keep *_DegraderStopFilterCH2_*_*",
-                            "keep *_compressPVTargetStopsCH2_*_*"
+                            "keep *_compressPVDegraderStopsCH2_*_*"
                            ]
         SelectEvents: [degraderStopPathCH2]
     }
@@ -106,7 +106,7 @@ outputs: {
         outputCommands:   [ "drop *_*_*_*",
                             @sequence::Pileup.SimKeptProducts,
                             "keep *_DegraderStopFilterPb_*_*",
-                            "keep *_compressPVTargetStopsPb_*_*"
+                            "keep *_compressPVDegraderStopsPb_*_*"
                            ]
         SelectEvents: [degraderStopPathPb]
     }

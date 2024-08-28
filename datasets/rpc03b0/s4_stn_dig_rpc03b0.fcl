@@ -1,11 +1,11 @@
 # -*- mode:tcl -*-
 #------------------------------------------------------------------------------
-# stntuple DTS file
+# stntuple DIG file : make sure compressed coll tags are defined
 #------------------------------------------------------------------------------
 BEGIN_PROLOG
   TRIGGER_PATHS       @protect_ignore: [ ] 
-  STN_COMPRESS_MCS    @protect_ignore: "compressDetStepMCs"     
-  STN_VDHITS_COLL_TAG @protect_ignore: "compressDetStepMCs:virtualdetector"
+  STN_COMPRESS_MCS    @protect_ignore: "compressDigiMCs"     
+  STN_VDHITS_COLL_TAG @protect_ignore: "compressDigiMCs:virtualdetector"
 END_PROLOG
 
 #include "Stntuple/fcl/stntuple.fcl"
@@ -15,6 +15,8 @@ process_name : S3StnDts
 source       : { module_type:RootInput fileNames:["undefined"] }
 
 physics : {
+    producers  : { @table::Reconstruction.producers }
+        
     analyzers  : { @table::stntuple.analyzers 
 	StntupleMaker: { @table::stntuple.analyzers.StntupleMaker
 #------------------------------------------------------------------------------
@@ -36,11 +38,16 @@ physics : {
     
     @table::stntuple.paths
 
-    trigger_paths : []
-
-    end_paths     : [ "p0" ]  ## defined in Stntuple/fcl/stntuple.fcl
+    p100          : [ @sequence::Reconstruction.TrkReco ]
+    trigger_paths : [ "p100" ]
+    end_paths     : [ "p0"   ]  ## defined in Stntuple/fcl/stntuple_tables.fcl
 }
+#------------------------------------------------------------------------------
+# make straw hits out of all digis and use all straw hits to make combo hits
+#------------------------------------------------------------------------------
+physics.producers.makeSH.MinimumTime                      : 100
+physics.producers.makePH.MinimumTime                      : 100
 #------------------------------------------------------------------------------
 # output files: 
 #-----------------------------------------------------------------------------
-physics.analyzers.InitStntuple.histFileName : "nts.mu2e.rpc02b0s31r0000.pipenu.001210_00000000.stn"
+physics.analyzers.InitStntuple.histFileName : "nts.mu2e.rpc03b0s44r0000.pipenu.001210_00000000.stn"
