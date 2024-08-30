@@ -1,7 +1,7 @@
 #+startup:fold
-
-
-
+* TODO  <2024-08-30 Fri> modified geometry - file:../common/degrader_v03.txt
+  - no overlaps
+  - the degrader support is not fully done - support structure is hanging in the air
 * <2024-08-23 Fri> RPC01B0 events with two tracks:
   
 - file:  /exp/mu2e/data/projects/pipenu/datasets/rpc01b0s44r0000/dig.mu2e.rpc01b0s44r0000.pipenu.001210_00000000.art

@@ -84,7 +84,7 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
-        job.fMaxInputFilesPerSegment =  500 ;                # individual files are small
+        job.fMaxInputFilesPerSegment =  50 ;                  # leave 10 concatenated files
         # job.fNEventsPerSegment       =  20000000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '5h'   
@@ -116,14 +116,14 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = [ 'nts.mu2e.'+job.fOutputDsID[0]  ]
         job.fOutputFormat            = [ 'stn'                           ]
 #------------------------------------------------------------------------------
-# s2:sim : use the s11 dataset 
+# s2:sim : use the s1x dataset , one input file per job segment
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s2');
-        job                          = s.new_job('sim','bpim0b0s11r0000');
+        job                          = s.new_job('sim','bpim0b0s1xr0000');
 
         job.fNInputFiles             = -1                     # number of segments defined by s1:sim
              
-        job.fMaxInputFilesPerSegment =  10
+        job.fMaxInputFilesPerSegment =  1
         # job.fNEventsPerSegment       =  20000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '10h'   
@@ -180,6 +180,7 @@ class Project(ProjectBase):
 # s2:concat: there are 3 datasets to be concatenated, so can't specify
 #            the input dataset explicitly
 # the stream of the first concat dataset is 's2a'
+# if run on already concatenated input, preserve the output stream ID
 #------------------------------------------------------------------------------        
         job                          = s.new_job('concat',idsid);
 
@@ -192,8 +193,10 @@ class Project(ProjectBase):
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
-        os                           = int(job.input_dataset().output_stream()) + 9;
-        odsid                        = self.fFamilyID+s.name()+"%x"%os+'r0000';       # this is concatenation...
+        os                           = job.input_dataset().output_stream();
+        odsid = 'undefined'
+        if (os < 'a') : odsid        = self.fFamilyID+s.name()+"%x"%int(os)+'r0000';       # this is concatenation...
+        else          : odsid        = self.fFamilyID+s.name()+os+'r0000';
 
         job.fOutputStream            = ['defaultOutput'                ]
         job.fOutputDsID              = [odsid                          ]

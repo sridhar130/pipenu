@@ -8,6 +8,3 @@
 //
 bool   degrader.build               = true;  // DEFAULT: false
 double degrader.rotation            = 60.0;   // 60:in the beam, 120: out of beam (degrees)
-
-double degrader.converter.rIn       = 249.9;
-double degrader.converter.rOut      = 250.0;
