@@ -46,6 +46,9 @@
 | [[file:../datasets/cele0b0/pbar2m.cele0b0.org][cele0b0]] | xx     |                                | ok          | mu- --> e- conversion electrons on Al, leading log |
 | rpc00b0 |        |                                |             | test0: simualte RPC on H2 in Ti degrader           |
 | rpc01b0 |        |                                |             | test1: RPC on hydrogen, Rconverter = 20cm          |
+| rpc02b0 |        |                                |             | test1: RPC on hydrogen, Rconverter = 25cm          |
+| rpc03b0 |        |                                |             | RPC on hydrogen, converter R=25cm, thickness=1mm   |
+| rpc04b0 |        |                                |             | RPC on hydrogen, converter R=25cm, thickness=0.1mm |
 |---------+--------+--------------------------------+-------------+----------------------------------------------------|
 * *stntuples*                                      
 - Stntuple catalogs: https://mu2e.fnal.gov/public/hep/computing/Stntuple/cafdfc/pipenu/index.shtml                         

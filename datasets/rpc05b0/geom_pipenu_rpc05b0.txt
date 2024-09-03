@@ -1,0 +1,13 @@
+// -*- mode: c++ -*-
+//-----------------------------------------------------------------------------
+// test if conversions of 130 MeV photons are reconstructable at all in full field
+// at all
+// converter thickness 200 um : the outer radius is set to 250 mm
+//-----------------------------------------------------------------------------
+#include "pipenu/common/geom_baseline.txt"
+#include "pipenu/common/degrader_v03.txt"
+//
+bool   degrader.build               =  true;  // DEFAULT: false
+double degrader.rotation            =  60.0;   // 60:in the beam, 120: out of beam (degrees)
+
+double degrader.converter.rIn       = 249.8;
