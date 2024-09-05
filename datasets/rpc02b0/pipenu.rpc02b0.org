@@ -1,6 +1,7 @@
 f# -*- mode:org -*-
 #+startup:fold
-  *rpc02b0* : particle gun, 130 MeV photons converting at R=20cm nominal field
+  *rpc02b0* : particle gun, 130 MeV photons converting at R=25cm nominal field
+  gold converter thickness - 1mm, the converter not shifted in Z wrt the degrader
   this is a test dataset, a quick check of whether events with two tracks are there at all
 # ----------------------------------------------------------------------------------------------------
  - directory       : file:./

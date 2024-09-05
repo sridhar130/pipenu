@@ -19,7 +19,7 @@ bool   degrader.build   = true;
 // If the degrader is OUT of the beamline, uncomment the next line
 double degrader.rotation = 120.0; // (degrees)
 
-double degrader.upstreamEdge.z             = 4235.0;
+double degrader.upstreamEdge.z             = 4250.0; // 4235.0;
 
 // first disk - polyethylene, second - leave titanium, converter - gold
 string degrader.filter.materialName        = "Polyethylene";
@@ -33,25 +33,25 @@ string degrader.support.materialName       = "StainlessSteel";
 double degrader.pivot.x                    = -3582.5;
 double degrader.pivot.y                    = -556.8;
 
-double degrader.frame.rIn                  = 137.5;
-double degrader.frame.rOut                 = 150.0;
-double degrader.frame.halfLength           = 6.35;
+double degrader.frame.rIn                  = 127.5;
+double degrader.frame.rOut                 = 140.0;  // to have the converter fit in 
+double degrader.frame.halfLength           =   6.35;
 double degrader.frame.centerOffFromPivot   = 643.0;  // dist from pivot of
-       // degrader arm to center of the frame (and filter)
-double degrader.frame.arcAngle             = 90.0; // degrees of arc
+                                                     // degrader arm to center of the frame (and filter)
+double degrader.frame.arcAngle             = 90.0;   // degrees of arc
 
-double degrader.filter.rIn                 = 0.0;
-double degrader.filter.rOut                = 150.0;
-double degrader.filter.halfLength          = 4.5;
+double degrader.filter.rIn                 =   0.0;
+double degrader.filter.rOut                = 140.0;
+double degrader.filter.halfLength          =   4.5;
 
-double degrader.filter2.rIn                = 0.0;
-double degrader.filter2.rOut               = 150.0;
-double degrader.filter2.halfLength         = 0.5;
+double degrader.filter2.rIn                =   0.0;
+double degrader.filter2.rOut               = 100.0;
+double degrader.filter2.halfLength         =   0.4;
 
 double degrader.converter.rIn              = 249.0;
 double degrader.converter.rOut             = 250.0;
-double degrader.converter.halfLength       = 5.00;
-double degrader.converter.dz               = 0;
+double degrader.converter.halfLength       =   5.0;
+double degrader.converter.dz               =   0.0;  // this is a negative shift, zero by default
 
 double degrader.counterweight.rIn          = 0.0;
 double degrader.counterweight.rOut         = 42.0;
@@ -61,12 +61,12 @@ double degrader.counterweight.centerOffFromPivot = 99.0;
 double degrader.rod.width                  = 12.7;
 double degrader.rod.depth                  = 12.7;
 
-double degrader.supportArm.dx              = 5.0; // half-lengths
+double degrader.supportArm.dx              = 5.0;    // half-lengths
 double degrader.supportArm.dy              = 7.0;
-double degrader.supportArm.dz              = 196.0;
-double degrader.supportArm.offsetx         = 85.0; // Full Offsets
+double degrader.supportArm.dz              = 186.0; // 196.0; // minus 10 mm
+double degrader.supportArm.offsetx         = 85.0;  // Full Offsets
 double degrader.supportArm.offsety         = 30.0;
-double degrader.supportArm.offsetz         = 235.0;
+double degrader.supportArm.offsetz         = 225.; // 235.0;
 double degrader.supportPlate.dx            = 100.0;
 double degrader.supportPlate.dy            = 40.0;
 double degrader.supportPlate.dz            = 6.25;

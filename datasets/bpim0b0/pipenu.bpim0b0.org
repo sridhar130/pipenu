@@ -1,11 +1,12 @@
-f# -*- mode:org -*-
+f# -*- mode:org buffer-read-only:t -*-
 #+startup:fold
   *bpim0b0* : dataset to generate pi- stops for the advanced degrader study
+  last updated: <2024-09-05 Thu>
   Trace only pi-
   Degrader consists of two layers: 9mm of CH2 and 1mm of Pb, together weight approximately equivalent to that of 4mm Ti
-  Consider RPC on Ch2
+  Consider RPC on CH2
 
-  the concatenated S2 stop datasets are copied to file:/exp/mu2e/data/projects/pipenu/datasets
+  the concatenated S2 stop datasets (CH2, Pb, ST) are copied to file:/exp/mu2e/data/projects/pipenu/datasets
 
   - pi-/POT (T>200 ns) : 68.42/2.5e8 = 2.7e-7;
   - out of these, about 3.e-2 become pi- p -- > n gamma : 8.2e-9
@@ -31,13 +32,13 @@ f# -*- mode:org -*-
 |-----------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
 | [[file:s1_sim_concat.fcl][s1_concat]] | bpip0b0s11r0000 |  833951 |          1 |        |    500 |     1 | bpim0b0s1xr0000 |      1 |  833951 |       |        | S1, everything relevant |
 |-----------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| [[file:s2_sim_bpim0b0.fcl][s2_sim]]    | bpim0b0s11r0000 |  833951 |          1 |    500 |     10 |    50 | bpim0b0s21r0000 |     50 |   50427 |       |        | TargetStopOutput        |
-|           |                 |         |            |        |        |       | bpim0b0s24r0000 |     50 |  630771 |       |        | DegraderStopFilterCH2   |
-|           |                 |         |            |        |        |       | bpim0b0s25r0000 |     50 |   46340 |       |        | DegraderStopFilterPb    |
+| [[file:s2_sim_bpim0b0.fcl][s2_sim]]    | bpim0b0s11r0000 |  833951 |          1 |    500 |     10 |    50 | bpim0b0s21r0000 |     50 |   31945 |       |        | TargetStopOutput        |
+|           |                 |         |            |        |        |       | bpim0b0s24r0000 |     50 |  683119 |       |        | DegraderStopFilterCH2   |
+|           |                 |         |            |        |        |       | bpim0b0s25r0000 |     50 |   66900 |       |        | DegraderStopFilterPb    |
 |-----------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| [[file:s2_concat_bpim0b0.fcl][s2_concat]] | bpim0b0s21r0000 |         |          1 |     50 |     50 |     1 | bpim0b0s21r0000 |      1 |   24597 |       |        | TargetStopOutput        |
-|           | bpim0b0s24r0000 |         |          1 |     50 |     50 |     1 | bpim0b0s24r0000 |      1 |  630771 |       |        | DegraderStopFilterCH2   |
-|           | bpim0b0s25r0000 |         |          1 |     50 |     50 |     1 | bpim0b0s25r0000 |      1 |   99846 |       |        | DegraderStopFilterPb    |
+| [[file:s2_concat_bpim0b0.fcl][s2_concat]] | bpim0b0s21r0000 |         |          1 |     50 |     50 |     1 | bpim0b0s21r0000 |      1 |   31945 |       |        | TargetStopOutput        |
+|           | bpim0b0s24r0000 |         |          1 |     50 |     50 |     1 | bpim0b0s24r0000 |      1 |  683119 |       |        | DegraderStopFilterCH2   |
+|           | bpim0b0s25r0000 |         |          1 |     50 |     50 |     1 | bpim0b0s25r0000 |      1 |   66900 |       |        | DegraderStopFilterPb    |
 |-----------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
 
 * ---------------------------------------------------------------------------------------------------------------
