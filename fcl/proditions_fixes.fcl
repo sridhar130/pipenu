@@ -1,0 +1,9 @@
+# -*- mode:fcl -*- 
+#------------------------------------------------------------------------------
+# smth has changes and w/o this the MC digitization job just crashes
+#------------------------------------------------------------------------------
+# services.ProditionsService.alignedTracker.useDb    : false
+services.ProditionsService.alignedTrackerSim.useDb : false
+services.ProditionsService.crvCalib.useDb          : false
+services.ProditionsService.crvPhotonYield.useDb    : false
+services.ProditionsService.crvStatus.useDb         : false

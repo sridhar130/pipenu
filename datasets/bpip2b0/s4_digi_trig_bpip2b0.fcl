@@ -38,11 +38,13 @@ services.GeometryService.inputFile  : "pipenu/datasets/bpip2b0/geom_pipenu_bpip2
 services.GeometryService.bFieldFile : "pipenu/common/bfgeom_DS70_v01.txt"
 services.TFileService.fileName      : "/dev/null"
 #------------------------------------------------------------------------------
-#  DB constants
+#  DB/proditions constants
 #------------------------------------------------------------------------------
 services.DbService.purpose : MDC2020_perfect
 services.DbService.version : v1_0
 services.DbService.verbose : 2
+
+#include "pipenu/fcl/proditions_fixes.fcl"
 #------------------------------------------------------------------------------
 # Limit the amount of "Begin processing the ... record" messages
 #------------------------------------------------------------------------------
@@ -76,4 +78,3 @@ outputs: {
 #------------------------------------------------------------------------------
 # everything below is appended by generate_fcl
 #------------------------------------------------------------------------------
-

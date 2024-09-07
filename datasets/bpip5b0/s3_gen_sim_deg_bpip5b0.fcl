@@ -24,6 +24,7 @@ physics.producers.generate : { module_type: "EventGeneratorMu"
 # those are a universal function
 #------------------------------------------------------------------------------
     generator  : { tool_type: "StoppedPiENuGenerator" 
+        processCode            : "mu2ePienu"
         spectrum: {
             pdgCode            : -11                      ## e+
             spectrumShape      : "ceLeadingLog"

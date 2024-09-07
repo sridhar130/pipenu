@@ -25,6 +25,7 @@ physics.producers.generate : { @table::EventGenerator.producers.positronGun
 # pi+ --> e+ nu, the radiative corrections are a universal function
 #------------------------------------------------------------------------------
     generator  : {  tool_type: "StoppedPiENuGenerator" 
+        processCode            : "mu2ePienu"
         spectrum: {
             pdgCode            : -11                      ## e+
             spectrumShape      : "ceLeadingLog"
