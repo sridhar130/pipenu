@@ -10,6 +10,7 @@ class Project(ProjectBase):
 # 1. stage 3 : generator input, trace up to the exit from TS5 coll
 #-------v----------------------------------------------------------------------
         self.add_dataset(Dataset('generator'                          ,'rpc03b0s00r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.rpc03b0s24r0000.pipenu.art','rpc03b0s24r0000','local'))
 #------------------------------------------------------------------------------
 # s4: digi_trig, use only pi+ --> e+ nu  decays in the ST
 #-------v----------------------------------------------------------------------
@@ -40,14 +41,16 @@ class Project(ProjectBase):
         s                            = self.new_stage('s3');
         job                          = s.new_job('gen_sim','rpc03b0s00r0000');
 
-        job.fNInputFiles             = 1                                # number of segments 
+        job.fNInputFiles             = -1                                # number of segments 
 
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 500000
-        job.fResample                = 'no'                             # yes/no
+        job.fResample                = 'yes'                             # yes/no
+        job.fResamplingModuleLabel   = 'TargetStopResampler'
+
         job.fRunNumber               = 1210
         job.fRequestedTime           = '3h'
-        job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
+        job.fIfdh                    = 'xrootd'                            # ifdh/xrootd
 
         odsid34                      = self.fFamilyID+s.name()+'4'+'r0000';
         job.fOutputStream            = [ 'PrimaryOutput'     ]

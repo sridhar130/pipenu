@@ -3,7 +3,6 @@ f# -*- mode:org -*-
   *rpc04b0* : particle gun, 130 MeV photons converting at R=25cm nominal field
   the simulated thickness of the Au foil is 100 um
   start from pi- stops in CH2
-  degrader thickness 100um
 # ----------------------------------------------------------------------------------------------------
  - directory       : file:./
  - configuration   : [[file:./init_project.py][init_project.py]]

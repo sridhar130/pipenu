@@ -10,10 +10,14 @@ class Project(ProjectBase):
 # 1. stage 3 : generator input, trace up to the exit from TS5 coll
 #-------v----------------------------------------------------------------------
         self.add_dataset(Dataset('generator'                          ,'rpc04b0s00r0000','local'))
+
+        self.add_dataset(Dataset('sim.mu2e.rpc04b0s21r0000.pipenu.art','rpc04b0s21r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.rpc04b0s24r0000.pipenu.art','rpc04b0s24r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.rpc04b0s25r0000.pipenu.art','rpc04b0s25r0000','local'))
 #------------------------------------------------------------------------------
 # s4: digi_trig, use only pi+ --> e+ nu  decays in the ST
 #-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('dts.mu2e.rpc04b0s34r0000.pipenu.art','rpc04b0s31r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.rpc04b0s34r0000.pipenu.art','rpc04b0s34r0000','local'))
 #------------------------------------------------------------------------------
 # s5: reco_kk, reco_kff 
 #-------v----------------------------------------------------------------------
@@ -38,16 +42,18 @@ class Project(ProjectBase):
 # need a different FCL because of different collection names
 #------------------------------------------------------------------------------  
         s                            = self.new_stage('s3');
-        job                          = s.new_job('gen_sim','rpc04b0s00r0000');
+        job                          = s.new_job('gen_sim',idsid);
 
-        job.fNInputFiles             = 1                                # number of segments 
+        job.fNInputFiles             = -1                               # number of segments 
 
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 500000
-        job.fResample                = 'no'                             # yes/no
+        job.fResample                = 'yes'                            # yes/no
+        job.fResamplingModuleLabel   = 'TargetStopResampler'
+
         job.fRunNumber               = 1210
-        job.fRequestedTime           = '3h'
-        job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
+        job.fRequestedTime           = '10h'
+        job.fIfdh                    = 'xrootd'                         # ifdh/xrootd
 
         odsid34                      = self.fFamilyID+s.name()+'4'+'r0000';
         job.fOutputStream            = [ 'PrimaryOutput'     ]
