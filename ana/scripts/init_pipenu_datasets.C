@@ -102,6 +102,28 @@ void init_pipenu_datasets(stn_book* Book) {
 
     ds = Book->NewDataset ("pipenu.bmup9b0s29r0000" ,"",-1,   1000000000); 
     hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+//-----------------------------------------------------------------------------
+// pi- beam datasets
+//-----------------------------------------------------------------------------
+    ds = Book->NewDataset ("pipenu.bpim0b0s21r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.bpim0b0s24r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.bpim0b0s25r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+//-----------------------------------------------------------------------------
+// RPC datasets
+//-----------------------------------------------------------------------------
+    ds = Book->NewDataset ("pipenu.rpc03b0s44r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_drpc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.rpc04b0s44r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_drpc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.rpc05b0s44r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_drpc_ana.0000" );
 
   }
 }
