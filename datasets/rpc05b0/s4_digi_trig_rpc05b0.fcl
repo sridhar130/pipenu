@@ -54,6 +54,7 @@ services.message.destinations.log.outputStatistics                 : true
 # move the digitization start to 100 ns
 #------------------------------------------------------------------------------
 #include "pipenu/fcl/digi_start_time.fcl"
+#include "pipenu/fcl/proditions_fixes.fcl"
 
 physics.p1            : [ @sequence::Digitize.DigitizeSequence ]
 physics.e1            : [ defaultOutput        ]

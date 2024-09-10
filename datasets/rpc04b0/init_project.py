@@ -89,7 +89,7 @@ class Project(ProjectBase):
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
         job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
+        # job.fNEventsPerSegment       =  20000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '3h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
@@ -105,31 +105,6 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                          ]
 #------------------------------------------------------------------------------
 # stage 5
-# s5:reco_kff : InputDsID is 'rpc04b0s41r0000' 
-#               reconstruction job has only one output stream
-#------------------------------------------------------------------------------        
-        s                            = self.new_stage('s5');
-        job                          = s.new_job('reco_kff',idsid);
-
-        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
-             
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
-        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '3h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
-        job.fMaxMemory               = '3000MB'
-
-        output_stream                = self.fInputDataset.output_stream()
-
-        odsid                        = self.fFamilyID+'s5'+output_stream+'r0000';
-
-        job.fOutputStream            = ['defaultOutput'                ]
-        job.fOutputDsID              = [odsid                          ]
-        job.fOutputFnPattern         = ['mcs.mu2e.'+job.fOutputDsID[0] ]
-        job.fOutputFormat            = ['art'                          ]
-#------------------------------------------------------------------------------
-# stage 5
 # s5:reco_kk : InputDsID is 'rpc04b0s41r0000' 
 #              reconstruction job has only one output stream
 #------------------------------------------------------------------------------        
@@ -137,8 +112,8 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
+        job.fMaxInputFilesPerSegment =  1
+        # job.fNEventsPerSegment       =  20000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '3h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
@@ -153,29 +128,6 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = ['mcs.mu2e.'+job.fOutputDsID[0] ]
         job.fOutputFormat            = ['art'                          ]
 #------------------------------------------------------------------------------
-# s5:stn_kff : InputDsID is 'rpc04b0s51r0000' 
-#              stntupling job has only one output stream
-#------------------------------------------------------------------------------        
-        job                          = s.new_job('stn_kff',idsid);
-
-        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
-             
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
-        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '3h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
-        job.fMaxMemory               = '3000MB'
-
-        output_stream                = self.fInputDataset.output_stream()
-
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
-
-        job.fOutputStream            = ['defaultOutput'                ]
-        job.fOutputDsID              = [odsid                          ]
-        job.fOutputFnPattern         = ['nts.mu2e.'+job.fOutputDsID[0] ]
-        job.fOutputFormat            = ['stn'                          ]
-#------------------------------------------------------------------------------
 # s5:stn_kk : stntupling job has only one output stream
 #             no ned to redefine the stage
 #------------------------------------------------------------------------------        
@@ -184,7 +136,7 @@ class Project(ProjectBase):
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
         job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  100000
+        # job.fNEventsPerSegment       =  100000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '3h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd
