@@ -1,0 +1,9 @@
+// -*- mode: c++ -*-
+//-----------------------------------------------------------------------------
+// test if conversions of 130 MeV photons are reconstructable at all in full field
+// at all
+// converter thickness 100 um
+//-----------------------------------------------------------------------------
+#include "pipenu/common/geom_baseline.txt"
+//
+int tsda.build        = 0;

@@ -10,7 +10,7 @@ END_PROLOG
 
 process_name : S5Stn
 #------------------------------------------------------------------------------
-services.GeometryService.inputFile    : "pipenu/datasets/rpc04b0/geom_pipenu_rpc04b0.txt"
+services.GeometryService.inputFile    : "pipenu/datasets/neut0b0/geom_pipenu_neut0b0.txt"
 services.GeometryService.bFieldFile   : "pipenu/common/bfgeom_DS70_v01.txt"
 
 source       : { module_type : RootInput fileNames : ["undefined", "undefined"] }
@@ -73,5 +73,5 @@ physics : {
 }
 
 #------------------------------------------------------------------------------
-physics.analyzers.InitStntuple.histFileName : "nts.mu2e.rpc04b0s51r0100.pipenu.001210_00000000.stn"
-# outputs.defaultOutput.fileName              : "sim.mu2e.rpc04b0s51r0100.pipenu.001210_00000000.art"
+physics.analyzers.InitStntuple.histFileName : "nts.mu2e.neut0b0s51r0100.pipenu.001210_00000000.stn"
+# outputs.defaultOutput.fileName              : "sim.mu2e.neut0b0s51r0100.pipenu.001210_00000000.art"

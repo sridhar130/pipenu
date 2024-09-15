@@ -1,15 +1,13 @@
 f# -*- mode:org -*-
 #+startup:fold
-  *rpc04b0* : particle gun, 130 MeV photons converting at R=25cm nominal field
-  the simulated thickness of the Au foil is 100 um
-  start from pi- stops in CH2
+  *neut1b0* : particle gun, neutrons for pileup, no TSdA
 # ----------------------------------------------------------------------------------------------------
  - directory       : file:./
  - configuration   : [[file:./init_project.py][init_project.py]]
  - grid input      : file:../../../tmp/pipenu/fcl
  - grid output     : file:/pnfs/mu2e/scratch/users/murat/workflow
  - output_location : file:/exp/mu2e/data/projects/pipenu
- - log files       : file:/exp/mu2e/data/projects/pipenu/log::/rpc04b0/
+ - log files       : file:/exp/mu2e/data/projects/pipenu/log::/neut1b0/
  - stntuples       : file:/exp/mu2e/data/projects/pipenu/stntuple
  - catalogs        : file:./catalog
  - summary         : [[file:../../doc/][../../doc/]]
@@ -20,31 +18,31 @@ f# -*- mode:org -*-
 | job          | input dsid      | Nevents | Resampling | Nfiles | Nfiles | Njobs | output_dsid     | Nfiles | Nevents | Nev   | upload | comments                |
 |              |                 |         |     factor |        |  / job |       |                 |        |         | /file |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s3_gen_sim   | rpc04b0s21r0000 |  100000 |          1 |      1 |      1 |     1 | rpc04b0s31r0000 |        |   53124 |       |        |                         |
+| s3_gen_sim   | neut1b0s21r0000 |  100000 |          1 |      1 |      1 |     1 | neut1b0s31r0000 |        |   53124 |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s4_digi_trig | rpc04b0s31r0000 |   53124 |          1 |      1 |      1 |     1 | rpc04b0s41r0000 |      1 |   53124 |       |        |                         |
+| s4_digi_trig | neut1b0s31r0000 |   53124 |          1 |      1 |      1 |     1 | neut1b0s41r0000 |      1 |   53124 |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s5_reco_kff  | rpc04b0s41r0000 |         |          1 |      1 |      1 |     1 | rpc04b0s51r0000 |      1 |         |       |        |                         |
+| s5_reco_kff  | neut1b0s41r0000 |         |          1 |      1 |      1 |     1 | neut1b0s51r0000 |      1 |         |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s5_stn_kff   | rpc04b0s51r0000 |         |          1 |      1 |      1 |     1 | rpc04b0s51r0000 |      1 |         |       |        |                         |
+| s5_stn_kff   | neut1b0s51r0000 |         |          1 |      1 |      1 |     1 | neut1b0s51r0000 |      1 |         |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s5_reco_kk   | rpc04b0s41r0000 |   53124 |          1 |      1 |      1 |     1 | rpc04b0s51r0100 |      1 |   53124 |       |        |                         |
+| s5_reco_kk   | neut1b0s41r0000 |   53124 |          1 |      1 |      1 |     1 | neut1b0s51r0100 |      1 |   53124 |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
-| s5_stn_kk    | rpc04b0s51r0100 |   53124 |          1 |      1 |      1 |     1 | rpc04b0s51r0100 |      1 |   53124 |       |        |                         |
+| s5_stn_kk    | neut1b0s51r0100 |   53124 |          1 |      1 |      1 |     1 | neut1b0s51r0100 |      1 |   53124 |       |        |                         |
 |--------------+-----------------+---------+------------+--------+--------+-------+-----------------+--------+---------+-------+--------+-------------------------|
 
 * ---------------------------------------------------------------------------------------------------------------
 * data formats                                                                                                
 * ---------------------------------------------------------------------------------------------------------------
-* dts.user.rpc04b0s41r0000.pipenu.art                                                                         
-murat@mu2ebuild01:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s /exp/mu2e/data/projects/pipenu/datasets/rpc04b0s31r0000/murat/dts.murat.rpc04b0s31r0000.pipenu.001210_00000000.art 
+* dts.user.neut1b0s41r0000.pipenu.art                                                                         
+murat@mu2ebuild01:/exp/mu2e/app/users/murat/muse_002>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s /exp/mu2e/data/projects/pipenu/datasets/neut1b0s31r0000/murat/dts.murat.neut1b0s31r0000.pipenu.001210_00000000.art 
    ************************** Mu2e Offline **************************
      art v3_14_03    root v6_28_10a    KinKal v02_05_00b
      build  /exp/mu2e/app/users/murat/muse_002
      build  sl7-prof-e28-p055    03/24/24 10:06:55
    ******************************************************************
-24-Mar-2024 10:29:18 CDT  Initiating request to open input file "/exp/mu2e/data/projects/pipenu/datasets/rpc04b0s31r0000/murat/dts.murat.rpc04b0s31r0000.pipenu.001210_00000000.art"
-24-Mar-2024 10:29:19 CDT  Opened input file "/exp/mu2e/data/projects/pipenu/datasets/rpc04b0s31r0000/murat/dts.murat.rpc04b0s31r0000.pipenu.001210_00000000.art"
+24-Mar-2024 10:29:18 CDT  Initiating request to open input file "/exp/mu2e/data/projects/pipenu/datasets/neut1b0s31r0000/murat/dts.murat.neut1b0s31r0000.pipenu.001210_00000000.art"
+24-Mar-2024 10:29:19 CDT  Opened input file "/exp/mu2e/data/projects/pipenu/datasets/neut1b0s31r0000/murat/dts.murat.neut1b0s31r0000.pipenu.001210_00000000.art"
 Begin processing the 1st record. run: 1210 subRun: 0 event: 1 at 24-Mar-2024 10:29:20 CDT
 Found 13 data products in this Event
 Data products: 
@@ -69,17 +67,17 @@ Friendly Class Name  Module Label  Instance Name  Process Name     Product ID
 mu2e::GenEventCount    genCounter                      Primary  2659886210
 
 Found 0 data products in this Run
-24-Mar-2024 10:29:21 CDT  Closed input file "/exp/mu2e/data/projects/pipenu/datasets/rpc04b0s31r0000/murat/dts.murat.rpc04b0s31r0000.pipenu.001210_00000000.art"
+24-Mar-2024 10:29:21 CDT  Closed input file "/exp/mu2e/data/projects/pipenu/datasets/neut1b0s31r0000/murat/dts.murat.neut1b0s31r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
-* dig.murat.rpc04b0s41r0000.pipenu.art                                                                        
-murat@mu2ebuild02:/exp/mu2e/app/users/murat/muse_al9>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-06-06-08-42.s4_digi_trig_rpc04b0.mu2ebuild02.3736308/dig.mu2e.rpc04b0s41r0000.pipenu.001210_00000000.art 
+* dig.murat.neut1b0s41r0000.pipenu.art                                                                        
+murat@mu2ebuild02:/exp/mu2e/app/users/murat/muse_al9>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl -s results/2024-06-06-08-42.s4_digi_trig_neut1b0.mu2ebuild02.3736308/dig.mu2e.neut1b0s41r0000.pipenu.001210_00000000.art 
    ************************** Mu2e Offline **************************
      art v3_14_03    root v6_28_10a    KinKal v02_05_00b
      build  /exp/mu2e/app/users/murat/muse_al9
      build  al9-debug-e28-p056    06/06/24 08:27:08
    ******************************************************************
-07-Jun-2024 09:45:19 CDT  Initiating request to open input file "results/2024-06-06-08-42.s4_digi_trig_rpc04b0.mu2ebuild02.3736308/dig.mu2e.rpc04b0s41r0000.pipenu.001210_00000000.art"
-07-Jun-2024 09:45:20 CDT  Opened input file "results/2024-06-06-08-42.s4_digi_trig_rpc04b0.mu2ebuild02.3736308/dig.mu2e.rpc04b0s41r0000.pipenu.001210_00000000.art"
+07-Jun-2024 09:45:19 CDT  Initiating request to open input file "results/2024-06-06-08-42.s4_digi_trig_neut1b0.mu2ebuild02.3736308/dig.mu2e.neut1b0s41r0000.pipenu.001210_00000000.art"
+07-Jun-2024 09:45:20 CDT  Opened input file "results/2024-06-06-08-42.s4_digi_trig_neut1b0.mu2ebuild02.3736308/dig.mu2e.neut1b0s41r0000.pipenu.001210_00000000.art"
 Begin processing the 1st record. run: 1210 subRun: 0 event: 4 at 07-Jun-2024 09:45:21 CDT
 Found 25 data products in this Event
 Data products: 
@@ -117,17 +115,17 @@ mu2e::ProtonBunchIntensity        PBISim  MeanIntensity        S4Digi  238800499
        mu2e::GenEventCount    genCounter                      Primary  2659886210
 
 Found 0 data products in this Run
-07-Jun-2024 09:45:21 CDT  Closed input file "results/2024-06-06-08-42.s4_digi_trig_rpc04b0.mu2ebuild02.3736308/dig.mu2e.rpc04b0s41r0000.pipenu.001210_00000000.art"
+07-Jun-2024 09:45:21 CDT  Closed input file "results/2024-06-06-08-42.s4_digi_trig_neut1b0.mu2ebuild02.3736308/dig.mu2e.neut1b0s41r0000.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
-* mcs.mu2e.rpc04b0s54r0100.pipenu.art                                                                         
-murat@mu2ebuild02:/exp/mu2e/app/users/murat/pbar2m02>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl results/2024-09-13-15-47.s5_reco_kk_rpc04b0.mu2ebuild02.1696880/mcs.user.rpc04b0s51r0001.pipenu.001210_00000000.art 
+* mcs.mu2e.neut1b0s54r0100.pipenu.art                                                                         
+murat@mu2ebuild02:/exp/mu2e/app/users/murat/pbar2m02>mu2e -c Offline/Print/fcl/dumpDataProducts.fcl results/2024-09-13-15-47.s5_reco_kk_neut1b0.mu2ebuild02.1696880/mcs.user.neut1b0s51r0001.pipenu.001210_00000000.art 
    ************************** Mu2e Offline **************************
      art v3_14_03    root v6_30_04    KinKal v02_05_00b
      build  /exp/mu2e/app/users/murat/pbar2m02
      build  al9-debug-e28-p057    09/12/24 21:38:56
    ******************************************************************
-13-Sep-2024 15:51:46 CDT  Initiating request to open input file "results/2024-09-13-15-47.s5_reco_kk_rpc04b0.mu2ebuild02.1696880/mcs.user.rpc04b0s51r0001.pipenu.001210_00000000.art"
-13-Sep-2024 15:51:46 CDT  Opened input file "results/2024-09-13-15-47.s5_reco_kk_rpc04b0.mu2ebuild02.1696880/mcs.user.rpc04b0s51r0001.pipenu.001210_00000000.art"
+13-Sep-2024 15:51:46 CDT  Initiating request to open input file "results/2024-09-13-15-47.s5_reco_kk_neut1b0.mu2ebuild02.1696880/mcs.user.neut1b0s51r0001.pipenu.001210_00000000.art"
+13-Sep-2024 15:51:46 CDT  Opened input file "results/2024-09-13-15-47.s5_reco_kk_neut1b0.mu2ebuild02.1696880/mcs.user.neut1b0s51r0001.pipenu.001210_00000000.art"
 Begin processing the 1st record. run: 1210 subRun: 0 event: 2 at 13-Sep-2024 15:51:48 CDT
 Found 59 data products in this Event
 Data products: 
@@ -199,7 +197,7 @@ mu2e::ProtonBunchIntensity        PBISim  MeanIntensity        S4Digi  238800499
        mu2e::GenEventCount    genCounter                      Primary  2659886210
 
 Found 0 data products in this Run
-13-Sep-2024 15:51:48 CDT  Closed input file "results/2024-09-13-15-47.s5_reco_kk_rpc04b0.mu2ebuild02.1696880/mcs.user.rpc04b0s51r0001.pipenu.001210_00000000.art"
+13-Sep-2024 15:51:48 CDT  Closed input file "results/2024-09-13-15-47.s5_reco_kk_neut1b0.mu2ebuild02.1696880/mcs.user.neut1b0s51r0001.pipenu.001210_00000000.art"
 Art has completed and will exit with status 0.
 * ---------------------------------------------------------------------------------------------------------------
 * back to summary: [[file:../../doc/dataset_summary.org][pipenu/doc/dataset_summary.org]]

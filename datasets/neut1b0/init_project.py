@@ -9,26 +9,26 @@ class Project(ProjectBase):
 # datasets of this family
 # 1. stage 3 : generator input, trace up to the exit from TS5 coll
 #-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('generator'                          ,'rpc04b0s00r0000','local'))
+        self.add_dataset(Dataset('generator'                          ,'neut1b0s00r0000','local'))
 
-        self.add_dataset(Dataset('sim.mu2e.rpc04b0s21r0000.pipenu.art','rpc04b0s21r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.rpc04b0s24r0000.pipenu.art','rpc04b0s24r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.rpc04b0s25r0000.pipenu.art','rpc04b0s25r0000','local'))
-        self.add_dataset(Dataset('dts.mu2e.rpc04b0s34r0000.pipenu.art','rpc04b0s34r0000','local'))
-        self.add_dataset(Dataset('dig.mu2e.rpc04b0s44r0000.pipenu.art','rpc04b0s44r0000','local'))
-        self.add_dataset(Dataset('mcs.mu2e.rpc04b0s54r0100.pipenu.art','rpc04b0s54r0100','local'))
+        self.add_dataset(Dataset('sim.mu2e.neut1b0s21r0000.pipenu.art','neut1b0s21r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.neut1b0s24r0000.pipenu.art','neut1b0s24r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.neut1b0s25r0000.pipenu.art','neut1b0s25r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.neut1b0s34r0000.pipenu.art','neut1b0s34r0000','local'))
+        self.add_dataset(Dataset('dig.mu2e.neut1b0s44r0000.pipenu.art','neut1b0s44r0000','local'))
+        self.add_dataset(Dataset('mcs.mu2e.neut1b0s54r0100.pipenu.art','neut1b0s54r0100','local'))
 #------------------------------------------------------------------------------
 # s4: digi_trig, use only pi+ --> e+ nu  decays in the ST
 #-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('dts.mu2e.rpc04b0s34r0000.pipenu.art','rpc04b0s34r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.neut1b0s34r0000.pipenu.art','neut1b0s34r0000','local'))
 #------------------------------------------------------------------------------
 # s5: reco_kk, reco_kff 
 #-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('dig.mu2e.rpc04b0s44r0000.pipenu.art','rpc04b0s41r0000','local'))
+        self.add_dataset(Dataset('dig.mu2e.neut1b0s44r0000.pipenu.art','neut1b0s41r0000','local'))
 #------------------------------------------------------------------------------
 # s5 : stn_kk, stn_kff
 #-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('mcs.mu2e.rpc04b0s54r0100.pipenu.art','rpc04b0s51r0100','local'))
+        self.add_dataset(Dataset('mcs.mu2e.neut1b0s54r0100.pipenu.art','neut1b0s51r0100','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ class Project(ProjectBase):
 
     def __init__(self,idsid=None):
         
-        ProjectBase.__init__(self,project='pipenu',family_id='rpc04b0',idsid=idsid);
+        ProjectBase.__init__(self,project='pipenu',family_id='neut1b0',idsid=idsid);
         self.init_datasets();
 #------------------------------------------------------------------------------
 # s3:gen_sim : generator
@@ -66,7 +66,7 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
 # s3:stn_dts : ntuple output of detector steps
 #------------------------------------------------------------------------------  
-#        job                          = s.new_job('stn_dts','rpc04b0s31r0000');
+#        job                          = s.new_job('stn_dts','neut1b0s31r0000');
 #
 #        job.fNInputFiles             = -1                                # defined by the input DS    
 #
@@ -83,7 +83,7 @@ class Project(ProjectBase):
 #        job.fOutputFormat            = [ 'stn'             ]
 #------------------------------------------------------------------------------
 # stage 4
-# s4:digi_trig : InputDsID is 'rpc04b0s31r0000' 
+# s4:digi_trig : InputDsID is 'neut1b0s31r0000' 
 #                digitization job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s4');
@@ -108,7 +108,7 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                          ]
 #------------------------------------------------------------------------------
 # stage 5
-# s5:reco_kk : InputDsID is 'rpc04b0s41r0000' or 'rpc04b0s44r0000'
+# s5:reco_kk : InputDsID is 'neut1b0s41r0000' or 'neut1b0s44r0000'
 #              reconstruction job has only one output stream
 #------------------------------------------------------------------------------        
         s                            = self.new_stage('s5');

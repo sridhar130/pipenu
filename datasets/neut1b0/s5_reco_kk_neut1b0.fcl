@@ -14,7 +14,7 @@ END_PROLOG
 
 process_name : S5Reco
 
-services.GeometryService.inputFile    : "pipenu/datasets/rpc04b0/geom_pipenu_rpc04b0.txt"
+services.GeometryService.inputFile    : "pipenu/datasets/neut1b0/geom_pipenu_neut1b0.txt"
 services.GeometryService.bFieldFile   : "Offline/Mu2eG4/geom/bfgeom_v01.txt"
 services.TFileService.fileName        : "/dev/null"
 
@@ -68,7 +68,7 @@ physics.producers.KKDeMHPar.ModuleSettings.HelixSeedCollections : [ "MHFinderDe"
 physics.producers.KKDeMHPar.UsePDGCharge                        : false
 #------------------------------------------------------------------------------
 # outputs.defaultOutput.outputCommands  : [ "keep *_*_*_*" ] ## @local::Reconstruction.Output.outputCommands 
-outputs.defaultOutput.fileName        : "mcs.user.rpc04b0s51r0001.pipenu.001210_00000000.art"
+outputs.defaultOutput.fileName        : "mcs.user.neut1b0s51r0001.pipenu.001210_00000000.art"
 #------------------------------------------------------------------------------
 # Uncomment the below lines if one wants a truncated report i.e with the "Run,Event,SubRun" 
 # numbers not mentioned for every event
