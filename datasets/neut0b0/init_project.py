@@ -9,26 +9,9 @@ class Project(ProjectBase):
 # datasets of this family
 # 1. stage 3 : generator input, trace up to the exit from TS5 coll
 #-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('generator'                          ,'neut0b0s00r0000','local'))
-
-        self.add_dataset(Dataset('sim.mu2e.neut0b0s21r0000.pipenu.art','neut0b0s21r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.neut0b0s24r0000.pipenu.art','neut0b0s24r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.neut0b0s25r0000.pipenu.art','neut0b0s25r0000','local'))
-        self.add_dataset(Dataset('dts.mu2e.neut0b0s34r0000.pipenu.art','neut0b0s34r0000','local'))
-        self.add_dataset(Dataset('dig.mu2e.neut0b0s44r0000.pipenu.art','neut0b0s44r0000','local'))
-        self.add_dataset(Dataset('mcs.mu2e.neut0b0s54r0100.pipenu.art','neut0b0s54r0100','local'))
-#------------------------------------------------------------------------------
-# s4: digi_trig, use only pi+ --> e+ nu  decays in the ST
-#-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('dts.mu2e.neut0b0s34r0000.pipenu.art','neut0b0s34r0000','local'))
-#------------------------------------------------------------------------------
-# s5: reco_kk, reco_kff 
-#-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('dig.mu2e.neut0b0s44r0000.pipenu.art','neut0b0s41r0000','local'))
-#------------------------------------------------------------------------------
-# s5 : stn_kk, stn_kff
-#-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('mcs.mu2e.neut0b0s54r0100.pipenu.art','neut0b0s51r0100','local'))
+        self.add_dataset(Dataset('generator'                            ,'neut0b0s00r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.MuminusStopsCat.MDC2020p.art','neut0b0s21r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.neut0b0s31r0000.pipenu.art'  ,'neut0b0s31r0000','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
@@ -47,7 +30,7 @@ class Project(ProjectBase):
         s                            = self.new_stage('s3');
         job                          = s.new_job('gen_sim',idsid);
 
-        job.fNInputFiles             = -1                               # number of segments 
+        job.fNInputFiles             = 20                               # number of segments 
 
         job.fMaxInputFilesPerSegment = 1
         job.fNEventsPerSegment       = 500000
@@ -58,10 +41,10 @@ class Project(ProjectBase):
         job.fRequestedTime           = '10h'
         job.fIfdh                    = 'xrootd'                         # ifdh/xrootd
 
-        odsid34                      = self.fFamilyID+s.name()+'4'+'r0000';
+        odsid31                      = self.fFamilyID+s.name()+'1'+'r0000';
         job.fOutputStream            = [ 'PrimaryOutput'     ]
-        job.fOutputDsID              = [ odsid34             ]
-        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid34 ]
+        job.fOutputDsID              = [ odsid31             ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid31 ]
         job.fOutputFormat            = [ 'art'               ]
 #------------------------------------------------------------------------------
 # s3:stn_dts : ntuple output of detector steps
@@ -106,54 +89,6 @@ class Project(ProjectBase):
         job.fOutputDsID              = [odsid                          ]
         job.fOutputFnPattern         = ['dig.mu2e.'+job.fOutputDsID[0] ]
         job.fOutputFormat            = ['art'                          ]
-#------------------------------------------------------------------------------
-# stage 5
-# s5:reco_kk : InputDsID is 'neut0b0s41r0000' or 'neut0b0s44r0000'
-#              reconstruction job has only one output stream
-#------------------------------------------------------------------------------        
-        s                            = self.new_stage('s5');
-        job                          = s.new_job('reco_kk',idsid);
-
-        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
-             
-        job.fMaxInputFilesPerSegment =  1
-        # job.fNEventsPerSegment       =  20000
-        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '3h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
-        job.fMaxMemory               = '3000MB'
-
-        output_stream                = self.fInputDataset.output_stream()
-
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
-
-        job.fOutputStream            = ['defaultOutput'                ]
-        job.fOutputDsID              = [odsid                          ]
-        job.fOutputFnPattern         = ['mcs.mu2e.'+job.fOutputDsID[0] ]
-        job.fOutputFormat            = ['art'                          ]
-#------------------------------------------------------------------------------
-# s5:stn_kk : stntupling job has only one output stream
-#             no ned to redefine the stage
-#------------------------------------------------------------------------------        
-        job                          = s.new_job('stn_kk',idsid);
-
-        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
-             
-        job.fMaxInputFilesPerSegment =  50
-        # job.fNEventsPerSegment       =  100000
-        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '3h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
-        job.fMaxMemory               = '3000MB'
-
-        output_stream                = self.fInputDataset.output_stream()
-
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0100';
-
-        job.fOutputStream            = ['InitStntuple'    ]
-        job.fOutputDsID              = [odsid             ]
-        job.fOutputFnPattern         = ['nts.mu2e.'+odsid ]
-        job.fOutputFormat            = ['stn'             ]
 #------------------------------------------------------------------------------
 # end
 #------------------------------------------------------------------------------

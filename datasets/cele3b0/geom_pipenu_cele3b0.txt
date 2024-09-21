@@ -1,0 +1,10 @@
+// -*- mode: c++ -*-
+//-----------------------------------------------------------------------------
+// default geometry plus degrader_v4 out of the beam, meaning converter only
+//-----------------------------------------------------------------------------
+#include "pipenu/common/geom_baseline.txt"
+#include "pipenu/common/degrader_v04.txt"
+//
+double degrader.upstreamEdge.z      = 4225.0 ;  // default: 4235.0; (hack)
+bool   degrader.build               =  true;    // DEFAULT: false
+double degrader.rotation            = 120.0;    // 60:in the beam, 120: out of the beam (degrees)

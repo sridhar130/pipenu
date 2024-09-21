@@ -41,16 +41,16 @@ double degrader.frame.centerOffFromPivot   = 643.0;  // dist from pivot of
 double degrader.frame.arcAngle             = 90.0;   // degrees of arc
 
 double degrader.filter.rIn                 =   0.0;
-double degrader.filter.rOut                = 140.0;
-double degrader.filter.halfLength          =   4.5;
+double degrader.filter.rOut                = 130.0;
+double degrader.filter.halfLength          =  12.0;
 
-# double degrader.filter2.rIn                =   0.0;
-# double degrader.filter2.rOut               = 100.0;
-# double degrader.filter2.halfLength         =   0.4;
+double degrader.filter2.rIn                =   0.0;
+double degrader.filter2.rOut               = 100.0;
+double degrader.filter2.halfLength         =   0.4;
 
-double degrader.converter.rIn              = 249.0;
+double degrader.converter.rIn              = 249.9;
 double degrader.converter.rOut             = 250.0;
-double degrader.converter.halfLength       =   5.0;
+double degrader.converter.halfLength       =  10.0;
 double degrader.converter.dz               =   0.0;  // this is a negative shift, zero by default
 
 double degrader.counterweight.rIn          = 0.0;

@@ -9,7 +9,7 @@ class Project(ProjectBase):
 #------------------------------------------------------------------------------
 # s3. input for stage3 (simulation of mu- --> e- conversion) : muons stopped in the ST
 #-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('sim.mu2e.cele0b0s21r0000.pipenu.art','cele0b0s21r0000','local'))
+        self.add_dataset(Dataset('sim.mu2e.MuminusStopsCat.MDC2020p.art','cele0b0s21r0000','local'))
 #------------------------------------------------------------------------------
 # s4: digi_trig, use only pi+ --> e+ nu  decays in the ST
 #-------v----------------------------------------------------------------------
@@ -30,21 +30,21 @@ class Project(ProjectBase):
         ProjectBase.__init__(self,project='pipenu',family_id='cele0b0',idsid=idsid);
         self.init_datasets();
 #------------------------------------------------------------------------------
-# s3:gen_sim_tgt : pi+ --> e+ nu decays of pions stopped in the ST
-# need a different FCL because of different collection names
+# s3:gen_sim : mu- --> e- converion on AL, LO
 #------------------------------------------------------------------------------  
         s                            = self.new_stage('s3');
-        job                          = s.new_job('gen_sim_tgt',idsid);
+        job                          = s.new_job('gen_sim',idsid);
 
         job.fNInputFiles             = 1                                # number of segments 
 
         job.fMaxInputFilesPerSegment = 1
-        job.fNEventsPerSegment       = 1000
+        job.fNEventsPerSegment       = 50000
         job.fResample                = 'yes'                             # yes/no
         job.fResamplingModuleLabel   = 'TargetStopResampler'
         job.fRunNumber               = 1210
-        job.fRequestedTime           = '3h'
+        job.fRequestedTime           = '10h'
         job.fIfdh                    = 'ifdh'                            # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
 
         odsid                        = self.fFamilyID+s.name()+'1'+'r0000';
         job.fOutputStream            = [ 'PrimaryOutput'   ]
@@ -63,6 +63,7 @@ class Project(ProjectBase):
         job.fResample                = 'no'                               # yes/no
         job.fRequestedTime           = '3h'
         job.fIfdh                    = 'ifdh'                           # ifdh/xrootd
+        job.fMaxMemory               = '3000MB'
 
         odsid                        = self.fFamilyID+s.name()+'1'+'r0000';
         job.fOutputStream            = [ 'InitStntuple'    ]
@@ -79,15 +80,15 @@ class Project(ProjectBase):
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
+        job.fMaxInputFilesPerSegment =  1
+        # job.fNEventsPerSegment       =  20000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '3h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fIfdh                    = 'ifdh' ## 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
         output_stream                = self.fInputDataset.output_stream()
-        odsid                        = self.fFamilyID+'s4'+output_stream+'r0000';
+        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
 
         job.fOutputStream            = ['defaultOutput'                ]
         job.fOutputDsID              = [odsid                          ]
@@ -137,43 +138,19 @@ class Project(ProjectBase):
         job.fOutputFormat            = ['art'                          ]
 #------------------------------------------------------------------------------
 # stage 5
-# s5:reco_kff : InputDsID is 'cele0b0s41r0000' 
-#               reconstruction job has only one output stream
-#------------------------------------------------------------------------------        
-        s                            = self.new_stage('s5');
-        job                          = s.new_job('reco_kff',idsid);
-
-        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
-             
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
-        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '3h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
-        job.fMaxMemory               = '3000MB'
-
-        output_stream                = self.fInputDataset.output_stream()
-
-        odsid                        = self.fFamilyID+'s5'+output_stream+'r0000';
-
-        job.fOutputStream            = ['defaultOutput'                ]
-        job.fOutputDsID              = [odsid                          ]
-        job.fOutputFnPattern         = ['mcs.mu2e.'+job.fOutputDsID[0] ]
-        job.fOutputFormat            = ['art'                          ]
-#------------------------------------------------------------------------------
-# stage 5
 # s5:reco_kk : InputDsID is 'cele0b0s41r0000' 
 #              reconstruction job has only one output stream
 #------------------------------------------------------------------------------        
+        s                            = self.new_stage('s5');
         job                          = s.new_job('reco_kk',idsid);
 
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
+        job.fMaxInputFilesPerSegment =  1
+        # job.fNEventsPerSegment       =  20000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '3h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
+        job.fIfdh                    = 'ifdh' # 'xrootd'               # ifdh/xrootd
         job.fMaxMemory               = '3000MB'
 
         output_stream                = self.fInputDataset.output_stream()
@@ -185,29 +162,6 @@ class Project(ProjectBase):
         job.fOutputFnPattern         = ['mcs.mu2e.'+job.fOutputDsID[0] ]
         job.fOutputFormat            = ['art'                          ]
 #------------------------------------------------------------------------------
-# s5:stn_kff : InputDsID is 'cele0b0s51r0000' 
-#              stntupling job has only one output stream
-#------------------------------------------------------------------------------        
-        job                          = s.new_job('stn_kff',idsid);
-
-        job.fNInputFiles             = -1                     # number of segments defined by the input dataset
-             
-        job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  20000
-        job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
-        job.fRequestedTime           = '3h'   
-        job.fIfdh                    = 'xrootd'               # ifdh/xrootd
-        job.fMaxMemory               = '3000MB'
-
-        output_stream                = self.fInputDataset.output_stream()
-
-        odsid                        = self.fFamilyID+s.name()+output_stream+'r0000';
-
-        job.fOutputStream            = ['InitStntuple'                 ]
-        job.fOutputDsID              = [odsid                          ]
-        job.fOutputFnPattern         = ['nts.mu2e.'+job.fOutputDsID[0] ]
-        job.fOutputFormat            = ['art'                          ]
-#------------------------------------------------------------------------------
 # s5:stn_kk : stntupling job has only one output stream
 #             no ned to redefine the stage
 #------------------------------------------------------------------------------        
@@ -216,7 +170,7 @@ class Project(ProjectBase):
         job.fNInputFiles             = -1                     # number of segments defined by the input dataset
              
         job.fMaxInputFilesPerSegment =  50
-        job.fNEventsPerSegment       =  100000
+        # job.fNEventsPerSegment       =  100000
         job.fResample                = 'no'   # yes/no        # for resampling, need to define the run number again
         job.fRequestedTime           = '3h'   
         job.fIfdh                    = 'xrootd'               # ifdh/xrootd

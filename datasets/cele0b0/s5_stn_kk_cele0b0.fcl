@@ -11,7 +11,7 @@ END_PROLOG
 process_name : S5Stn
 #------------------------------------------------------------------------------
 services.GeometryService.inputFile    : "pipenu/datasets/cele0b0/geom_pipenu_cele0b0.txt"
-services.GeometryService.bFieldFile   : "pipenu/common/bfgeom_DS70_v01.txt"
+services.GeometryService.bFieldFile   : "Offline/Mu2eG4/geom/bfgeom_v01.txt"
 
 source       : { module_type : RootInput fileNames : ["undefined", "undefined"] }
 
@@ -37,9 +37,9 @@ physics : {
 
 	    simpCollTag      : "compressDigiMCs"
             minSimpMomentum  : -1  ## to get stopped pi+
-	    spmcBlockName    : [ "SpmcBlock"     , "VDetBlock"             , "IPABlock"             ]
-	    spmcCollTag      : [ "g4run:tracker" , "g4run:virtualdetector" , "g4run:protonabsorber" ]
-	    statusG4Tag      : [ "g4run"         , "g4run"                 , "g4run"                ]
+	    spmcBlockName    : [ "SpmcBlock"                       , "IPABlock"             ]
+	    spmcCollTag      : [ "compressDigiMCs:virtualdetector" , "compressDigiMCs:protonabsorber" ]
+	    statusG4Tag      : [ "g4run"                           , "g4run"                ]
 #------------------------------------------------------------------------------
 # so far, positive and negative helices reside in different collections
 # to be merged - done !

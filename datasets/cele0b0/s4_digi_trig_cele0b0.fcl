@@ -33,7 +33,7 @@ services.TFileService.fileName        : "/dev/null"
 # geometry and magnetic field
 #------------------------------------------------------------------------------
 services.GeometryService.inputFile    : "pipenu/datasets/cele0b0/geom_pipenu_cele0b0.txt"
-services.GeometryService.bFieldFile   : "pipenu/common/bfgeom_v01.txt"
+services.GeometryService.bFieldFile   : "Offline/Mu2eG4/geom/bfgeom_v01.txt"
 #------------------------------------------------------------------------------
 #  DB constants
 #------------------------------------------------------------------------------
@@ -48,6 +48,8 @@ services.message.destinations.log.categories.ArtReport.reportEvery : 1
 services.message.destinations.log.categories.ArtReport.limit       : 10000
 services.message.destinations.log.categories.ArtReport.timespan    : 300
 services.message.destinations.log.outputStatistics                 : true
+
+#include "pipenu/fcl/proditions_fixes.fcl"
 
 physics.p1            : [ @sequence::Digitize.DigitizeSequence ]
 physics.e1            : [ defaultOutput        ]

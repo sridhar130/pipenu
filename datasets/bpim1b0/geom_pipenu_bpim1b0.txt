@@ -1,0 +1,12 @@
+// -*- mode: c++ -*-
+//-----------------------------------------------------------------------------
+// pipenu geometry for 'degrader+'
+// list all relevant degrader/converter parameters
+// for bpim1b0, the values below are the defaults from pipenu/common/degrader_v04e.txt
+// thick CH2-only converter Rout = 13 cm
+//-----------------------------------------------------------------------------
+#include "pipenu/common/geom_baseline.txt"
+#include "pipenu/common/degrader_v04.txt"
+//
+bool   degrader.build                      = true;  // DEFAULT: false
+double degrader.rotation                   = 60.0;   // 60:in the beam, 120: out of beam (degrees)

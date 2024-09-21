@@ -13,8 +13,8 @@ END_PROLOG
 process_name : S3DetStepAna
 #------------------------------------------------------------------------------
 services.GeometryService.inputFile    : "pipenu/datasets/neut1b0/geom_pipenu_neut1b0.txt"
-services.GeometryService.bFieldFile   : "pipenu/common/bfgeom_v01.txt"
-services.TFileService.fileName        : "nts.user.neut0b1s31r0000.pipenu.001210_00000000.root"
+services.GeometryService.bFieldFile   : "Offline/Mu2eG4/geom/bfgeom_v01.txt"
+services.TFileService.fileName        : "nts.user.neut1b0s31r0000.pipenu.001210_00000000.root"
 
 source       : { module_type : RootInput fileNames : ["undefined", "undefined"] }
 

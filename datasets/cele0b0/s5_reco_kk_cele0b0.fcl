@@ -15,7 +15,7 @@ END_PROLOG
 process_name : S5Reco
 
 services.GeometryService.inputFile    : "pipenu/datasets/cele0b0/geom_pipenu_cele0b0.txt"
-services.GeometryService.bFieldFile   : "pipenu/common/bfgeom_DS70_v01.txt"
+services.GeometryService.bFieldFile   : "Offline/Mu2eG4/geom/bfgeom_v01.txt"
 services.TFileService.fileName        : "/dev/null"
 
 source.fileNames    : [ "to_be_defined.art" ]

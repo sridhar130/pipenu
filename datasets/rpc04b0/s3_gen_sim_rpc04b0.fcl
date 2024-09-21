@@ -3,6 +3,10 @@
 # RPC on hydrogen ... start from pi- stops in CH2
 # a copy of the input file saved in /exp/mu2e/data/projects/pipenu/datasets/bpim0b0s2dr0000
 #------------------------------------------------------------------------------
+BEGIN_PROLOG
+  PROCESS_CODE   : "mu2eExternalRPC"
+END_PROLOG
+
 #include "Production/JobConfig/primary/TargetStopParticle.fcl"
 
 services.SeedService.baseSeed: 8
@@ -12,13 +16,14 @@ services.SeedService.baseSeed: 8
 services.GeometryService.inputFile  : "pipenu/datasets/rpc04b0/geom_pipenu_rpc04b0.txt"
 services.GeometryService.bFieldFile : "Offline/Mu2eG4/geom/bfgeom_v01.txt"
 
-physics.producers.generate : { module_type: "EventGeneratorMu"
+physics.producers.generate : { @table::EventGeneratorMu
     simpCollTag    : "TargetStopResampler"
     tmin           : 1000
     tmax           : 1700
     verbosityLevel : 0
     stopPdgCode    : -211                             ## stopped pi-
     lifetime       : 26. ## 2196.98                   ## charged pion lifetime, ns
+    makeHistograms : 1
 #------------------------------------------------------------------------------
 # use particle gun to generate 130 MeV photons
 # as the radius of the converter is 25 cm and the radius of the degrader is 15cm,
@@ -27,7 +32,7 @@ physics.producers.generate : { module_type: "EventGeneratorMu"
     generator  : { @table::ParticleGunMu
         nParticles      :   1
         pdgCode         :  22                         ## positrons
-        processCode     : "mu2eExternalRPC"           ## fake whatever is fakeable
+        processCode     : @local::PROCESS_CODE
         pmin            : 129.4
         pmax            : 129.4
         mode            : "flat"
@@ -48,7 +53,7 @@ physics.producers.g4run.inputs  : {
     }
 }
 
-physics.producers.FindMCPrimary.PrimaryProcess  : "mu2ePienu"
+physics.producers.FindMCPrimary.PrimaryProcess  : @local::PROCESS_CODE
 # physics.producers.FindMCPrimary.debugLevel      : 100
 
 physics.filters.TargetStopResampler.mu2e.MaxEventsToSkip : 0

@@ -11,24 +11,8 @@ class Project(ProjectBase):
 #-------v----------------------------------------------------------------------
         self.add_dataset(Dataset('generator'                          ,'neut1b0s00r0000','local'))
 
-        self.add_dataset(Dataset('sim.mu2e.neut1b0s21r0000.pipenu.art','neut1b0s21r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.neut1b0s24r0000.pipenu.art','neut1b0s24r0000','local'))
-        self.add_dataset(Dataset('sim.mu2e.neut1b0s25r0000.pipenu.art','neut1b0s25r0000','local'))
-        self.add_dataset(Dataset('dts.mu2e.neut1b0s34r0000.pipenu.art','neut1b0s34r0000','local'))
-        self.add_dataset(Dataset('dig.mu2e.neut1b0s44r0000.pipenu.art','neut1b0s44r0000','local'))
-        self.add_dataset(Dataset('mcs.mu2e.neut1b0s54r0100.pipenu.art','neut1b0s54r0100','local'))
-#------------------------------------------------------------------------------
-# s4: digi_trig, use only pi+ --> e+ nu  decays in the ST
-#-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('dts.mu2e.neut1b0s34r0000.pipenu.art','neut1b0s34r0000','local'))
-#------------------------------------------------------------------------------
-# s5: reco_kk, reco_kff 
-#-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('dig.mu2e.neut1b0s44r0000.pipenu.art','neut1b0s41r0000','local'))
-#------------------------------------------------------------------------------
-# s5 : stn_kk, stn_kff
-#-------v----------------------------------------------------------------------
-        self.add_dataset(Dataset('mcs.mu2e.neut1b0s54r0100.pipenu.art','neut1b0s51r0100','local'))
+        self.add_dataset(Dataset('sim.mu2e.MuminusStopsCat.MDC2020p.art','neut1b0s21r0000','local'))
+        self.add_dataset(Dataset('dts.mu2e.neut1b0s31r0000.pipenu.art'  ,'neut1b0s31r0000','local'))
 #------------------------------------------------------------------------------
 # a job always has an input dataset, but...
 #------------------------------------------------------------------------------
@@ -58,10 +42,10 @@ class Project(ProjectBase):
         job.fRequestedTime           = '10h'
         job.fIfdh                    = 'xrootd'                         # ifdh/xrootd
 
-        odsid34                      = self.fFamilyID+s.name()+'4'+'r0000';
+        odsid31                      = self.fFamilyID+s.name()+'1'+'r0000';
         job.fOutputStream            = [ 'PrimaryOutput'     ]
-        job.fOutputDsID              = [ odsid34             ]
-        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid34 ]
+        job.fOutputDsID              = [ odsid31             ]
+        job.fOutputFnPattern         = [ 'dts.mu2e.'+odsid31 ]
         job.fOutputFormat            = [ 'art'               ]
 #------------------------------------------------------------------------------
 # s3:stn_dts : ntuple output of detector steps
