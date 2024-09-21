@@ -103,6 +103,14 @@ void init_pipenu_datasets(stn_book* Book) {
     ds = Book->NewDataset ("pipenu.bmup9b0s29r0000" ,"",-1,   1000000000); 
     hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
 //-----------------------------------------------------------------------------
+// neutron pileup datasets
+//-----------------------------------------------------------------------------
+    ds = Book->NewDataset ("pipenu.neut0b0s31r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"detstepana.0000",   "" );
+
+    ds = Book->NewDataset ("pipenu.neut1b0s31r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"detstepana.0000",   "" );
+//-----------------------------------------------------------------------------
 // pi- beam datasets
 //-----------------------------------------------------------------------------
     ds = Book->NewDataset ("pipenu.bpim0b0s21r0000" ,"",-1,   1000000000); 
@@ -113,6 +121,20 @@ void init_pipenu_datasets(stn_book* Book) {
 
     ds = Book->NewDataset ("pipenu.bpim0b0s25r0000" ,"",-1,   1000000000); 
     hf = Book->NewHistFile(ds->id()            ,"","murat_spmc_ana.0000" );
+//-----------------------------------------------------------------------------
+// CE datasets
+//-----------------------------------------------------------------------------
+    ds = Book->NewDataset ("pipenu.cele0b0s51r0100" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_trk_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.cele1b0s51r0100" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_trk_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.cele2b0s51r0100" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_trk_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.cele3b0s51r0100" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_trk_ana.0000" );
 //-----------------------------------------------------------------------------
 // RPC datasets
 //-----------------------------------------------------------------------------
