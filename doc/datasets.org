@@ -1,6 +1,6 @@
 # 
 *------------------------------------------------------------------------------
-* PIPENU datasets (summary)       last update : <2023-10-26 Thu>
+* PIPENU datasets (summary)       last update : <2024-10-02 Wed>
 * -----------------------------------------------------------------------------
 * all data/log files: file:/exp/mu2e/data/projects/pipenu
 - logfiles: file:/exp/mu2e/data/projects/pipenu/log
