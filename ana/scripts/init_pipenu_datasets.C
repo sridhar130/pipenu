@@ -144,7 +144,13 @@ void init_pipenu_datasets(stn_book* Book) {
     ds = Book->NewDataset ("pipenu.rpc04b0s44r0000" ,"",-1,   1000000000); 
     hf = Book->NewHistFile(ds->id()            ,"","murat_drpc_ana.0000" );
 
+    ds = Book->NewDataset ("pipenu.rpc04b0s54r0100" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_drpc_ana.0000" );
+
     ds = Book->NewDataset ("pipenu.rpc05b0s44r0000" ,"",-1,   1000000000); 
+    hf = Book->NewHistFile(ds->id()            ,"","murat_drpc_ana.0000" );
+
+    ds = Book->NewDataset ("pipenu.rpc07b0s54r0100" ,"",-1,   1000000000); 
     hf = Book->NewHistFile(ds->id()            ,"","murat_drpc_ana.0000" );
 
   }
